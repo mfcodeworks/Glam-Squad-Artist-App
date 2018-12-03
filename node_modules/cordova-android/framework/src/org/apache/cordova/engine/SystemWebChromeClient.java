@@ -243,52 +243,18 @@ public class SystemWebChromeClient extends WebChromeClient {
             }
         }, intent, FILECHOOSER_RESULTCODE);
     }
-    
-    Uri photoUri;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onShowFileChooser(WebView webView, final ValueCallback<Uri[]> filePathsCallback, final WebChromeClient.FileChooserParams fileChooserParams) {
         Intent intent = fileChooserParams.createIntent();
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         try {
             parentEngine.cordova.startActivityForResult(new CordovaPlugin() {
-                /*@Override
+                @Override
                 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
                     Uri[] result = WebChromeClient.FileChooserParams.parseResult(resultCode, intent);
                     LOG.d(LOG_TAG, "Receive file chooser URL: " + result);
                     filePathsCallback.onReceiveValue(result);
-                }*/
-                @Override
-                public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-                    if (resultCode ==  Activity.RESULT_OK && intent != null) {
-                        if (intent.getData() != null)
-                        {
-                            Uri[] result = WebChromeClient.FileChooserParams.parseResult(resultCode, intent);
-                            filePathsCallback.onReceiveValue(result);
-                        }
-                        else
-                        {
-                            if (intent.getClipData() != null) {
-                                final int numSelectedFiles = intent.getClipData().getItemCount();
-                                Uri[] result = new Uri[numSelectedFiles];
-                                for (int i = 0; i < numSelectedFiles; i++) {
-                                    result[i] = intent.getClipData().getItemAt(i).getUri();
-                                }
-                                filePathsCallback.onReceiveValue(result);
-                            }
-                            else {
-                                filePathsCallback.onReceiveValue(null);
-                            }
-                        }
-                    }
-                    else if(resultCode ==  Activity.RESULT_OK && (intent == null || intent.getData() == null )) {
-                        Uri[] result = new Uri[1];
-                        result[0] = photoUri;
-                        filePathsCallback.onReceiveValue(result);
-                    } else {
-                        filePathsCallback.onReceiveValue(null);
-                    }
                 }
             }, intent, FILECHOOSER_RESULTCODE);
         } catch (ActivityNotFoundException e) {

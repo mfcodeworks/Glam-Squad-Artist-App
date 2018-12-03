@@ -9,168 +9,6 @@ import * as ui from './ui-tools';
 const endpoint = 'https://glam-squad-db.nygmarosebeauty.com/';
 const apiSecret = '1GSqDjCYAXeBLuLLVBx3bXlpC5NKUPqC';
 
-// Fill event form with default data
-export function autofillEventForm(data) {
-    // Get address from booking button click and set for booking dialog
-    var address = data.val();
-    $("#event-address").val(address);
-
-    // Get local datetime now
-    var datetime = new Date();
-
-    /** 
-     * Set time (time now + 2 hours) for booking dialog
-     * Format 01:00 - 23:59
-     */
-    var hours = ("0" + (datetime.getHours() + 2)).slice(-2);
-    var minutes = ("0" + datetime.getMinutes()).slice(-2);
-    var time = hours+":"+minutes;
-    $("#event-time").val(time);
-
-    /** 
-     * Set date (today) for booking dialog
-     * Format 2018-01-01
-     */
-    var day = ("0" + datetime.getDate()).slice(-2);
-    var month = ("0" + (datetime.getMonth() + 1)).slice(-2);
-    var date = datetime.getFullYear()+"-"+(month)+"-"+(day) ;
-    $("#event-date").val(date);
-};
-
-// Watch and process event form
-export function processEventBooking() {
-    // On form event submit
-    $("#btn-confirm-event").click(function() {
-        // Disable click to prevent double-booking
-        $("#btn-confirm-event").prop("disabled", true);
-        $(".event-package-selection").removeClass("input-warning");
-
-        // Payment choice
-        console.log($("#event-card-selection :selected").data("card"));
-        if(!$("#event-card-selection :selected").data("card")) {
-            $("#btn-confirm-event").prop("disabled", false);
-            $("#btn-add-card").click();
-            return;
-        }
-        else {
-            var card = $("#event-card-selection :selected").data("card");
-        }
-
-        // Event Package
-        var packages = [];
-        var price = 0.0;
-        $(".event-package-selection").each(function(e) {
-            if($(this).hasClass("active")) {
-                packages.push($(this).data("package"));
-                price += parseFloat($(this).data("price"));
-            }
-        });
-        if(packages.length < 1) {
-            $(".event-package-selection").addClass("input-warning");
-            $("#btn-confirm-event").prop("disabled", false);
-            return;
-        }
-
-        // If all valid begin building form
-        ui.startLoader();
-
-        // Create datetime
-        var year = $("#event-date").val().split("-")[0];
-        var month = parseInt($("#event-date").val().split("-")[1])-1;
-        var day = $("#event-date").val().split("-")[2];
-        var hour = $("#event-time").val().split(":")[0];
-        var minute = $("#event-time").val().split(":")[1];
-        var datetime = new Date(year,month,day,hour,minute);
-
-        session.get("login")
-            .then(function(res) {
-                var form = {
-                    formContext: "event-form",
-                    address: $("#event-address").val(),
-                    datetime: datetime.toISOString(),
-                    packages: packages,
-                    note: $("#event-note").val(),
-                    price: parseFloat(price),
-                    userId: parseInt(JSON.parse(res).userId),
-                    card: card,
-                    photos: []
-                };
-
-                // Read files
-                var photoInput = $("#event-photos")[0];
-                var files = [];
-
-                for(var i = 0; i < photoInput.files.length; i++) {
-                    files.push( tools.readFile(photoInput.files[i]) );
-                }
-            
-                Promise.all(files)
-                    .then(function(blobs) {
-                        blobs.forEach(function(blob) {
-                            form.photos.push(blob);
-                        });
-
-                        sendEventBooking(form);
-
-                    }, function(err) {
-                        console.log("Read file loop error.\n" + err);
-                        ui.endLoader();
-                        navigator.notification.alert(
-                            "Error occured reading photos attached. Please try again.",
-                            null,
-                            "Photo Error",
-                            "Okay"
-                        );
-                        $("#btn-confirm-event").prop("disabled", false);
-                    });
-            });
-    });
-}
-
-function sendEventBooking(form) {
-    console.log(JSON.stringify(form));
-
-    // Create post request
-    postData(form)
-        .then( function(res) {
-            console.log(JSON.stringify(res,null,'\t'));
-            $("#btn-confirm-event").prop("disabled", false);
-            $("#btn-close-event").click();
-            $(".btn-delete-marker").click();
-            ui.endLoader();
-
-            var topic = "event-"+res.id+"-client";
-            push.subscribe(topic);
-            push.notification(
-                res.id, 
-                topic, 
-                "Event Booked", 
-                "Event successfully booked at "+form.address
-            )
-                .then(function(d) {
-                    console.log(d);
-                });
-
-            navigator.notification.alert(
-                "Booking Completed!",
-                null,
-                "Success",
-                "Okay"
-            );
-
-        }, function(err) {
-            console.log(err);
-            $("#btn-confirm-event").prop("disabled", false);
-            ui.endLoader();
-            navigator.notification.alert(
-                "Booking Failed. Please try again later.",
-                "Server Error",
-                null,
-                "Okay"
-            );
-        });
-}
-
 export function registerUser() {
     // Verify inputs
     $("#reg-username").removeClass("is-invalid");
@@ -198,7 +36,7 @@ export function registerUser() {
 
     // Create a registration form
     var form = {
-        formContext: "client-registration",
+        formContext: "artist-registration",
         username: $("#reg-username").val(),
         email: $("#reg-email").val(),
         password: $("#reg-password").val()
@@ -213,7 +51,7 @@ export function registerUser() {
                 // If successful alert
                 case true:
                     navigator.notification.alert(
-                        "Registration successful. You can now login.",
+                        "Registration received. You will receive an email shortly notifying you of your next step.",
                         null,
                         "Registration Success",
                         "Okay"
@@ -225,7 +63,7 @@ export function registerUser() {
                 case false:
                     navigator.notification.alert(
                         "An error occured, please try again later.\n"+JSON.stringify(r.error),
-                        "Registration Error",
+                        null,
                         "Error",
                         "Okay"
                     );
@@ -268,7 +106,7 @@ export function authenticateUser() {
     // Create authentication form
     ui.startLoader();
     var form = {
-        formContext: "client-login",
+        formContext: "artist-login",
         username: $("#login-username").val(),
         password: $("#login-password").val()
     };
@@ -305,7 +143,7 @@ export function authenticateUser() {
                     // If SQL error login incorrect
                     if(r.error == "Incorrect login details.") {
                         navigator.notification.alert(
-                            "Incorrect login details.\n",
+                            "Incorrect login details.",
                             null,
                             "Incorrect Login",
                             "Okay"
@@ -313,20 +151,30 @@ export function authenticateUser() {
                     }
                     else {
                         // Else if SQL error then API incorrect, alert error
-                        navigator.notification.alert("Error occured, please try again later.\n"+r.error);
+                        navigator.notification.alert(
+                            "Error occured, please try again later.\n"+JSON.stringify(r.error,null,2),
+                            null,
+                            "Error",
+                            "Okay"
+                        );
                         break;
                     }
                     break;
 
                 default:
                     // If response malformed/null alert error
-                    navigator.notification.alert("An unknown error occured. Please try agian later.\n"+JSON.stringify(r));
+                    navigator.notification.alert(
+                        "An unknown error occured. Please try agian later.\n"+JSON.stringify(r,null,2),
+                        null,
+                        "Error",
+                        "Okay"
+                    );
                     break;
             }
         }, function(e) {
             ui.endLoader();
             navigator.notification.alert(
-                "Error occured, please try again later.",
+                "Error occured, please try again later.\n"+e,
                 null,
                 "Error",
                 "Okay"
@@ -349,7 +197,7 @@ export function isAuthenticated() {
     
                 // Build validation form
                 var form = {
-                    formContext: "client-session-check",
+                    formContext: "artist-session-check",
                     userId: parseInt(res.userId),
                     usernameHash: res.usernameHash
                 };
@@ -364,7 +212,7 @@ export function isAuthenticated() {
     })
 }
 
-export function getFcmTopics(type = "client") {
+export function getFcmTopics(type = "artist") {
     return session.get("login")
         .then(function(d) {
             return JSON.parse(d);
@@ -372,7 +220,7 @@ export function getFcmTopics(type = "client") {
         .then(function(u) {
             // Save form
             var form = {
-                formContext: "fcm-client-topic-fetch",
+                formContext: "fcm-topic-fetch",
                 type: type,
                 userId: u.userId
             };
@@ -393,7 +241,7 @@ export function getFcmTopics(type = "client") {
         });
 }
 
-export function saveFcmTopic(topic) {
+export function saveFcmTopic(topic, type = "artist") {
     return session.get("login")
         .then(function(d) {
             return JSON.parse(d);
@@ -403,6 +251,7 @@ export function saveFcmTopic(topic) {
             // Save ID to JSON
             var form = {
                 topic: topic,
+                type: type,
                 userId: parseInt(u.userId),
                 formContext: "fcm-topic-registration",
             };
@@ -470,7 +319,7 @@ export function updateUser() {
             var data = JSON.parse(res);
             
             var form = {
-                formContext: "client-info-update",
+                formContext: "artist-info-update",
                 userId: parseInt(data.userId),
                 username: $("#new-username").val(),
                 email: $("#new-email").val(),
@@ -530,78 +379,6 @@ export function updateUser() {
                         $(".alert").fadeOut();
                     }, (1000 * 7));
                 });
-        });
-}
-
-export function saveClientPaymentInfo(form) {
-    return postData(form)
-        .then(function(r) {
-            console.log(r);
-
-            session.get("login")
-                .then(function(u) {
-                    return JSON.parse(u);
-                })
-                .then(function(u) {
-                    if(!u.stripeId) {
-                        u.stripeId = form.stripeId;
-
-                        session.remove("login")
-                            .then(function() {
-                                session.save("login", JSON.stringify(u));
-                            });
-                    }
-                    else {
-                        return;
-                    }
-                });
-        });
-}
-
-export function deleteCard(card) {
-    return new Promise(function(resolve) {
-        session.get("login")
-            .then(function(r) {
-                return JSON.parse(r);
-            })
-            .then(function(r) {
-                var form = {
-                    formContext: "delete-card",
-                    cardID: card,
-                    userID: parseInt(r.userID)
-                }
-            
-                resolve(postData(form));
-            });
-    });
-}
-
-export function getEvents() {
-    return session.get("login")
-        .then(function(r) {
-            return JSON.parse(r);
-        })
-        .then(function(u) {
-            var form = {
-                formContext: "event-get",
-                userId: u.userId
-            }
-            return postData(form);
-        });
-}
-
-export function deleteEvent(job) {
-    return session.get("login")
-        .then(function(r) {
-            return JSON.parse(r);
-        })
-        .then(function(u) {
-            var form = {
-                formContext: "event-delete",
-                userId: u.userId,
-                jobId: job
-            }
-            return postData(form);
         });
 }
 

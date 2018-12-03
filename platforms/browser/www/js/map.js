@@ -4,8 +4,6 @@ window.jQuery = $;
 window.$ = $;
 import 'bootstrap';
 import '@fortawesome/fontawesome-free';
-import * as ui from './ui-tools';
-import * as api from './api';
 import * as push from './push';
 import * as tools from './tools';
 import * as map from './map-functions';
@@ -45,12 +43,7 @@ var app = {
                 push.handle();
 
                 // UI handlers
-                api.processEventBooking();
-                map.handlePayment();
                 tools.handleLogout();
-                ui.eventPackageSelector();
-                ui.fillPaymentOptions();
-                ui.updateBookingImages();
 
                 // Auth check
                 map.authenticatedCheck();

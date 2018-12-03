@@ -246,58 +246,58 @@ INJECTED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\andro
 		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:26:42-68
 		INJECTED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
-uses-permission#android.permission.ACCESS_COARSE_LOCATION
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:27:5-81
 	android:name
 		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:27:22-78
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:28:5-81
+	android:name
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:28:22-78
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:28:5-79
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:29:5-79
 	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:28:22-76
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:29:22-76
 uses-feature#android.hardware.location.gps
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:29:5-66
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:30:5-66
 	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:29:19-63
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:30:5-79
-MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:21:5-78
-MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:21:5-78
-MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:21:5-78
-MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:21:5-78
-MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:19:5-78
-MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:19:5-78
-	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:30:22-76
-uses-permission#android.permission.VIBRATE
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:31:5-66
-	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:31:22-63
-uses-permission#android.permission.WAKE_LOCK
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:32:5-68
-MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:22:5-67
-MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:22:5-67
-MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:22:5-67
-MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:22:5-67
-MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:21:5-67
-MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:21:5-67
-	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:32:22-65
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:33:5-81
-	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:33:22-78
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:30:19-63
 uses-permission#android.permission.RECORD_AUDIO
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:34:5-71
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:31:5-71
 	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:34:22-68
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:31:22-68
 uses-permission#android.permission.MODIFY_AUDIO_SETTINGS
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:35:5-80
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:32:5-80
 	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:35:22-77
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:32:22-77
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:36:5-75
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:33:5-75
 	android:name
-		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:36:22-72
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:33:22-72
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:34:5-79
+MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:21:5-78
+MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:21:5-78
+MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:21:5-78
+MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:21:5-78
+MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:19:5-78
+MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:19:5-78
+	android:name
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:34:22-76
+uses-permission#android.permission.VIBRATE
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:35:5-66
+	android:name
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:35:22-63
+uses-permission#android.permission.WAKE_LOCK
+ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:36:5-68
+MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:22:5-67
+MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:22:5-67
+MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:22:5-67
+MERGED from [com.google.firebase:firebase-analytics-impl:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-impl-11.6.2.aar\af25e6eb927e9afb995eef22921c567c\AndroidManifest.xml:22:5-67
+MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:21:5-67
+MERGED from [com.google.firebase:firebase-iid:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-iid-11.6.2.aar\d5555e1d87bdd6325118e9d33e27147e\AndroidManifest.xml:21:5-67
+	android:name
+		ADDED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:36:22-65
 uses-permission#com.sec.android.provider.badge.permission.READ
 ADDED from [me.leolin:ShortcutBadger:1.1.17] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\ShortcutBadger-1.1.17.aar\9b3ed135ef1378aa86a6c1c82b3dae08\AndroidManifest.xml:19:5-86
 	android:name

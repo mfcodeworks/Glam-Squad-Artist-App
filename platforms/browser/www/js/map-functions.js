@@ -2,10 +2,8 @@
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as ui from './ui-tools';
-import * as session from './session';
 import * as api from './api';
 import * as tools from './tools';
-import * as payment from './payment';
 
 // map var
 var map;
@@ -217,116 +215,4 @@ export function authenticatedCheck() {
         .then(function(r) {
             if(!r) tools.load("login.html");
         });
-}
-
-export function handlePayment() {
-    return new Promise(function(resolve) {
-        var stripe = Stripe('pk_test_q4I6d4V8onnBC31PJOdKjY8i');
-        var elements = stripe.elements();
-    
-        $(document).ready(function() {
-            // Custom styling can be passed to options when creating an Element.
-            var style = {
-                base: {
-                    // Add your base input styles here. For example:
-                    fontSize: '16px',
-                    color: '#fff',
-                    iconColor: '#fff',
-                    
-                }
-            };
-    
-            // Create an instance of the card Element.
-            var card = elements.create('card', {style: style});
-    
-            // Add an instance of the card Element into the `card-element` <div>.
-            card.mount('#card-element');
-    
-            // Handle card errors
-            card.addEventListener('change', function(e) {
-                var displayError = document.getElementById('card-errors');
-                if (e.error) {
-                    displayError.textContent = e.error.message;
-                } else {
-                    displayError.textContent = '';
-                }
-            });
-    
-            $("#btn-save-card").click(function() {
-                ui.startLoader();
-
-                stripe.createToken(card)
-                    .then(function(r) {
-                        if (r.error) {
-                            // Inform the customer that there was an error.
-                            var errorElement = document.getElementById('card-errors');
-                            errorElement.textContent = r.error.message;
-
-                            ui.endLoader();
-                        } else {
-                            var token = r.token;
-                            console.log(token);
-    
-                            var save = $("#save-card").prop('checked');
-    
-                            if(save) { 
-                                // Get user data
-                                session.get("login")
-                                    .then(function(r) {
-                                        // Create customer info object
-                                        var customerData = {
-                                            formContext: "save-client-payment-info",
-                                            type: token.card.brand,
-                                            lastFour: parseInt(token.card.last4),
-                                            token: token.card.id,
-                                            userID: parseInt(JSON.parse(r).userId),
-                                        }
-                    
-                                        payment.getCustomerId(token.id)
-                                            .then(function(r) {
-                                                customerData.stripeId = r;
-                    
-                                                console.log(customerData);
-        
-                                                api.saveClientPaymentInfo(customerData)
-                                                    .then(function() {
-                                                        var html = "<option data-card=\'" + token.card.id + "\' selected='selected'>" + token.card.brand + " - " + token.card.last4 +"</option>";
-                                                        $("#event-card-selection").append(html);
-                                                        $("#event-card-selection").show();
-
-                                                        ui.endLoader();
-                                                    });
-                                            });
-                                    });
-                            }
-                            else {
-                                // Get user data
-                                session.get("login")
-                                    .then(function(r) {
-                                        // Create card info object
-                                        var cardData = {
-                                            formContext: "save-client-payment-info",
-                                            type: token.card.brand,
-                                            lastFour: parseInt(token.card.last4),
-                                            token: token.id,
-                                            userID: parseInt(JSON.parse(r).userId),
-                                        }
-                    
-                                        api.saveClientPaymentInfo(cardData)
-                                            .then(function() {
-                                                var html = "<option data-card=\'" + token.id + "\' selected='selected'>" + token.card.brand + " - " + token.card.last4 +"</option>";
-                                                $("#event-card-selection").append(html);
-                                                $("#event-card-selection").show();
-
-                                                ui.endLoader();
-                                            });
-                                    });
-                            }
-                            $("#btn-close-create-card").click();
-                        }
-                    });
-            });
-        });
-        resolve(true);
-    });
 }

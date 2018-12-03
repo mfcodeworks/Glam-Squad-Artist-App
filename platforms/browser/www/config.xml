@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nygmarosebeauty.nrglamsquad" version="0.6.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.nygmarosebeauty.nrglamsquadartist" version="0.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>
-        NR Glam Squad
+        NR Glam Squad Artist
     </name>
     <description>
-        NR Glam Squad
+        NR Glam Squad Artist.
     </description>
     <author email="mf@nygmarosebeauty.com" href="https://mf.nygmarosebeauty.com">
         MF Softworks

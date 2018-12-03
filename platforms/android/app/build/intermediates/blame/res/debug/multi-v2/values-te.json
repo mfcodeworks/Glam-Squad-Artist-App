@@ -55,62 +55,6 @@
                     }
                 }
             ]
-        },
-        {
-            "outputFile": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Client-App\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-te\\values-te.xml",
-            "map": [
-                {
-                    "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-11.6.2.aar\\43a90d363a2ca0943ad5a546a44acb4b\\res\\values-te\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "285",
-                        "endColumns": "198",
-                        "endOffsets": "483"
-                    },
-                    "to": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "105",
-                        "endColumns": "198",
-                        "endOffsets": "299"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\values-te\\values-te.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "100",
-                        "endOffsets": "151"
-                    },
-                    "to": {
-                        "startLines": "4",
-                        "startColumns": "4",
-                        "startOffsets": "409",
-                        "endColumns": "100",
-                        "endOffsets": "505"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\firebase-messaging-11.6.2.aar\\f025a29f25104cf7328a52ec54e17af9\\res\\values-te\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "243",
-                        "endColumns": "100",
-                        "endOffsets": "343"
-                    },
-                    "to": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "304",
-                        "endColumns": "104",
-                        "endOffsets": "404"
-                    }
-                }
-            ]
         }
     ]
 }

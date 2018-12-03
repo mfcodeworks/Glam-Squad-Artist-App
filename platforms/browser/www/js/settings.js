@@ -31,10 +31,7 @@ var app = {
                 tools.handleLogout();
                 ui.formToggle();
                 settings.fillUserInfo();
-                settings.handlePayment();
                 settings.updateUserHandler();
-                settings.getCards();
-                settings.getUserEvents();
 
                 // Auth check
                 settings.authenticatedCheck();

@@ -9,7 +9,7 @@
         "parents": {
           "NSLocationWhenInUseUsageDescription": [
             {
-              "xml": "<string>Location access will use clients location for booking events faster via map</string>",
+              "xml": "<string>Location access will use users location for finding and saving locations faster via map</string>",
               "count": 1,
               "mode": "merge",
               "id": "config.xml"
@@ -31,7 +31,19 @@
               "count": 1
             },
             {
+              "xml": "<feature name=\"File\"><param name=\"ios-package\" value=\"CDVFile\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
+            },
+            {
               "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
+              "count": 1
+            },
+            {
+              "xml": "<preference name=\"KeepAVAudioSessionAlwaysActive\" value=\"NO\" />",
               "count": 1
             },
             {
@@ -44,18 +56,6 @@
             },
             {
               "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
-              "count": 1
-            },
-            {
-              "xml": "<feature name=\"File\"><param name=\"ios-package\" value=\"CDVFile\" /><param name=\"onload\" value=\"true\" /></feature>",
-              "count": 1
-            },
-            {
-              "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
-              "count": 1
-            },
-            {
-              "xml": "<preference name=\"KeepAVAudioSessionAlwaysActive\" value=\"NO\" />",
               "count": 1
             }
           ]
@@ -85,35 +85,35 @@
   },
   "installed_plugins": {
     "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "cordova-plugin-network-information": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "cordova-plugin-vibration": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "cordova-support-google-services": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "phonegap-plugin-multidex": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
-    },
-    "phonegap-plugin-push": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
     "cordova-plugin-file": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
     "cordova-plugin-media": {
       "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO",
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "phonegap-plugin-multidex": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "phonegap-plugin-push": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   },
   "dependent_plugins": {},
@@ -124,71 +124,6 @@
       "pluginId": "cordova-plugin-dialogs",
       "merges": [
         "navigator.notification"
-      ]
-    },
-    {
-      "id": "cordova-plugin-geolocation.Coordinates",
-      "file": "plugins/cordova-plugin-geolocation/www/Coordinates.js",
-      "pluginId": "cordova-plugin-geolocation",
-      "clobbers": [
-        "Coordinates"
-      ]
-    },
-    {
-      "id": "cordova-plugin-geolocation.PositionError",
-      "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
-      "pluginId": "cordova-plugin-geolocation",
-      "clobbers": [
-        "PositionError"
-      ]
-    },
-    {
-      "id": "cordova-plugin-geolocation.Position",
-      "file": "plugins/cordova-plugin-geolocation/www/Position.js",
-      "pluginId": "cordova-plugin-geolocation",
-      "clobbers": [
-        "Position"
-      ]
-    },
-    {
-      "id": "cordova-plugin-geolocation.geolocation",
-      "file": "plugins/cordova-plugin-geolocation/www/geolocation.js",
-      "pluginId": "cordova-plugin-geolocation",
-      "clobbers": [
-        "navigator.geolocation"
-      ]
-    },
-    {
-      "id": "cordova-plugin-network-information.network",
-      "file": "plugins/cordova-plugin-network-information/www/network.js",
-      "pluginId": "cordova-plugin-network-information",
-      "clobbers": [
-        "navigator.connection",
-        "navigator.network.connection"
-      ]
-    },
-    {
-      "id": "cordova-plugin-network-information.Connection",
-      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
-      "pluginId": "cordova-plugin-network-information",
-      "clobbers": [
-        "Connection"
-      ]
-    },
-    {
-      "id": "cordova-plugin-vibration.notification",
-      "file": "plugins/cordova-plugin-vibration/www/vibration.js",
-      "pluginId": "cordova-plugin-vibration",
-      "merges": [
-        "navigator"
-      ]
-    },
-    {
-      "id": "phonegap-plugin-push.PushNotification",
-      "file": "plugins/phonegap-plugin-push/www/push.js",
-      "pluginId": "phonegap-plugin-push",
-      "clobbers": [
-        "PushNotification"
       ]
     },
     {
@@ -365,6 +300,38 @@
       "runs": true
     },
     {
+      "id": "cordova-plugin-geolocation.Coordinates",
+      "file": "plugins/cordova-plugin-geolocation/www/Coordinates.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "clobbers": [
+        "Coordinates"
+      ]
+    },
+    {
+      "id": "cordova-plugin-geolocation.PositionError",
+      "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "clobbers": [
+        "PositionError"
+      ]
+    },
+    {
+      "id": "cordova-plugin-geolocation.Position",
+      "file": "plugins/cordova-plugin-geolocation/www/Position.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "clobbers": [
+        "Position"
+      ]
+    },
+    {
+      "id": "cordova-plugin-geolocation.geolocation",
+      "file": "plugins/cordova-plugin-geolocation/www/geolocation.js",
+      "pluginId": "cordova-plugin-geolocation",
+      "clobbers": [
+        "navigator.geolocation"
+      ]
+    },
+    {
       "id": "cordova-plugin-media.MediaError",
       "file": "plugins/cordova-plugin-media/www/MediaError.js",
       "pluginId": "cordova-plugin-media",
@@ -379,18 +346,51 @@
       "clobbers": [
         "window.Media"
       ]
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection",
+        "navigator.network.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-vibration.notification",
+      "file": "plugins/cordova-plugin-vibration/www/vibration.js",
+      "pluginId": "cordova-plugin-vibration",
+      "merges": [
+        "navigator"
+      ]
+    },
+    {
+      "id": "phonegap-plugin-push.PushNotification",
+      "file": "plugins/phonegap-plugin-push/www/push.js",
+      "pluginId": "phonegap-plugin-push",
+      "clobbers": [
+        "PushNotification"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-dialogs": "2.0.1",
+    "cordova-plugin-file": "6.0.1",
     "cordova-plugin-geolocation": "4.0.1",
+    "cordova-plugin-media": "5.0.2",
     "cordova-plugin-network-information": "2.0.1",
     "cordova-plugin-vibration": "3.1.0",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-support-google-services": "1.1.0",
     "phonegap-plugin-multidex": "1.0.0",
-    "phonegap-plugin-push": "2.2.3",
-    "cordova-plugin-file": "6.0.1",
-    "cordova-plugin-media": "5.0.2"
+    "phonegap-plugin-push": "2.2.3"
   }
 }

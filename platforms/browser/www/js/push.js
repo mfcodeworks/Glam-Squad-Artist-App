@@ -2,7 +2,7 @@
 import * as api from './api';
 
 var push;
-var fcmTopics = ['all', 'clients'];
+var fcmTopics = ['all', 'artists'];
 var serverKey = 'AAAAY5tckGE:APA91bG58lohPhe2J-T7PIY-27Ux6CRbz05ns_kfUY1B2raSRvHNQz5oLDq6-UVVWCBnGZ9Pz1qElFtl2bX6PjR8obu7q0auLgwpE9Abj9C0LBLYMNVilXaSGRpSaK_ko-awy6CbYhQz';
 
 // Handle push notificaion receive event
