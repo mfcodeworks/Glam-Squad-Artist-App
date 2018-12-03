@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "427808297057",
+    "firebase_url": "https://nr-glam-squad.firebaseio.com",
+    "project_id": "nr-glam-squad",
+    "storage_bucket": "nr-glam-squad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427808297057:android:0ca21748c14bbed1",
+        "android_client_info": {
+          "package_name": "com.nygmarosebeauty.nrglamsquadartist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427808297057-g8ganbj0pcpqcr7b07l0ip7po8n8bqqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqCZu6EjdMlOMHyTbRXL7r-W_1wDrXpfk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

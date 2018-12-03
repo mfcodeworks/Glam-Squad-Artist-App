@@ -1,0 +1,59 @@
+/* Custom */
+#map {
+    position:absolute; 
+    top:0; 
+    bottom:0; 
+    width:100%; 
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+.geocoder {
+    position: relative !important;
+    z-index: 100;
+    width: 65vw;
+    margin: 0 auto;
+    top: 20px;
+}
+.event-marker {
+    background-image: url("../img/logo-marker.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 58px;
+    cursor: pointer;
+    z-index: 10 !important;
+}
+.marker-popup {
+    text-align: center;
+}
+/* API: Mapbox GL JS */
+.mapboxgl-ctrl-geocoder { 
+    min-width:100%;
+    z-index: 100 !important;
+}
+.mapboxgl-ctrl-geocoder,
+.mapboxgl-ctrl-geocoder:active,
+.mapboxgl-ctrl-geocoder input,
+.mapboxgl-ctrl-geocoder input::placeholder,
+.geocoder-icon,
+.suggestions { 
+    background-color: grey !important;
+    border-color: grey !important;
+    color: #fff !important;
+    font-size: 11pt !important;
+    caret-color: #fff !important;
+}
+.mapboxgl-canvas {
+    z-index: 0;
+}
+.mapboxgl-marker {
+    z-index: 10 !important;
+}
+.mapboxgl-popup {
+    z-index: 50 !important;
+}
+.mapboxgl-popup-close-button {
+    display: none;
+}

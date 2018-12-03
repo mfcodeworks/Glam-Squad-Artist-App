@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+    <head>
+        <!-- https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy -->
+        <meta 
+            http-equiv="Content-Security-Policy" 
+            content="default-src * 'unsafe-inline' data: blob: gap:; 
+                script-src 'self' 'unsafe-eval' blob: data: https://api.mapbox.com https://js.stripe.com; 
+                connect-src * data: blob: https://glam-squad-db.nygmarosebeauty.com;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <link rel="shortcut icon" href="img/logo-white.png">
+        <link rel='dns-prefetch' href='https://api.mapbox.com' />
+        <link rel='dns-prefetch' href='https://glam-squad-db.nygmarosebeauty.com' />
+        <title>NR Glam Squad</title>
+
+        <!-- Page CSS -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/fontawesome/all.min.css">
+        <link rel="stylesheet" type="text/css" href="css/custom.css">
+    </head>
+    <body class="clr-dark">
+
+        <!-- Splash Screen -->
+        <div id='splash-screen' class='clr-white'>
+            <img src="img/lips-loading_transparent.gif" id="splash-screen-inner">
+        </div>
+        <!-- /Splash Screen -->
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-black" data-role="header">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="map.html">Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Terms &amp; Conditions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="btn-logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Alert Container -->
+        <div class="container col-lg-10 col-sm-10 col-xs 10" id="alert-container" data-role="none">
+        </div>
+
+        <!-- User Info Form -->
+        <div class="container col-lg-10 col-sm-10 col-xs 10" id="user-info-form-container" data-role="none">
+            <form action='' id='user-info-form'>
+                <div class="form-group list-group-item clr-dark" data-role="toggleFormInput" data-target="user-info-form-inputs">
+                    <span class="h4">Update User Info</span>
+                </div>
+                <div id="user-info-form-inputs">
+                    <div class='form-group list-group-item clr-dark'>
+                        <i class="fas fa-user"></i> Username
+                        <input type='text' name='new-username' class='form-control input-dark' id='new-username'>
+                    </div>
+                    <div class='form-group list-group-item clr-dark'>
+                        <i class="fas fa-user"></i> Email
+                        <input type='text' name='new-email' class='form-control input-dark' id='new-email'>
+                    </div>
+                    <div class='form-group list-group-item clr-dark'>
+                        <i class="fas fa-lock"></i> Password
+                        <input type='password' name='new-password' class='form-control input-dark' id='new-password'>
+                    </div>
+                    <div class='form-group list-group-item clr-dark'>
+                        <i class="fas fa-lock"></i> Re-enter Password
+                        <input type='password' name='new-password2' class='form-control input-dark' id='new-password2'>
+                    </div>
+                    <div class='text-center list-group-item clr-dark'>
+                        <button type='submit' id="btn-confirm-update-user" class='btn clr-primary btn-md' data-role="none"><i class='fas fa-user'></i> Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /User Info Form -->
+
+        <!-- Payment Info Form -->
+        <div class="container col-lg-10 col-sm-10 col-xs 10" id="payment-info-form-container" data-role="none">
+            <form action='' id='payment-info-form'>
+                <div class="form-group list-group-item clr-dark" id="payment-info-header" data-role="toggleFormInput" data-target="payment-info-form-inputs">
+                    <span class="h4">Update Payment Info</span>
+                </div>
+                <div id="payment-info-form-inputs">
+                    <div class="form-group list-group-item clr-dark">
+                        <label for="card-element">
+                            Credit or debit card
+                        </label>
+                        <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                    
+                        <!-- Used to display Element errors. -->
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+                    <div class='text-center list-group-item clr-dark'>
+                        <button type='submit' id="btn-confirm-payment-info" class='btn clr-primary btn-md' data-role="none"><i class='far fa-credit-card'></i> Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /Payment Info Form -->
+
+        <!-- Events Form -->
+        <div class="container col-lg-10 col-sm-10 col-xs 10" id="events-form-container" data-role="none">
+            <form action='' id='events-form'>
+                <div class="form-group list-group-item clr-dark" data-role="toggleFormInput" data-target="events-form-inputs">
+                    <span class="h4">Events</span>
+                </div>
+                <div id="events-form-inputs">
+                    <div class="form-group list-group-item clr-dark">
+                        <p>
+                            No events booked. Start booking now! 
+                            <a href="map.html" class="btn clr-primary btn-md col-md-6">Map</a>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /Events Form-->
+
+        <!-- JS Scripts -->
+        <script src="https://js.stripe.com/v3/"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/settings.bundle.js"></script>
+        <!-- /JS Scripts -->
+    </body>
+</html>

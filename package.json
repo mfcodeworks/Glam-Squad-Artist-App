@@ -1,0 +1,58 @@
+{
+  "name": "com.nygmarosebeauty.nrglamsquadartist",
+  "displayName": "NR Glam Squad Artist",
+  "version": "0.1.0",
+  "description": "NR Glam Squad Artist.",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MF Softworks",
+  "license": "",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.5.0",
+    "@mapbox/mapbox-gl-geocoder": "^2.3.0",
+    "bootstrap": "^4.1.3",
+    "cordova-android": "^7.1.2",
+    "cordova-browser": "^5.0.4",
+    "cordova-ios": "^4.5.5",
+    "cordova-plugin-dialogs": "^2.0.1",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-media": "^5.0.2",
+    "cordova-plugin-network-information": "^2.0.1",
+    "cordova-plugin-vibration": "^3.1.0",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-support-google-services": "^1.2.1",
+    "crypto-js": "^3.1.9-1",
+    "jquery": "^3.3.1",
+    "mapbox-gl": "^0.51.0",
+    "phonegap-plugin-multidex": "^1.0.0",
+    "phonegap-plugin-push": "^2.2.3",
+    "popper.js": "^1.14.6",
+    "storage": "^0.2.0",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-media": {
+        "KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE": "NO"
+      },
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-vibration": {},
+      "phonegap-plugin-push": {
+        "ANDROID_SUPPORT_V13_VERSION": "27.+",
+        "FCM_VERSION": "11.6.2"
+      }
+    },
+    "platforms": [
+      "browser",
+      "android",
+      "ios"
+    ]
+  },
+  "devDependencies": {}
+}
