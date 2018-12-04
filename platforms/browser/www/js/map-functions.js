@@ -10,11 +10,11 @@ var map;
 // user lat/lng
 var lat;
 var long;
-// current marker
-var marker = null;
+// markers
+var markers = [];
+var locations = [];
 // mapbox access token
 var accessToken = 'pk.eyJ1IjoibWZzb2Z0d29ya3MiLCJhIjoiY2pudmZ5N3cwMDUwcTNwbm44ZzNnM201cCJ9.EsNcDPIULJ5_mhJYwOZEgA';
-
 
 // Handle location data
 export function onMapSuccess(position) {
@@ -34,6 +34,12 @@ export function onMapSuccess(position) {
     loadMap();
 };
 
+function mapDefault() {
+    lat = 34.072;
+    long = -118.358;
+    loadMap();
+}
+
 function loadMap() {
     $(document).ready(function() {
         // Add map to app
@@ -44,6 +50,9 @@ function loadMap() {
         
         // Observe map for clicks and reverse geocode
         addMapClickMarker();
+
+        // Add artist locations
+        getLocations();
     });
 }
 
@@ -79,12 +88,6 @@ export function onMapError(error) {
             break;
     }
 };
-
-function mapDefault() {
-    lat = 34.052;
-    long = -118.243;
-    loadMap();
-}
 
 /** 
  * API: Mapbox GL JS API 
@@ -166,16 +169,14 @@ function addMapClickMarker() {
 
 // Make map marker
 function makeMapMarker(lnglat, address) {
-    // CHANGED: Only one marker allowed as of v0.1.7
-    // Set marker ID as the length of markers array
-    //var markerID = markers.length;
-    if(marker != null) {
-        marker.remove();
-    }
+    // Remove old marker handlers
+    if(markers.length) removeMarker();
+    $(document).off('submit', '#artist-location');
+    $(document).off('click', 'button.btn-delete-marker');
 
     // Create marker point div
     var point = document.createElement('div');
-    point.className = 'event-marker';
+    point.className = 'location-marker';
 
     // Create popup with address, TODO: handle create event button
     var popup = new mapboxgl.Popup(
@@ -183,32 +184,113 @@ function makeMapMarker(lnglat, address) {
             anchor: 'bottom',
             offset: 25,
             closeOnClick: true,
+            closeButton: false,
+            className: "marker-popup"
         })
         .setHTML('\
-            <div class=\'marker-popup\'> \
-                <h6>' + address + '</h6> \
-                <button type="button" class="btn-delete-marker btn clr-cancel">Cancel</button>&nbsp; \
-                <button type="button" class="btn-open-booking-dialog btn clr-primary" data-toggle="modal" data-target="#event-dialog-modal" value="' + address + '">Book Glam Squad</button> \
-            </div> \
+            <h6>' + address + '</h6> \
+            <form id="artist-location"> \
+                <div class="form-group"> \
+                    <label>Location Name:</label>\
+                    <input type="text" class="form-control" name="location-shortname" id="location-shortname" placeholder="Home" data-lat="' + lnglat[1] + '" data-lng="' + lnglat[0] + '"> \
+                </div> \
+                <div class="form-group mb-0"> \
+                    <button type="button" class="btn-delete-marker btn clr-cancel">Cancel</button>&nbsp; \
+                    <button type="submit" class="btn clr-primary" >Save</button> \
+                </div>\
+            </form> \
         ');
 
     // Make marker with popup on map
-    marker = new mapboxgl.Marker(point)
+    var marker = new mapboxgl.Marker(point)
         .setLngLat(lnglat)
         .setPopup(popup)
-        .addTo(map);
+        .addTo(map)
+
+    markers.push(marker);
 
     // Watch for delete marker
-    $(document).on('click', 'button.btn-delete-marker', function() {
-        // Remove marker
-        marker.remove();
-    });
+    $(document).on('click', 'button.btn-delete-marker', removeMarker);
 
     // Watch for booking dialog button
-    $(document).on('click', 'button.btn-open-booking-dialog', function() {
-        api.autofillEventForm($(this));
+    $(document).on('submit', '#artist-location', function(e) {
+        e.preventDefault();
+
+        api.saveLocation().then(getLocations);
     });
 };
+
+function makeLocationMarker(loc) {
+    // Create marker point div
+    var point = document.createElement('div');
+    point.className = 'saved-location-marker';
+
+    // Create popup with address, TODO: handle create event button
+    var popup = new mapboxgl.Popup(
+        {
+            anchor: 'bottom',
+            offset: 25,
+            closeOnClick: true,
+            closeButton: false,
+            className: "marker-popup"
+        })
+        .setHTML('\
+            <h6>' + loc.loc_name + '</h6> \
+            <form id="artist-saved-location"> \
+                <div class="form-group mb-0"> \
+                    <button type="button" class="btn-location-close btn clr-cancel">Cancel</button>&nbsp; \
+                    <button type="submit" class="btn-location-delete btn clr-primary" data-location-id="' + loc.id + '">Delete</button> \
+                </div>\
+            </form> \
+        ');
+
+    // Make marker with popup on map
+    var marker = new mapboxgl.Marker(point)
+        .setLngLat([loc.loc_lng, loc.loc_lat])
+        .setPopup(popup)
+        .addTo(map)
+
+    locations.push(marker);
+}
+
+function removeMarker() {
+    var marker = markers.pop();
+    marker.remove();
+}
+
+export function getLocations() {
+    return api.getLocations()
+        .then(function(l) {
+            $(document).off('submit', '#artist-saved-location');
+            
+            $(".saved-location-marker").remove();
+
+            if(l) {
+                for(var i = 0; i < l.length; i++) {
+                    makeLocationMarker(l[i]);
+                }
+
+                $(document).on('click', 'button.btn-location-close', function() { 
+                    $(".mapboxgl-popup").remove();    
+                });
+
+                // Watch for delete marker button
+                $(document).on("submit", "#artist-saved-location", deleteLocation);
+            }
+        });
+}
+
+function deleteLocation(e) {
+    e.preventDefault();
+
+    var locId = $(".btn-location-delete").data("location-id");
+
+    api.deleteLocation(locId)
+        .then(function() {
+            $(".mapboxgl-popup").remove()
+        })
+        .then(getLocations);
+}
 
 export function authenticatedCheck() {
     return api.isAuthenticated()

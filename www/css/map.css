@@ -16,7 +16,8 @@ html, body {
     margin: 0 auto;
     top: 20px;
 }
-.event-marker {
+.saved-location-marker,
+.location-marker {
     background-image: url("../img/logo-marker.png");
     background-size: cover;
     background-repeat: no-repeat;
@@ -53,7 +54,4 @@ html, body {
 }
 .mapboxgl-popup {
     z-index: 50 !important;
-}
-.mapboxgl-popup-close-button {
-    display: none;
 }

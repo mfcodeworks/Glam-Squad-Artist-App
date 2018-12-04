@@ -228,7 +228,6 @@ export function getFcmTopics(type = "artist") {
             postData(form)
                 .then(function(r) {
                     console.log("FCM Topics' Retreived.");
-                    console.log(r);
 
                     // Subscribe all topics
                     if(r.data) {
@@ -307,6 +306,111 @@ export function saveFcmTopic(topic, type = "artist") {
                             break;
                     }
                 });
+        });
+}
+
+export function getLocations() {
+    return session.get("login")
+        .then(function(d) {
+            return JSON.parse(d);
+        })
+        .then(function(u) {
+            // Save ID to JSON
+            var form = {
+                userId: parseInt(u.userId),
+                formContext: "artist-location-fetch",
+            };
+
+            // Send to API Server
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log("Got locations.");
+                    return r.data;
+                    break;
+
+                case false:
+                    console.log("Failed to fetch locations.");
+                    console.log(r.error_code + ": " + r.error);
+                    break;
+
+                default:
+                    console.log("Unknown error occured communicating with API server.");
+                    break;
+            }
+        });
+}
+
+export function deleteLocation(locId) {
+    return session.get("login")
+        .then(function(d) {
+            return JSON.parse(d);
+        })
+        .then(function(u) {
+
+            // Save ID to JSON
+            var form = {
+                locId: parseInt(locId),
+                userId: parseInt(u.userId),
+                formContext: "artist-location-delete",
+            };
+
+            // Send to API Server
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log("Deleted location " + name);
+                    break;
+                case false:
+                    console.log("Failed to delete location " + name);
+                    console.log(r.error_code + ": " + r.error);
+                    break;
+                default:
+                    console.log("Unknown error occured communicating with API server.");
+                    break;
+            }
+        });
+}
+
+export function saveLocation() {
+    return session.get("login")
+        .then(function(d) {
+            return JSON.parse(d);
+        })
+        .then(function(u) {
+
+            // Save ID to JSON
+            var form = {
+                name: $("#location-shortname").val(),
+                lat: parseFloat($("#location-shortname").data("lat")),
+                lng: parseFloat($("#location-shortname").data("lng")),
+                userId: parseInt(u.userId),
+                formContext: "artist-location",
+            };
+
+            // Send to API Server
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log("Saved location " + name);
+                    break;
+                case false:
+                    console.log("Failed to save location " + name);
+                    console.log(r.error_code + ": " + r.error);
+                    break;
+                default:
+                    console.log("Unknown error occured communicating with API server.");
+                    break;
+            }
+        })
+        .then(function() {
+            $(".btn-delete-marker").click();
         });
 }
 

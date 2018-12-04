@@ -30,7 +30,7 @@
 -injars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\transforms\desugar\debug\29.jar'(**.class)
 -injars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\transforms\desugar\debug\30.jar'(**.class)
 -injars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\transforms\desugar\debug\31.jar'(**.class)
--injars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\transforms\desugar\debug\32.jar'(**.class)
+-injars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\transforms\desugar\debug\33.jar'(**.class)
 -outjars 'D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\app\build\intermediates\multi-dex\debug\componentClasses.jar'
 
 -libraryjars 'C:\Users\arranf\AppData\Local\Android\Sdk\build-tools\28.0.2\lib\shrinkedAndroid.jar'
