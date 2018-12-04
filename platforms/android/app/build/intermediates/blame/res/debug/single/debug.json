@@ -44,6 +44,10 @@
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\logo.png"
     },
     {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_icon_group.xml.flat",
+        "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\layout\\notification_template_icon_group.xml"
+    },
+    {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-ldpi_icon.png.flat",
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\mipmap-ldpi\\icon.png"
     },
@@ -128,6 +132,10 @@
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-port-xhdpi\\screen.png"
     },
     {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout-v16_notification_template_custom_big.xml.flat",
+        "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\layout-v16\\notification_template_custom_big.xml"
+    },
+    {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-land-xxhdpi_screen.png.flat",
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-land-xxhdpi\\screen.png"
     },
@@ -160,6 +168,10 @@
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\mipmap-hdpi\\icon.png"
     },
     {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_action.xml.flat",
+        "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\layout\\notification_action.xml"
+    },
+    {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_part_time.xml.flat",
         "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\layout\\notification_template_part_time.xml"
     },
@@ -178,6 +190,10 @@
     {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_notification_bg_low_normal.9.png.flat",
         "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\drawable-mdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_action_tombstone.xml.flat",
+        "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\4ed985cf37b60a2911f3f7e3d068dbde\\res\\layout\\notification_action_tombstone.xml"
     },
     {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_notification_bg_low.xml.flat",

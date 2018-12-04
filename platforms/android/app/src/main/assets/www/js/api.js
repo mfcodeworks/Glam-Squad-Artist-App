@@ -231,12 +231,47 @@ export function getFcmTopics(type = "artist") {
                     console.log(r);
 
                     // Subscribe all topics
-                    var topics = r.data;
-                    for(var i = 0; i < topics.length; i++) {
-                        push.subscribe(topics[i].fcm_topic);
+                    if(r.data) {
+                        var topics = r.data;
+                        for(var i = 0; i < topics.length; i++) {
+                            push.subscribe(topics[i].fcm_topic);
+                        }
                     }
                 }, function(err) {
                     console.log("Error retreiving FCM Topics':\n" + err.error_code + ": " + err.error);
+                });
+        });
+}
+
+export function saveFcmToken(token) {
+    return session.get("login")
+        .then(function(d) {
+            return JSON.parse(d);
+        })
+        .then(function(u) {
+
+            // Save ID to JSON
+            var form = {
+                token: token,
+                userId: parseInt(u.userId),
+                formContext: "fcm-token-registration",
+            };
+
+            // Send to API Server
+            postData(form)
+                .then(function(r) {
+                    switch(r.response) {
+                        case true:
+                            console.log("Saved FCM Token '" + token + "'");
+                            break;
+                        case false:
+                            console.log("Failed to save FCM Token '" + token + "'");
+                            console.log(r.error_code + ": " + r.error);
+                            break;
+                        default:
+                            console.log("Unknown error occured communicating with API server.");
+                            break;
+                    }
                 });
         });
 }
