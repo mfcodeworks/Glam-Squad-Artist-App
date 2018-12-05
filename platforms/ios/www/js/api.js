@@ -328,22 +328,27 @@ export function getLocations() {
             switch(r.response) {
                 case true:
                     console.log("Got locations.");
+                    ui.endLoader();
                     return r.data;
                     break;
 
                 case false:
                     console.log("Failed to fetch locations.");
                     console.log(r.error_code + ": " + r.error);
+                    ui.endLoader();
                     break;
 
                 default:
                     console.log("Unknown error occured communicating with API server.");
+                    ui.endLoader();
                     break;
             }
         });
 }
 
 export function deleteLocation(locId) {
+    ui.startLoader();
+
     return session.get("login")
         .then(function(d) {
             return JSON.parse(d);
@@ -377,6 +382,8 @@ export function deleteLocation(locId) {
 }
 
 export function saveLocation() {
+    ui.startLoader();
+
     return session.get("login")
         .then(function(d) {
             return JSON.parse(d);

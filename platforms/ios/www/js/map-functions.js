@@ -191,7 +191,6 @@ function makeMapMarker(lnglat, address) {
             <h6>' + address + '</h6> \
             <form id="artist-location"> \
                 <div class="form-group"> \
-                    <label>Location Name:</label>\
                     <input type="text" class="form-control" name="location-shortname" id="location-shortname" placeholder="Home" data-lat="' + lnglat[1] + '" data-lng="' + lnglat[0] + '"> \
                 </div> \
                 <div class="form-group mb-0"> \
@@ -235,7 +234,7 @@ function makeLocationMarker(loc) {
             className: "marker-popup"
         })
         .setHTML('\
-            <h6>' + loc.loc_name + '</h6> \
+            <h4>' + loc.loc_name + '</h4> \
             <form id="artist-saved-location"> \
                 <div class="form-group mb-0"> \
                     <button type="button" class="btn-location-close btn clr-cancel">Cancel</button>&nbsp; \
