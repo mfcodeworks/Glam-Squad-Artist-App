@@ -26,7 +26,6 @@ var app = {
         // Check for network connection
         tools.monitorNetwork()
             .then(function() {
-                
                 // Register form handlers
                 ui.loginUserHandler();
                 ui.registerUserHandler();
@@ -44,10 +43,6 @@ var app = {
                     e,
                     "Okay"
                 );
-            })
-            // After all loaded, remove splash
-            .then(function() {
-                ui.removeSplash();
             });
     },
     
