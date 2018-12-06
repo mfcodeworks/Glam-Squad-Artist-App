@@ -1,7 +1,7 @@
 {
   "name": "com.nygmarosebeauty.nrglamsquadartist",
   "displayName": "NR Glam Squad Artist",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "NR Glam Squad Artist.",
   "private": true,
   "scripts": {
@@ -18,6 +18,7 @@
     "cordova-ios": "^4.5.5",
     "cordova-plugin-dialogs": "^2.0.1",
     "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-media": "^5.0.2",
     "cordova-plugin-network-information": "^2.0.1",
     "cordova-plugin-vibration": "^3.1.0",
@@ -46,7 +47,8 @@
       "phonegap-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "11.6.2"
-      }
+      },
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "browser",

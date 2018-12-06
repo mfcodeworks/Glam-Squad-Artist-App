@@ -8,10 +8,22 @@ var serverKey = 'AAAAY5tckGE:APA91bG58lohPhe2J-T7PIY-27Ux6CRbz05ns_kfUY1B2raSRvH
 // Handle push notificaion receive event
 export function handle() {
     return new Promise(function(resolve) {
+        PushNotification.createChannel(function() {
+            console.log("Create notification channel for new events.");
+        }, function() {
+            console.log("Failed to create notification channel for new events.");
+        },
+        {
+            id: "PushPluginChannel",
+            description: "New Events",
+            importance: 5,
+            vibration: true
+        });
+
         push = PushNotification.init({
             android: {
                 icon: 'logo',
-                iconColor: 'white',
+                iconColor: 'black',
                 topics: fcmTopics,
                 clearNotifications: 'false',
                 forceShow: 'true'
@@ -36,6 +48,50 @@ export function handle() {
     
         push.on('notification', function(notif) {
             console.log(JSON.stringify(notif,null,2));
+
+            // If weblink in payload
+            if(notif.additionalData.extra.weblink) {
+
+                // Load with timeout to allow for device ready
+                setTimeout(function() {
+
+                    navigator.notification.confirm(
+                        "Open notification link?",
+                        function(index) {
+                            if(index === 1) cordova.InAppBrowser.open(notif.additionalData.extra.weblink);
+                        },
+                        "Notification",
+                        ["Yes", "No"]
+                    );
+                    
+                // Allow 3 seconds
+                }, 3 * 1000);
+
+            }
+        });
+        
+        PushNotification.createChannel(function() {
+            console.log("Create notification channel for deals.");
+        }, function() {
+            console.log("Failed to create notification channel for deals.");
+        },
+        {
+            id: "DealsChannel",
+            description: "Deals",
+            importance: 3,
+            vibration: true
+        });
+        
+        PushNotification.createChannel(function() {
+            console.log("Create notification channel for booked events.");
+        }, function() {
+            console.log("Failed to create notification channel for booked events.");
+        },
+        {
+            id: "BookedEventsChannel",
+            description: "Booked Events",
+            importance: 5,
+            vibration: true
         });
         
         api.getFcmTopics();
@@ -69,7 +125,7 @@ export function unsubscribe(topic) {
     );
 };
 
-export function notification(id, topic, title, message, extra = null) {
+export function notification(id, topic, title, message, channel = 'PushPluginChannel', extra = null) {
     var content = {
         to: '/topics/' + topic,
         priority: 'high',
@@ -78,7 +134,9 @@ export function notification(id, topic, title, message, extra = null) {
             message: message,
             notId: parseInt(id),
             'content-available' : '1',
+            'force-start' : '1',
             image: 'logo',
+            'android_channel_id' : channel,
             extra: extra
         }
     };

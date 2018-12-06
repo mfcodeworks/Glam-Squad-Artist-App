@@ -158,7 +158,26 @@ a.col-md-6 {
     margin-top: 10px;
 }
 #notification-menu {
-    margin-left: -60px;
+    width: 165px;
+    height: 60vh;
+    overflow: scroll;
+    margin-left: -125px;
+}
+#notification-count {
+    position: absolute;
+    color: #fff;
+    background-color: #000;
+    border-radius: 100%;
+    padding: 3px;
+    margin-top: -0.5rem;
+    margin-left: 1.2rem;
+    font-size: 9pt;
+}
+.event-notification-item {
+    background-color: #f25f70;
+    border-color: #fff;
+    color: #fff;
+    padding-bottom: 5px;
 }
 /* Form positioning */
 #user-info-form-inputs,

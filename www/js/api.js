@@ -196,7 +196,14 @@ export function getNewEvents() {
             return postData(form);
         })
         .then(function(r) {
-            console.log(r);
+            var events = r.data;
+            console.log(events);
+            $(".notification-menu-display").empty();
+            for(var i = 0; i < events.length; i++) {
+                ui.notificationEvent(events[i]);
+            }
+            var count = '<span id="notification-count">' + events.length + '</span>';
+            $('.notification-menu-toggler').prepend(count);
         });
 }
 
