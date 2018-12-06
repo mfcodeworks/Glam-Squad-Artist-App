@@ -7,6 +7,7 @@ import '@fortawesome/fontawesome-free';
 import * as push from './push';
 import * as tools from './tools';
 import * as map from './map-functions';
+import * as api from './api';
 
 // app var
 var app = {
@@ -44,6 +45,7 @@ var app = {
 
                 // UI handlers
                 tools.handleLogout();
+                api.getNewEvents();
 
                 // Auth check
                 map.authenticatedCheck();

@@ -182,6 +182,24 @@ export function authenticateUser() {
         });
 };
 
+export function getNewEvents() {
+    return session.get("login")
+        .then(function(d) {
+            return JSON.parse(d);
+        })
+        .then(function(u) {
+            var form = {
+                formContext: "artist-fetch-new-events",
+                userId: u.userId
+            }
+
+            return postData(form);
+        })
+        .then(function(r) {
+            console.log(r);
+        });
+}
+
 export function isAuthenticated() {
     // Get login session
     return new Promise(function(resolve) {
