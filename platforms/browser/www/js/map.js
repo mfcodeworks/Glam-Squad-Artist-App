@@ -27,6 +27,16 @@ var app = {
         // Check network connection (!important for API)
         tools.monitorNetwork()
             .then(function() {
+                // Notification handler
+                push.handle();
+
+                // UI handlers
+                tools.handleLogout();
+                api.getNewEvents();
+
+                // Auth check
+                map.authenticatedCheck();
+
                 // Begin map load
                 navigator.geolocation.getCurrentPosition(
                     map.onMapSuccess, 
@@ -39,17 +49,7 @@ var app = {
                         maximumAge: (5 * 1000), 
                     }
                 );
-
-                // Notification handler
-                push.handle();
-
-                // UI handlers
-                tools.handleLogout();
-                api.getNewEvents();
-
-                // Auth check
-                map.authenticatedCheck();
-
+                
                 // Network connection error alert
             }, function(e) {
                 navigator.notification.alert(

@@ -172,6 +172,8 @@ a.col-md-6 {
     margin-top: -0.5rem;
     margin-left: 1.2rem;
     font-size: 9pt;
+    width: 25px;
+    height: 25px;
 }
 .event-notification-item {
     background-color: #f25f70;

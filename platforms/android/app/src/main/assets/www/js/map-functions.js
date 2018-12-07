@@ -4,6 +4,8 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import * as ui from './ui-tools';
 import * as api from './api';
 import * as tools from './tools';
+import * as push from './push';
+import * as session from './session';
 
 // map var
 var map;
@@ -31,6 +33,9 @@ export function onMapSuccess(position) {
 
     lat = parseFloat(position.coords.latitude.toFixed(3));
     long = parseFloat(position.coords.longitude.toFixed(3));
+
+    saveUserLocale();
+    
     loadMap();
 };
 
@@ -54,6 +59,29 @@ function loadMap() {
         // Add artist locations
         getLocations();
     });
+}
+
+function saveUserLocale() {
+    var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
+
+    $.get(
+        reverseGeocodeURL,
+        {
+            access_token: accessToken,
+            types: "country"
+        },
+        function(data) {
+            var locale = {
+                country: data.features[0].text,
+                code: data.features[0].properties.short_code.toUpperCase()
+            };
+
+            session.save("locale", JSON.stringify(locale))
+                .then(function() {
+                    push.subscribe(locale.country);
+                });
+        }
+    );
 }
 
 // Handle location errors TODO: handle errors on device

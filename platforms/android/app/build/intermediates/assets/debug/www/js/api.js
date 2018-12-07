@@ -196,14 +196,28 @@ export function getNewEvents() {
             return postData(form);
         })
         .then(function(r) {
-            var events = r.data;
-            console.log(events);
-            $(".notification-menu-display").empty();
-            for(var i = 0; i < events.length; i++) {
-                ui.notificationEvent(events[i]);
+            switch(r.response) {
+                case true:
+                    var events = r.data;
+                    console.log(events);
+                    $(".notification-menu-display").empty();
+                    for(var i = 0; i < events.length; i++) {
+                        ui.notificationEvent(events[i]);
+                        session.save("event-" + events[i].id, JSON.stringify(events[i]));
+                    }
+                    if(events.length > 99) var number = "99+";
+                    else var number = events.length;
+                    var count = '<span id="notification-count">' + number + '</span>';
+                    $('.notification-menu-toggler').prepend(count);
+                    break;
+                
+                case false:
+                    console.warn("Error fetching events. " + r.error);
+                    break;
+
+                default:
+                    console.warn("Warning. Server error fetching events. " + r);
             }
-            var count = '<span id="notification-count">' + events.length + '</span>';
-            $('.notification-menu-toggler').prepend(count);
         });
 }
 

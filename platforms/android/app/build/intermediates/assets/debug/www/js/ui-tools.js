@@ -44,7 +44,7 @@ export function notificationEvent(event) {
     var date = new Date(event.datetime);
     var html = '\
     <li class="list-group-item clr-primary event-notification-item pt-1">\
-        <a class="text-white p" href="#">\
+        <a class="text-white p" href="#" data-event-id=' + event.id + '>\
             ' + event.address + '\
             <br><br>\
             ' + date.toLocaleString() + '\
