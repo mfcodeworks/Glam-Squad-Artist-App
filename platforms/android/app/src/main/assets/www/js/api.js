@@ -1,5 +1,5 @@
 // imports
-import * as session from './session';
+import * as storage from './storage';
 import * as tools from './tools';
 import * as CryptoJS from 'crypto-js';
 import * as push from './push';
@@ -130,12 +130,12 @@ export function authenticateUser() {
 
                     console.log("Making session: "+JSON.stringify(data,null,4));
 
-                    session.save("login",JSON.stringify(data))
+                    storage.save("login",JSON.stringify(data))
                         .then(function(res) {
                             console.log("Session save response: "+res);
                             if(res) tools.load("map.html");
                         }, function(err) {
-                            console.log(err);
+                            console.warn(err);
                         });
                     break;
 
@@ -183,7 +183,7 @@ export function authenticateUser() {
 };
 
 export function getNewEvents() {
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -198,12 +198,13 @@ export function getNewEvents() {
         .then(function(r) {
             switch(r.response) {
                 case true:
+                    var storageProgress = [];
                     var events = r.data;
                     console.log(events);
                     $(".notification-menu-display").empty();
                     for(var i = 0; i < events.length; i++) {
                         ui.notificationEvent(events[i]);
-                        session.save("event-" + events[i].id, JSON.stringify(events[i]));
+                        storageProgress.push(storage.save("event-" + events[i].id, JSON.stringify(events[i])));
                     }
                     if(events.length > 99) var number = "99+";
                     else var number = events.length;
@@ -218,13 +219,17 @@ export function getNewEvents() {
                 default:
                     console.warn("Warning. Server error fetching events. " + r);
             }
+            return Promise.all(storageProgress);
+        })
+        .then(function() {
+            ui.handleEventNotificationClick();
         });
 }
 
 export function isAuthenticated() {
     // Get login session
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(res) {
                 return JSON.parse(res);
             })
@@ -252,7 +257,7 @@ export function isAuthenticated() {
 }
 
 export function getFcmTopics(type = "artist") {
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -276,13 +281,13 @@ export function getFcmTopics(type = "artist") {
                         }
                     }
                 }, function(err) {
-                    console.log("Error retreiving FCM Topics':\n" + err.error_code + ": " + err.error);
+                    console.warn("Error retreiving FCM Topics':\n" + err.error_code + ": " + err.error);
                 });
         });
 }
 
 export function saveFcmToken(token) {
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -303,11 +308,11 @@ export function saveFcmToken(token) {
                             console.log("Saved FCM Token '" + token + "'");
                             break;
                         case false:
-                            console.log("Failed to save FCM Token '" + token + "'");
-                            console.log(r.error_code + ": " + r.error);
+                            console.warn("Failed to save FCM Token '" + token + "'");
+                            console.warn(r.error_code + ": " + r.error);
                             break;
                         default:
-                            console.log("Unknown error occured communicating with API server.");
+                            console.warn("Unknown error occured communicating with API server.");
                             break;
                     }
                 });
@@ -315,7 +320,7 @@ export function saveFcmToken(token) {
 }
 
 export function saveFcmTopic(topic, type = "artist") {
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -337,11 +342,11 @@ export function saveFcmTopic(topic, type = "artist") {
                             console.log("Saved FCM Topic '" + topic + "'");
                             break;
                         case false:
-                            console.log("Failed to save FCM ID '" + topic + "'");
-                            console.log(r.error_code + ": " + r.error);
+                            console.warn("Failed to save FCM ID '" + topic + "'");
+                            console.warn(r.error_code + ": " + r.error);
                             break;
                         default:
-                            console.log("Unknown error occured communicating with API server.");
+                            console.warn("Unknown error occured communicating with API server.");
                             break;
                     }
                 });
@@ -349,7 +354,7 @@ export function saveFcmTopic(topic, type = "artist") {
 }
 
 export function getLocations() {
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -372,13 +377,13 @@ export function getLocations() {
                     break;
 
                 case false:
-                    console.log("Failed to fetch locations.");
-                    console.log(r.error_code + ": " + r.error);
+                    console.warn("Failed to fetch locations.");
+                    console.warn(r.error_code + ": " + r.error);
                     ui.endLoader();
                     break;
 
                 default:
-                    console.log("Unknown error occured communicating with API server.");
+                    console.warn("Unknown error occured communicating with API server.");
                     ui.endLoader();
                     break;
             }
@@ -388,7 +393,7 @@ export function getLocations() {
 export function deleteLocation(locId) {
     ui.startLoader();
 
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -410,11 +415,11 @@ export function deleteLocation(locId) {
                     console.log("Deleted location " + name);
                     break;
                 case false:
-                    console.log("Failed to delete location " + name);
-                    console.log(r.error_code + ": " + r.error);
+                    console.warn("Failed to delete location " + name);
+                    console.warn(r.error_code + ": " + r.error);
                     break;
                 default:
-                    console.log("Unknown error occured communicating with API server.");
+                    console.warn("Unknown error occured communicating with API server.");
                     break;
             }
         });
@@ -423,7 +428,7 @@ export function deleteLocation(locId) {
 export function saveLocation() {
     ui.startLoader();
 
-    return session.get("login")
+    return storage.get("login")
         .then(function(d) {
             return JSON.parse(d);
         })
@@ -447,11 +452,11 @@ export function saveLocation() {
                     console.log("Saved location " + name);
                     break;
                 case false:
-                    console.log("Failed to save location " + name);
-                    console.log(r.error_code + ": " + r.error);
+                    console.warn("Failed to save location " + name);
+                    console.warn(r.error_code + ": " + r.error);
                     break;
                 default:
-                    console.log("Unknown error occured communicating with API server.");
+                    console.warn("Unknown error occured communicating with API server.");
                     break;
             }
         })
@@ -467,7 +472,7 @@ export function fillUserInfo() {
     $("#new-password2").val("");
 
     // Update user info
-    session.get("login")
+    storage.get("login")
         .then(function(res) {
             var data = JSON.parse(res);
             console.log(data);
@@ -499,7 +504,7 @@ export function updateUser() {
     ui.startLoader();
     
     // Update user info
-    session.get("login")
+    storage.get("login")
         .then(function(res) {
             var data = JSON.parse(res);
             
@@ -518,7 +523,7 @@ export function updateUser() {
                     console.log("User update response:\n" + JSON.stringify(r,null,2));
                     
                     if(r.response == true) {
-                        session.remove("login")
+                        storage.remove("login")
                             .then(function() {
                                 var u = r.data[0];
                                 var data = {
@@ -532,7 +537,7 @@ export function updateUser() {
 
                                 console.log(data);
 
-                                session.save("login",JSON.stringify(data));
+                                storage.save("login",JSON.stringify(data));
 
                                 fillUserInfo();
                             });
@@ -551,7 +556,7 @@ export function updateUser() {
                         );
                     }
                 }, function(err) {
-                    console.log(err);
+                    console.warn(err);
                     ui.endLoader();
                     $("#alert-container").append("\
                         <div class='alert alert-danger alert-custom' role='alert'>\

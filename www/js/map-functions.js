@@ -5,7 +5,7 @@ import * as ui from './ui-tools';
 import * as api from './api';
 import * as tools from './tools';
 import * as push from './push';
-import * as session from './session';
+import * as storage from './storage';
 
 // map var
 var map;
@@ -61,29 +61,6 @@ function loadMap() {
     });
 }
 
-function saveUserLocale() {
-    var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
-
-    $.get(
-        reverseGeocodeURL,
-        {
-            access_token: accessToken,
-            types: "country"
-        },
-        function(data) {
-            var locale = {
-                country: data.features[0].text,
-                code: data.features[0].properties.short_code.toUpperCase()
-            };
-
-            session.save("locale", JSON.stringify(locale))
-                .then(function() {
-                    push.subscribe(locale.country);
-                });
-        }
-    );
-}
-
 // Handle location errors TODO: handle errors on device
 export function onMapError(error) {
     console.log('code: ' + error.code + '\n' +'message: ' + error.message + '\n');
@@ -120,6 +97,29 @@ export function onMapError(error) {
 /** 
  * API: Mapbox GL JS API 
  */
+
+function saveUserLocale() {
+    var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
+
+    $.get(
+        reverseGeocodeURL,
+        {
+            access_token: accessToken,
+            types: "country"
+        },
+        function(data) {
+            var locale = {
+                country: data.features[0].text,
+                code: data.features[0].properties.short_code.toUpperCase()
+            };
+
+            storage.save("locale", JSON.stringify(locale))
+                .then(function() {
+                    push.subscribe(locale.country);
+                });
+        }
+    );
+}
 
 // Make map from location
 function makeMap() {

@@ -1,11 +1,11 @@
-import * as session from './session';
+import * as storage from './storage';
 
 /**
  * API: Stripe.js Card API
  */
 export function getCustomerId(token) {
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })
@@ -28,7 +28,7 @@ export function getCustomerId(token) {
 
 export function updateStripeCustomer(token) {
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })
@@ -70,7 +70,7 @@ export function makeStripeCustomer(token, email) {
 
 export function deleteCard(cardId) {
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })
@@ -93,7 +93,7 @@ export function deleteCard(cardId) {
 
 export function getUserCards() {
     return new Promise(function(resolve, reject) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })
@@ -123,7 +123,7 @@ export function getUserCards() {
 
 export function getCustomerInfo() {
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })
@@ -146,7 +146,7 @@ export function getCustomerInfo() {
 
 export function updateDefaultUserCard(cardID) {
     return new Promise(function(resolve) {
-        session.get("login")
+        storage.get("login")
             .then(function(u) {
                 return JSON.parse(u);
             })

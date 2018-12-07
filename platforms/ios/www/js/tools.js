@@ -1,4 +1,4 @@
-import * as session from './session';
+import * as storage from './storage';
 
 // Change Cordova URL
 export function load(url) {
@@ -9,7 +9,7 @@ export function load(url) {
 export function handleLogout() {
     return new Promise(function(resolve) {
         $("#btn-logout").click(function() {
-            session.remove("login")
+            storage.remove("login")
                 .then(function(res) {
                     if(res) load("login.html");
                 });
