@@ -184,9 +184,7 @@ export function authenticateUser() {
 
 export function getNewEvents() {
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
             var form = {
                 formContext: "artist-fetch-new-events",
@@ -221,9 +219,77 @@ export function getNewEvents() {
             }
             return Promise.all(storageProgress);
         })
-        .then(function() {
-            ui.handleEventNotificationClick();
-        });
+        .then(ui.handleEventNotificationClick)
+        .then(acceptEventBooking);
+}
+
+export function acceptEventBooking() {
+    $("#btn-accept-event").click(function() {
+        ui.startLoader();
+        var eventId = $("#btn-accept-event").data("event-id");
+        console.log(eventId);
+
+        storage.get("login")
+            .then(JSON.parse)
+            .then(function(u) {
+                var form = {
+                    formContext: "artist-apply-job",
+                    userId: u.userId,
+                    eventId: eventId
+                }
+
+                return postData(form);
+            })
+            .then(function(r) {
+                console.log(r);
+
+                switch(r.response) {
+                    case true:
+                        navigator.notification.alert(
+                            "Event successfully booked!",
+                            null,
+                            "Success",
+                            "Okay"
+                        );
+                        break;
+
+                    case false:
+                        navigator.notification.alert(
+                            r.error,
+                            null,
+                            "Error",
+                            "Okay"
+                        );
+                        break;
+
+                    default:
+                        navigator.notification.alert(
+                            `{r.error_code}: {r.error}`,
+                            null,
+                            "Unknown Server Error",
+                            "Okay"
+                        );
+                        break;
+                }
+            })
+            .then(function() {
+                // Remove notification
+                $('a[data-event-id="' + eventId + '"]').parent().remove();
+                // Collapse notifications
+                $("#notification-menu").collapse();
+                // Set new count
+                var count = parseInt($("#notification-count").text());
+                count--;
+                $("#notification-count").text(count.toString());
+                if(count === 0) {
+                    $(".notification-menu-display").append('<li class="nav-item active"><a class="text-white p" href="#">Empty</a></li>');
+                }
+            })
+            .then(function() {
+                $("#btn-close-event").click();
+                ui.endLoader();
+            });
+    });
 }
 
 export function isAuthenticated() {

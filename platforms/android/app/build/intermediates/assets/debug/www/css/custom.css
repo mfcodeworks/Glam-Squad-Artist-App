@@ -159,9 +159,11 @@ a.col-md-6 {
 }
 #notification-menu {
     width: 165px;
+    margin-left: -125px;
+}
+#notification-list {
     max-height: 60vh;
     overflow: scroll;
-    margin-left: -125px;
 }
 #notification-count {
     position: absolute;

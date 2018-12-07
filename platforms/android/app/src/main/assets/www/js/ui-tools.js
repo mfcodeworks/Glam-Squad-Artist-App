@@ -92,6 +92,8 @@ export function handleEventNotificationClick() {
                         <p class="event-datetime mt-2">' + date.toLocaleString(`en-${l.code}`) + '</p>';
                         
                         $("#event-information").append(html);
+
+                        $("#btn-accept-event").data("event-id", event.id);
                         
                         $("#event-info-modal").modal("show");
                     });
