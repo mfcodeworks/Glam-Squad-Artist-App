@@ -17,5 +17,5 @@ module.exports = {
     tls: 'empty',
     dns: 'empty',
   },
-  mode: 'production'
+  mode: 'development'
 };

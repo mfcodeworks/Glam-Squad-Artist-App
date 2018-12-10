@@ -1,5 +1,6 @@
 // imports
 import * as storage from './storage';
+import * as cache from './cache';
 import * as tools from './tools';
 import * as CryptoJS from 'crypto-js';
 import * as push from './push';
@@ -13,21 +14,23 @@ export function registerUser() {
     // Verify inputs
     $("#reg-username").removeClass("is-invalid");
     $("#reg-password").removeClass("is-invalid");
+    $("#reg-password2").removeClass("is-invalid");
     $("#reg-email").removeClass("is-invalid");
-    if(!tools.validate("username",$("#reg-username").val())) {
+    if(!tools.validate("username", $("#reg-username").val())) {
         $("#reg-username").addClass("is-invalid");
         return;
     }
-    if(!tools.validate("email",$("#reg-email").val())) {
+    if(!tools.validate("email", $("#reg-email").val())) {
         $("#reg-email").addClass("is-invalid");
         return;
     }
-    if(!tools.validate("password",$("#reg-password").val())) {
+    if(!tools.validate("password", $("#reg-password").val())) {
         $("#reg-password").addClass("is-invalid");
         return;
     }
-    if(!tools.validatePassword($("#reg-password").val(),$("#reg-password2").val())) {
+    if(!tools.validatePassword($("#reg-password").val(), $("#reg-password2").val())) {
         $("#reg-password").addClass("is-invalid");
+        $("#reg-password2").addClass("is-invalid");
         return;
     }
 
@@ -62,7 +65,7 @@ export function registerUser() {
                 // If SQL unsuccessful alert
                 case false:
                     navigator.notification.alert(
-                        "An error occured, please try again later.\n"+JSON.stringify(r.error),
+                        `${r.error_code}: ${r.error}`,
                         null,
                         "Error",
                         "Okay"
@@ -119,20 +122,15 @@ export function authenticateUser() {
             switch (r.response) {
                 case true:
                     var user = r.data[0];
-                    var data = {
-                        userId: user.id,
-                        username: user.username,
-                        usernameHash: user.usernameHash,
-                        email: user.email,
-                        profilePhoto: user.profile_photo,
-                        stripeId: user.stripe_customer_id,
-                    };
 
-                    console.log("Making session: "+JSON.stringify(data,null,4));
+                    var data = user;
+                    data.userId = user.id
+                    delete data.id;
+
+                    console.log("Making session: "+JSON.stringify(data,null,"\t"));
 
                     storage.save("login",JSON.stringify(data))
                         .then(function(res) {
-                            console.log("Session save response: "+res);
                             if(res) tools.load("map.html");
                         }, function(err) {
                             console.warn(err);
@@ -152,7 +150,7 @@ export function authenticateUser() {
                     else {
                         // Else if SQL error then API incorrect, alert error
                         navigator.notification.alert(
-                            "Error occured, please try again later.\n"+JSON.stringify(r.error,null,2),
+                            `${r.error_code}: ${r.error}`,
                             null,
                             "Error",
                             "Okay"
@@ -164,7 +162,7 @@ export function authenticateUser() {
                 default:
                     // If response malformed/null alert error
                     navigator.notification.alert(
-                        "An unknown error occured. Please try agian later.\n"+JSON.stringify(r,null,2),
+                        "An unknown error occured. Please try agian later.\n"+JSON.stringify(r,null,"\ts"),
                         null,
                         "Error",
                         "Okay"
@@ -198,16 +196,21 @@ export function getNewEvents() {
                 case true:
                     var storageProgress = [];
                     var events = r.data;
-                    console.log(events);
-                    $(".notification-menu-display").empty();
-                    for(var i = 0; i < events.length; i++) {
-                        ui.notificationEvent(events[i]);
-                        storageProgress.push(storage.save("event-" + events[i].id, JSON.stringify(events[i])));
+                    
+                    if(events.length > 0) {
+                        $(".notification-menu-display").empty();
+
+                        for(var i = 0; i < events.length; i++) {
+                            ui.notificationEvent(events[i]);
+                            storageProgress.push(storage.save("event-" + events[i].id, JSON.stringify(events[i])));
+                        }
+
+                        var number;
+                        if(events.length > 99) number = "99+";
+                        else number = events.length;
+                        var count = '<span id="notification-count">' + number + '</span>';
+                        $('.notification-menu-toggler').prepend(count);
                     }
-                    if(events.length > 99) var number = "99+";
-                    else var number = events.length;
-                    var count = '<span id="notification-count">' + number + '</span>';
-                    $('.notification-menu-toggler').prepend(count);
                     break;
                 
                 case false:
@@ -221,6 +224,15 @@ export function getNewEvents() {
         })
         .then(ui.handleEventNotificationClick)
         .then(acceptEventBooking);
+}
+
+export function getEvent(jobId) {
+    var form = {
+        formContext: "event-get",
+        jobId: jobId
+    }
+
+    return postData(form);
 }
 
 export function acceptEventBooking() {
@@ -246,11 +258,25 @@ export function acceptEventBooking() {
                 switch(r.response) {
                     case true:
                         navigator.notification.alert(
-                            "Event successfully booked!",
+                            "Event accepted! You'll be notified when the event is near.",
                             null,
                             "Success",
                             "Okay"
                         );
+
+                        var topic = `event-${eventId}-artist`;
+                        push.subscribe(topic)
+                            .then(function() {
+                                return cache.getEvent(eventId);
+                            })
+                            .then(function(e) {
+                                push.notification(
+                                    e.id,
+                                    topic,
+                                    `Event Accepted`,
+                                    `Successfully accepted event at ${e.address}`
+                                );
+                            });
                         break;
 
                     case false:
@@ -264,7 +290,7 @@ export function acceptEventBooking() {
 
                     default:
                         navigator.notification.alert(
-                            `{r.error_code}: {r.error}`,
+                            `${r.error_code}: ${r.error}`,
                             null,
                             "Unknown Server Error",
                             "Okay"
@@ -292,15 +318,27 @@ export function acceptEventBooking() {
     });
 }
 
+export function deleteEvent(id) {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            var form = {
+                formContext: "artist-cancel-job",
+                userId: u.userId,
+                jobId: id
+            }
+
+            return postData(form);
+        });
+}
+
 export function isAuthenticated() {
     // Get login session
     return new Promise(function(resolve) {
         storage.get("login")
-            .then(function(res) {
-                return JSON.parse(res);
-            })
-            .then(function(res) {
-                if(res == null) {
+            .then(JSON.parse)
+            .then(function(u) {
+                if(u === null) {
                     resolve(false);
                     return;
                 }
@@ -308,15 +346,25 @@ export function isAuthenticated() {
                 // Build validation form
                 var form = {
                     formContext: "artist-session-check",
-                    userId: parseInt(res.userId),
-                    usernameHash: res.usernameHash
+                    userId: parseInt(u.userId),
+                    usernameHash: u.usernameHash
                 };
             
                 // Return validation response
                 postData(form)
                     .then(function(res) {
-                        console.log("User authenticated: " + JSON.stringify(res));
-                        resolve(res);
+                        console.log("User authenticated: " + JSON.stringify(res.valid));
+
+                        // If user is valid update storage
+                        if(res.valid) {
+                            storage.remove("login");
+                            var data = res.data;
+                            data.userId = data.id;
+                            delete data.id;
+                            storage.save("login", JSON.stringify(data));
+                        }
+
+                        resolve(res.valid);
                     });
             });
     })
@@ -439,7 +487,7 @@ export function getLocations() {
                 case true:
                     console.log("Got locations.");
                     ui.endLoader();
-                    return r.data;
+                    return r;
                     break;
 
                 case false:

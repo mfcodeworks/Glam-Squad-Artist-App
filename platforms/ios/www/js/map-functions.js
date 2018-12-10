@@ -262,7 +262,7 @@ function makeLocationMarker(loc) {
             className: "marker-popup"
         })
         .setHTML('\
-            <h4>' + loc.loc_name + '</h4> \
+            <h4>' + loc.name + '</h4> \
             <form id="artist-saved-location"> \
                 <div class="form-group mb-0"> \
                     <button type="button" class="btn-location-close btn clr-cancel">Cancel</button>&nbsp; \
@@ -273,7 +273,7 @@ function makeLocationMarker(loc) {
 
     // Make marker with popup on map
     var marker = new mapboxgl.Marker(point)
-        .setLngLat([loc.loc_lng, loc.loc_lat])
+        .setLngLat([loc.lng, loc.lat])
         .setPopup(popup)
         .addTo(map)
 
@@ -292,9 +292,11 @@ export function getLocations() {
             
             $(".saved-location-marker").remove();
 
-            if(l) {
-                for(var i = 0; i < l.length; i++) {
-                    makeLocationMarker(l[i]);
+            if(l.data) {
+                var locations = l.data;
+
+                for(var i = 0; i < locations.length; i++) {
+                    makeLocationMarker(locations[i]);
                 }
 
                 $(document).on('click', 'button.btn-location-close', function() { 

@@ -26,15 +26,8 @@ var app = {
         // Check network connection
         tools.monitorNetwork()
             .then(function() {
-
-                // Register UI handlers
-                tools.handleLogout();
-                ui.formToggle();
-                settings.fillUserInfo();
-                settings.updateUserHandler();
-
                 // Auth check
-                settings.authenticatedCheck();
+                return settings.authenticatedCheck();
 
                 // Network error alert
             }, function(e) {
@@ -47,6 +40,14 @@ var app = {
                     "Okay"
                 );
             })
+            .then(function() {
+                // Register UI handlers
+                tools.handleLogout();
+                ui.formToggle();
+                settings.fillUserInfo();
+                settings.updateUserHandler();
+                settings.getBookings();
+            })
             // Remove splash after all loaded
             .then(function() {
                 ui.removeSplash();
@@ -55,19 +56,14 @@ var app = {
     
     // Back button handler
     onBackButton: function() {
-        if( ($("#register-dialog-modal").data("bs.modal") || {})._isShown ) {
-            $("#btn-cancel-register").click();
-        }
-        else {
-            navigator.notification.confirm(
-                "Close NR Glam Squad?",
-                function(index) {
-                    if(index == 1) navigator.app.exitApp();
-                },
-                "Exit",
-                ["Exit", "Cancel"]
-            );
-        }
+        navigator.notification.confirm(
+            "Close NR Glam Squad?",
+            function(index) {
+                if(index == 1) navigator.app.exitApp();
+            },
+            "Exit",
+            ["Exit", "Cancel"]
+        );
     }
 };
 

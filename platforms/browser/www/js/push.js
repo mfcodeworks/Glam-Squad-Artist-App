@@ -104,32 +104,40 @@ export function handle() {
 
         resolve(true);
     });
-};
+}
 
 export function subscribe(topic) {
-    push.subscribe(
-        topic,
-        function() {
-            console.log("FCM subscribed to "+topic);
-            api.saveFcmTopic(topic);
-        },
-        function(e) {
-            console.log("FCM failed to subscribe to "+topic);
-        }
-    );
-};
+    return new Promise(function(resolve, reject) {
+        push.subscribe(
+            topic,
+            function() {
+                console.log("FCM subscribed to "+topic);
+                api.saveFcmTopic(topic);
+                resolve(true);
+            },
+            function(e) {
+                console.log("FCM failed to subscribe to "+topic);
+                reject(new Error(e));
+            }
+        );
+    });
+}
 
 export function unsubscribe(topic) {
-    push.unsubscribe(
-        topic,
-        function() {
-            console.log("FCM unsubscribed to "+topic);
-        },
-        function(e) {
-            console.log("FCM failed to unsubscribe to "+topic);
-        }
-    );
-};
+    return new Promise(function(resolve, reject) {
+        push.unsubscribe(
+            topic,
+            function() {
+                console.log("FCM unsubscribed to "+topic);
+                resolve(true);
+            },
+            function(e) {
+                console.log("FCM failed to unsubscribe to "+topic);
+                reject(new Error(e));
+            }
+        );
+    })
+}
 
 export function notification(id, topic, title, message, channel = 'PushPluginChannel', extra = null) {
     var content = {
@@ -148,7 +156,7 @@ export function notification(id, topic, title, message, channel = 'PushPluginCha
     };
 
     return send(content);
-};
+}
 
 function send(message) {
     return new Promise(function(resolve, reject) {
@@ -165,7 +173,7 @@ function send(message) {
                 resolve(response);
             },
             error: function(xhr, status, error) {
-                reject(err);
+                reject(error);
             }
         })
     })

@@ -1,6 +1,7 @@
 // imports
 import * as api from './api';
 import * as storage from './storage';
+import * as cache from './cache';
 
 // Login screen forms
 export function registerUserHandler() {
@@ -71,10 +72,7 @@ export function handleEventNotificationClick() {
         console.log(`Event ID ${eventId}`);
 
         // Get event data from cache
-        storage.get(`event-${eventId}`)
-            .then(function(d) {
-                return JSON.parse(d);
-            })
+        cache.getEvent(eventId)
             .then(function(event) {
                 // Get user locale for formatting
                 storage.get("locale")
@@ -99,6 +97,44 @@ export function handleEventNotificationClick() {
                     });
             })
     });
+}
+
+
+export function addSettingsEvent(event) {
+    return cache.getEvent(event.id)
+        .then(function(event) {
+            var addressArray = event.address.split(",");
+            var address = addressArray[0];
+            if(addressArray[1]) address += "," + addressArray[1];
+        
+            var nowDate = new Date();
+            var eventDate = new Date(event.datetime);
+
+            return storage.get("locale")
+                .then(JSON.parse)
+                .then(function(l) {
+                    var buttons = "";
+                    if(nowDate.getTime() < eventDate.getTime()) {
+                        buttons += 
+                        `<div class="text-right clr-dark mb-1">
+                            <button type="button" class="btn-delete-event btn input-dark btn-md" data-event-address="${event.address}" data-event-id="${event.id}">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>`;
+                    }
+                
+                    var html = 
+                    `<a href="#" class="list-group-item list-group-item-action flex-column align-items-start clr-dark event-package-selection" data-event="${event.id}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-3">${address}</h5>
+                        </div>
+                        <small>${eventDate.toLocaleString(`en-${l.code}`)}</small>
+                        ${buttons}
+                    </a>`;
+                
+                    $("#events-form-inputs").append(html);
+                });
+        });
 }
 
 export function startLoader(color = "black") {
