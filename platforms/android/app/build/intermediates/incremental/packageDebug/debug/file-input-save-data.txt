@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Dec 11 16:08:26 SGT 2018
+#Tue Dec 11 17:16:01 SGT 2018
 1391.set=ASSET
 1034.base=D\:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 881.path=www/css/svgs/solid/table-tennis.svg
