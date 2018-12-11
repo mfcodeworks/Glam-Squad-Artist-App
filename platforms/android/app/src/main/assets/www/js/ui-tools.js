@@ -2,6 +2,7 @@
 import * as api from './api';
 import * as storage from './storage';
 import * as cache from './cache';
+import * as tools from './tools';
 
 // Login screen forms
 export function registerUserHandler() {
@@ -135,6 +136,26 @@ export function addSettingsEvent(event) {
                     $("#events-form-inputs").append(html);
                 });
         });
+}
+
+export function updatePortfolioImages() {
+    return new Promise(function(resolve) {
+        $("#reg-portfolio").change(function() {
+            $("#reg-portfolio").empty();
+    
+            var photos = $("#reg-portfolio")[0].files;
+        
+            for(var i = 0; i < photos.length; i++) {
+                tools.readFile(photos[i])
+                    .then(function(e) {
+                        $("#reg-portfolio-preview").append(
+                            "<li class='reg-portfolio-preview-image' ><img src='" + e +"' /></li>"
+                        );
+                    });
+            }
+        });
+        resolve(true);
+    });
 }
 
 export function startLoader(color = "black") {

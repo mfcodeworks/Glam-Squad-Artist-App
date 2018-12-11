@@ -29,6 +29,7 @@ var app = {
                 // Register form handlers
                 ui.loginUserHandler();
                 ui.registerUserHandler();
+                ui.updatePortfolioImages();
 
                 // Auth check
                 login.authenticatedCheck();

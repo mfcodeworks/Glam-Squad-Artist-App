@@ -42,56 +42,75 @@ export function registerUser() {
         formContext: "artist-registration",
         username: $("#reg-username").val(),
         email: $("#reg-email").val(),
-        password: $("#reg-password").val()
+        password: $("#reg-password").val(),
+        bio: $("#reg-bio").val(),
+        facebook: $("#reg-facebook").val(),
+        twitter: $("#reg-twitter").val(),
+        instagram: $("#reg-instagram").val(),
+        role: $("#reg-role").find(":selected").data("role-id"),
+        portfolio: []
     };
 
-    // POST to API server
-    postData(form)
-        .then( function(r) {
-            ui.endLoader();
+    var portfolioInput = $("#reg-portfolio")[0];
+    var files = [];
+    
+    for(var i = 0; i < portfolioInput.files.length; i++) {
+        files.push( tools.readFile(portfolioInput.files[i]) );
+    }
 
-            switch (r.response) {
-                // If successful alert
-                case true:
+    Promise.all(files)
+        .then(function(blobs) {
+            blobs.forEach(function(blob) {
+                form.portfolio.push(blob);
+            });
+        })
+        .then(function() {
+            postData(form)
+                .then(function(r) {
+                    switch (r.response) {
+                        // If successful alert
+                        case true:
+                            navigator.notification.alert(
+                                "Registration received. You will receive an email shortly notifying you of your next step.",
+                                null,
+                                "Registration Success",
+                                "Okay"
+                            );
+                            $("#btn-cancel-register").click();
+                            break;
+        
+                        // If SQL unsuccessful alert
+                        case false:
+                            navigator.notification.alert(
+                                `${r.error_code}: ${r.error}`,
+                                null,
+                                "Error",
+                                "Okay"
+                            );
+                            break;
+        
+                        default:
+                        // If malformed/null response alert error
+                            navigator.notification.alert(
+                                `An unknown error occured. Please try agian later.\n${JSON.stringify(r)}`,
+                                null,
+                                "Error",
+                                "Okay"
+                            );
+                            break;
+                    }
+                })
+                .then(ui.endLoader)
+                .catch(function(err) {
                     navigator.notification.alert(
-                        "Registration received. You will receive an email shortly notifying you of your next step.",
-                        null,
-                        "Registration Success",
-                        "Okay"
-                    );
-                    $("#btn-cancel-register").click();
-                    break;
-
-                // If SQL unsuccessful alert
-                case false:
-                    navigator.notification.alert(
-                        `${r.error_code}: ${r.error}`,
+                        `An error occured, please try again later.\n${err}`,
                         null,
                         "Error",
                         "Okay"
                     );
-                    break;
-
-                default:
-                // If malformed/null response alert error
-                    navigator.notification.alert(
-                        "An unknown error occured. Please try agian later.\n"+JSON.stringify(r),
-                        null,
-                        "Error",
-                        "Okay"
-                    );
-                    break;
-            }
-        }, function(err) {
-            ui.endLoader();
-            navigator.notification.alert(
-                "An error occured, please try again later.\n" + err,
-                null,
-                "Error",
-                "Okay"
-            );
+                });
         });
-};
+}
 
 export function authenticateUser() {
     // Verify inputs
@@ -402,9 +421,7 @@ export function getFcmTopics(type = "artist") {
 
 export function saveFcmToken(token) {
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
 
             // Save ID to JSON
@@ -415,31 +432,30 @@ export function saveFcmToken(token) {
             };
 
             // Send to API Server
-            postData(form)
-                .then(function(r) {
-                    switch(r.response) {
-                        case true:
-                            console.log("Saved FCM Token '" + token + "'");
-                            break;
-                        case false:
-                            console.warn("Failed to save FCM Token '" + token + "'");
-                            console.warn(r.error_code + ": " + r.error);
-                            break;
-                        default:
-                            console.warn("Unknown error occured communicating with API server.");
-                            break;
-                    }
-                });
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log(`Saved FCM Token: ${token}`);
+                    break;
+
+                case false:
+                    console.warn(`Failed to save FCM Token: ${token}`);
+                    console.warn(`${r.error_code}: ${r.error}`);
+                    break;
+
+                default:
+                    console.warn("Unknown error occured communicating with API server.");
+                    break;
+            }
         });
 }
 
 export function saveFcmTopic(topic, type = "artist") {
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
-
             // Save ID to JSON
             var form = {
                 topic: topic,
@@ -449,29 +465,29 @@ export function saveFcmTopic(topic, type = "artist") {
             };
 
             // Send to API Server
-            postData(form)
-                .then(function(r) {
-                    switch(r.response) {
-                        case true:
-                            console.log("Saved FCM Topic '" + topic + "'");
-                            break;
-                        case false:
-                            console.warn("Failed to save FCM ID '" + topic + "'");
-                            console.warn(r.error_code + ": " + r.error);
-                            break;
-                        default:
-                            console.warn("Unknown error occured communicating with API server.");
-                            break;
-                    }
-                });
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log(`Saved FCM Topic ${topic}`);
+                    break;
+
+                case false:
+                    console.warn(`Failed to save FCM topic: ${topic}`);
+                    console.warn(`${r.error_code}: ${r.error}`);
+                    break;
+
+                default:
+                    console.warn("Unknown error occured communicating with API server.");
+                    break;
+            }
         });
 }
 
 export function getLocations() {
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
             // Save ID to JSON
             var form = {
@@ -492,7 +508,7 @@ export function getLocations() {
 
                 case false:
                     console.warn("Failed to fetch locations.");
-                    console.warn(r.error_code + ": " + r.error);
+                    console.warn(`${r.error_code}: ${r.error}`);
                     ui.endLoader();
                     break;
 
@@ -508,11 +524,8 @@ export function deleteLocation(locId) {
     ui.startLoader();
 
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
-
             // Save ID to JSON
             var form = {
                 locId: parseInt(locId),
@@ -526,12 +539,14 @@ export function deleteLocation(locId) {
         .then(function(r) {
             switch(r.response) {
                 case true:
-                    console.log("Deleted location " + name);
+                    console.log(`Deleted location ${name}`);
                     break;
+
                 case false:
-                    console.warn("Failed to delete location " + name);
-                    console.warn(r.error_code + ": " + r.error);
+                    console.warn(`Failed to delete location ${name}`);
+                    console.warn(`${r.error_code}: ${r.error}`);
                     break;
+
                 default:
                     console.warn("Unknown error occured communicating with API server.");
                     break;
@@ -543,11 +558,8 @@ export function saveLocation() {
     ui.startLoader();
 
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
-
             // Save ID to JSON
             var form = {
                 name: $("#location-shortname").val(),
@@ -563,12 +575,14 @@ export function saveLocation() {
         .then(function(r) {
             switch(r.response) {
                 case true:
-                    console.log("Saved location " + name);
+                    console.log(`Saved location: ${name}`);
                     break;
+
                 case false:
-                    console.warn("Failed to save location " + name);
-                    console.warn(r.error_code + ": " + r.error);
+                    console.warn(`Failed to save location: ${name}`);
+                    console.warn(`${r.error_code}: ${r.error}`);
                     break;
+
                 default:
                     console.warn("Unknown error occured communicating with API server.");
                     break;
@@ -587,8 +601,8 @@ export function fillUserInfo() {
 
     // Update user info
     storage.get("login")
-        .then(function(res) {
-            var data = JSON.parse(res);
+        .then(JSON.parse)
+        .then(function(data) {
             console.log(data);
             $("#new-username").val(data.username);
             $("#new-email").val(data.email);
@@ -619,70 +633,62 @@ export function updateUser() {
     
     // Update user info
     storage.get("login")
-        .then(function(res) {
-            var data = JSON.parse(res);
-            
+        .then(JSON.parse)
+        .then(function(u) {
             var form = {
                 formContext: "artist-info-update",
-                userId: parseInt(data.userId),
+                userId: parseInt(u.userId),
                 username: $("#new-username").val(),
                 email: $("#new-email").val(),
                 password: $("#new-password").val()
             }
         
-            postData(form)
-                .then(function(r) {
-                    ui.endLoader();
+            return postData(form)
+        })
+        .then(function(r) {
+            console.log("User update response:\n" + JSON.stringify(r,null,"\t"));
+            
+            if(r.response === true) {
+                storage.remove("login")
+                    .then(function() {
+                        var u = r.data[0];
+                        u.userId = u.id
 
-                    console.log("User update response:\n" + JSON.stringify(r,null,2));
-                    
-                    if(r.response == true) {
-                        storage.remove("login")
-                            .then(function() {
-                                var u = r.data[0];
-                                var data = {
-                                    userId: u.id,
-                                    username: u.username,
-                                    usernameHash: u.usernameHash,
-                                    email: u.email,
-                                    profilePhoto: u.profile_photo,
-                                    stripeId: u.stripe_customer_id
-                                };
+                        console.log(data);
 
-                                console.log(data);
+                        storage.save("login",JSON.stringify(data));
 
-                                storage.save("login",JSON.stringify(data));
-
-                                fillUserInfo();
-                            });
-                        $("#alert-container").append("\
-                            <div class='alert alert-light alert-custom' role='alert'>\
-                                Successfully updated user info. \
-                            </div> \
-                        ");
-                    }
-                    else {
-                        navigator.notification.alert(
-                            "An error occured, please try again later.\n"+JSON.stringify(res.error),
-                            null,
-                            "Error",
-                            "Okay"
-                        );
-                    }
-                }, function(err) {
-                    console.warn(err);
-                    ui.endLoader();
-                    $("#alert-container").append("\
-                        <div class='alert alert-danger alert-custom' role='alert'>\
-                            Failed to update user info. \
-                        </div> \
-                    ");
-                }).then(function() {
-                    // Remove aler tafter 5 seconds
-                    setTimeout(function() {
-                        $(".alert").fadeOut();
-                    }, (1000 * 7));
-                });
+                        fillUserInfo();
+                    });
+                $("#alert-container").append("\
+                    <div class='alert alert-light alert-custom' role='alert'>\
+                        Successfully updated user info. \
+                    </div> \
+                ");
+            }
+            else {
+                navigator.notification.alert(
+                    "An error occured, please try again later.\n"+JSON.stringify(res.error),
+                    null,
+                    "Error",
+                    "Okay"
+                );
+            }
+        }, function(err) {
+            console.warn(err);
+            ui.endLoader();
+            $("#alert-container").append("\
+                <div class='alert alert-danger alert-custom' role='alert'>\
+                    Failed to update user info. \
+                </div> \
+            ");
+        })
+        .then(ui.endLoader)
+        .then(function() {
+            // Remove aler tafter 5 seconds
+            setTimeout(function() {
+                $(".alert").fadeOut();
+            }, (1000 * 7));
         });
 }
 

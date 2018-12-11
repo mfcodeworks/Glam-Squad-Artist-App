@@ -195,6 +195,7 @@ a.col-md-6 {
 #events-form-inputs {
     display: none;
 }
+#reg-portfolio-label,
 #event-photos-label {
     display: block;
     text-align: center;
@@ -241,8 +242,9 @@ a.navbar-brand {
     background-color: #000; 
 }
 /* Image preview horizontal list */
+#reg-portfolio-preview,
 #event-photos-preview {
-    padding: 0;
+    padding: 0.7rem;
     display: flex;
     flex-direction: row;
     width: auto;
@@ -250,14 +252,15 @@ a.navbar-brand {
     list-style: none;
 }
 /* Remove scrollbar */
+#reg-portfolio-preview::-webkit-scrollbars,
 #event-photos-preview::-webkit-scrollbar { 
     display: none;
 }
+.reg-portfolio-preview-image,
 .event-photo-preview-image {
     flex: 0 0 auto;
     width: auto;
     margin-right: 30px;
-    padding-top: 10px;
 }
 .event-photo-preview-delete {
     color: #de0606;
@@ -265,6 +268,7 @@ a.navbar-brand {
     margin-top: -8px;
     margin-left: -8px;
 }
+.reg-portfolio-preview-image img,
 .event-photo-preview-image img {
     max-height: 100px;
 }

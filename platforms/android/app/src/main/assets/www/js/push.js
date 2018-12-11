@@ -80,7 +80,7 @@ export function handle() {
             console.log(JSON.stringify(notif,null,2));
 
             // If weblink in payload
-            if(notif.additionalData.extra.weblink) {
+            if(notif.hasOwnProperty('weblink')) {
 
                 // Load with timeout to allow for device ready
                 setTimeout(function() {
