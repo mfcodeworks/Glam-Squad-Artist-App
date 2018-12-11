@@ -85,10 +85,19 @@ export function handleEventNotificationClick() {
                         var date = new Date(event.datetime);
 
                         var html = 
-                        '<div class="d-flex w-100 justify-content-between">\
-                            <h4 class="mb-3 display-4">' + event.address + '</h4>\
-                        </div>\
-                        <p class="event-datetime mt-2">' + date.toLocaleString(`en-${l.code}`) + '</p>';
+                        `<div class="d-flex w-100 justify-content-between">
+                            <h4 class="mb-3">${event.address}</h4>
+                        </div>
+                        <p class="event-datetime">${date.toLocaleString(`en-${l.code}`)}</p>
+                        <p class="text-left">Note: </br> ${event.note}</p>
+                        <ul class="form-group clr-dark p-0" id="reg-portfolio-preview">
+                        `;
+                        if(event.references !== null) {
+                            event.references.forEach(function(image) {
+                                html += `<li class='reg-portfolio-preview-image' ><img src='${image.photo}' /></li>`
+                            });
+                        }
+                        html += `</ul>`;
                         
                         $("#event-information").append(html);
 

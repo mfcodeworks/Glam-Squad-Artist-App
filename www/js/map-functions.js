@@ -292,7 +292,7 @@ export function getLocations() {
             
             $(".saved-location-marker").remove();
 
-            if(l.data) {
+            if(l.hasOwnProperty('data') && l.data !== null) {
                 var locations = l.data;
 
                 for(var i = 0; i < locations.length; i++) {

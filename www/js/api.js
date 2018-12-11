@@ -229,17 +229,19 @@ export function getNewEvents() {
                         else number = events.length;
                         var count = '<span id="notification-count">' + number + '</span>';
                         $('.notification-menu-toggler').prepend(count);
+
+                        return Promise.all(storageProgress);
                     }
                     break;
                 
                 case false:
-                    console.warn("Error fetching events. " + r.error);
+                    console.warn(`Error fetching events. ${r.error}`);
                     break;
 
                 default:
-                    console.warn("Warning. Server error fetching events. " + r);
+                    console.warn(`Warning. Server error fetching events. ${r}`);
+                    break;
             }
-            return Promise.all(storageProgress);
         })
         .then(ui.handleEventNotificationClick)
         .then(acceptEventBooking);
@@ -504,18 +506,17 @@ export function getLocations() {
                     console.log("Got locations.");
                     ui.endLoader();
                     return r;
-                    break;
 
                 case false:
                     console.warn("Failed to fetch locations.");
                     console.warn(`${r.error_code}: ${r.error}`);
                     ui.endLoader();
-                    break;
+                    return r;
 
                 default:
                     console.warn("Unknown error occured communicating with API server.");
                     ui.endLoader();
-                    break;
+                    return r;
             }
         });
 }
