@@ -30,6 +30,7 @@ var app = {
                 ui.loginUserHandler();
                 ui.registerUserHandler();
                 ui.updatePortfolioImages();
+                ui.fillArtistRoles();
 
                 // Auth check
                 login.authenticatedCheck();

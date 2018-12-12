@@ -247,6 +247,14 @@ export function getNewEvents() {
         .then(acceptEventBooking);
 }
 
+export function getArtistRoles() {
+    var form = {
+        formContext: "roles-get"
+    }
+
+    return postData(form);
+}
+
 export function getEvent(jobId) {
     var form = {
         formContext: "event-get",

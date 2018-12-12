@@ -112,6 +112,24 @@ export function handleEventNotificationClick() {
     });
 }
 
+export function fillArtistRoles() {
+    return api.getArtistRoles()
+        .then(function(r) {
+            if(r.hasOwnProperty('data')) {
+                r.data.forEach(function(role) {
+                    $("#reg-role").append(`<option data-role-id="${role.id}">${role.name}</option>`);
+                });
+            }
+            else {
+                navigator.notification.alert(
+                    "Error occured connecting to database, please ensure network is connected.",
+                    navigator.app.exitApp,
+                    "Error",
+                    "Okay"
+                );
+            }
+        });
+}
 
 export function addSettingsEvent(event) {
     return cache.getEvent(event.id)
