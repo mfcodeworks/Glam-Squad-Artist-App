@@ -51,7 +51,7 @@ export function notificationEvent(event) {
         .then(function(l) {
             var date = new Date(event.datetime);
             var html = '\
-            <li class="list-group-item clr-primary event-notification-item pt-1">\
+            <li class="list-group-item clr-primary event-notification-item p-0">\
                 <a class="text-white p" href="#" data-event-id=' + event.id + '>\
                     ' + event.address + '\
                     <br><br>\
@@ -88,13 +88,16 @@ export function handleEventNotificationClick() {
                         `<div class="d-flex w-100 justify-content-between">
                             <h4 class="mb-3">${event.address}</h4>
                         </div>
-                        <p class="event-datetime">${date.toLocaleString(`en-${l.code}`)}</p>
-                        <p class="text-left">Note: </br> ${event.note}</p>
-                        <ul class="form-group clr-dark p-0" id="reg-portfolio-preview">
-                        `;
+                        <p class="event-datetime">${date.toLocaleString(`en-${l.code}`)}</p>`;
+
+                        if(event.note !== null && event.note !== "") {
+                            html += `<p class="text-left">Note: </br> ${event.note}</p>`;
+                        }
+
+                        html += `<ul class="form-group clr-dark p-0" id="reg-portfolio-preview">`;
                         if(event.references !== null) {
                             event.references.forEach(function(image) {
-                                html += `<li class='reg-portfolio-preview-image' ><img src='${image.photo}' /></li>`
+                                html += `<li class='reg-portfolio-preview-image' ><img class="lightbox-img" src='${image.photo}' /></li>`
                             });
                         }
                         html += `</ul>`;

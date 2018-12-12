@@ -8,6 +8,7 @@ import * as push from './push';
 import * as tools from './tools';
 import * as map from './map-functions';
 import * as api from './api';
+import * as lightbox from './lightbox';
 
 // app var
 var app = {
@@ -33,6 +34,7 @@ var app = {
                 // UI handlers
                 tools.handleLogout();
                 api.getNewEvents();
+                lightbox.start();
 
                 // Auth check
                 map.authenticatedCheck();
