@@ -11,17 +11,18 @@ export function getEvent(jobId) {
                 if(e) return e;
 
                 // If not cached then get from server
-                return api.getEvent(jobId)
-                    .then(function(d) {
-                        return d.data;
-                    });
+                return apiGetEvent();
             })
     }
     // Storage failed, get from server
     catch(e) {
-        return api.getEvent(jobId)
-            .then(function(d) {
-                return d.data;
-            });
+        return apiGetEvent();
     }
+}
+
+function apiGetEvent() {
+    return api.getEvent(jobId)
+        .then(function(d) {
+            return d.data;
+        });
 }

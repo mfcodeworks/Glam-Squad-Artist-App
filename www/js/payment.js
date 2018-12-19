@@ -6,9 +6,7 @@ import * as storage from './storage';
 export function getCustomerId(token) {
     return new Promise(function(resolve) {
         storage.get("login")
-            .then(function(u) {
-                return JSON.parse(u);
-            })
+            .then(JSON.parse)
             .then(function(u) {
                 if(u.stripeId) {
                     updateStripeCustomer(token)
@@ -51,15 +49,15 @@ export function updateStripeCustomer(token) {
     });
 }
 
-export function makeStripeCustomer(token, email) {
+export function makeStripeAccount(user) {
     return new Promise(function(resolve) {
         $.ajax({
-            url: "https://api.stripe.com/v1/customers",
+            url: "https://api.stripe.com/v1/accounts",
             headers: {
                 'Authorization' : 'Bearer sk_test_ccu7Gl8YxOlksae8zncTMTiE'
             },
             method: "POST",
-            data: 'source='+token+'&email="'+email+'"',
+            data: `type=custom&country=${user.country}&email="${user.email}"`,
             success: function(r) {
                 console.log(r);
                 resolve(r);

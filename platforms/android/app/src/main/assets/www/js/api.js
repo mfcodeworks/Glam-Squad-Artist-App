@@ -5,6 +5,7 @@ import * as tools from './tools';
 import * as CryptoJS from 'crypto-js';
 import * as push from './push';
 import * as ui from './ui-tools';
+import * as payment from './payment';
 
 // NR Server Endpoint
 const endpoint = 'https://glam-squad-db.nygmarosebeauty.com/';
@@ -40,6 +41,7 @@ export function registerUser() {
     // Create a registration form
     var form = {
         formContext: "artist-registration",
+        country: $("#reg-country").children("option:selected").val(),
         username: $("#reg-username").val(),
         email: $("#reg-email").val(),
         password: $("#reg-password").val(),
@@ -65,6 +67,7 @@ export function registerUser() {
             });
         })
         .then(function() {
+            console.log(form);
             postData(form)
                 .then(function(r) {
                     switch (r.response) {
@@ -77,6 +80,7 @@ export function registerUser() {
                                 "Okay"
                             );
                             $("#btn-cancel-register").click();
+                            payment.makeStripeAccount(form);
                             break;
         
                         // If SQL unsuccessful alert

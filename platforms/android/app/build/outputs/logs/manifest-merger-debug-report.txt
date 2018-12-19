@@ -16,7 +16,6 @@ INJECTED from D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\andro
 MERGED from [com.android.support:support-v13:27.1.1] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\support-v13-27.1.1.aar\c269c2897fee9db9af64a038a93268de\AndroidManifest.xml:17:1-22:12
 MERGED from [me.leolin:ShortcutBadger:1.1.17] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\ShortcutBadger-1.1.17.aar\9b3ed135ef1378aa86a6c1c82b3dae08\AndroidManifest.xml:2:1-52:12
 MERGED from [com.google.firebase:firebase-messaging:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.6.2.aar\f025a29f25104cf7328a52ec54e17af9\AndroidManifest.xml:16:1-30:12
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\b065a02b5a35f6b4a8e6f1f8756fb4aa\AndroidManifest.xml:17:1-22:12
 MERGED from [:CordovaLib] D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:20:1-27:12
 MERGED from [com.google.firebase:firebase-core:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-core-11.6.2.aar\8592d2a572cdbf148d65648b4b64f411\AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.firebase:firebase-analytics:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-analytics-11.6.2.aar\5e228969156acdfe650106b6b26fd401\AndroidManifest.xml:16:1-35:12
@@ -188,8 +187,6 @@ MERGED from [me.leolin:ShortcutBadger:1.1.17] C:\Users\arranf\.gradle\caches\tra
 MERGED from [me.leolin:ShortcutBadger:1.1.17] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\ShortcutBadger-1.1.17.aar\9b3ed135ef1378aa86a6c1c82b3dae08\AndroidManifest.xml:7:5-9:41
 MERGED from [com.google.firebase:firebase-messaging:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.6.2.aar\f025a29f25104cf7328a52ec54e17af9\AndroidManifest.xml:17:5-43
 MERGED from [com.google.firebase:firebase-messaging:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-messaging-11.6.2.aar\f025a29f25104cf7328a52ec54e17af9\AndroidManifest.xml:17:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\b065a02b5a35f6b4a8e6f1f8756fb4aa\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\b065a02b5a35f6b4a8e6f1f8756fb4aa\AndroidManifest.xml:20:5-43
 MERGED from [:CordovaLib] D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
 MERGED from [:CordovaLib] D:\Projects\NR-Glam-Squad\NR-Glam-Squad-Artist-App\platforms\android\CordovaLib\build\intermediates\manifests\full\debug\AndroidManifest.xml:25:5-44
 MERGED from [com.google.firebase:firebase-core:11.6.2] C:\Users\arranf\.gradle\caches\transforms-1\files-1.1\firebase-core-11.6.2.aar\8592d2a572cdbf148d65648b4b64f411\AndroidManifest.xml:4:5-43
