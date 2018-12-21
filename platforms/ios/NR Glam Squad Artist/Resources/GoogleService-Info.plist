@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>427808297057-3640ljq3465ggrdns4lbm0dbn9qvelh6.apps.googleusercontent.com</string>
+	<string>427808297057-p8g7eoe4oo5ojgm8sk2m7ul2kejgr14h.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.427808297057-3640ljq3465ggrdns4lbm0dbn9qvelh6</string>
+	<string>com.googleusercontent.apps.427808297057-p8g7eoe4oo5ojgm8sk2m7ul2kejgr14h</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAOJwUxzPlupMeJ_2Dva2fRO7O9PHa6ycY</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.nygmarosebeauty.nrglamsquad</string>
+	<string>com.nygmarosebeauty.nrglamsquadartist</string>
 	<key>PROJECT_ID</key>
 	<string>nr-glam-squad</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:427808297057:ios:0ca21748c14bbed1</string>
+	<string>1:427808297057:ios:34c13db6150c7750</string>
 	<key>DATABASE_URL</key>
 	<string>https://nr-glam-squad.firebaseio.com</string>
 </dict>

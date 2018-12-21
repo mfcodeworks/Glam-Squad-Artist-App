@@ -4,7 +4,7 @@
     <string name="firebase_database_url" translatable="false">https://nr-glam-squad.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">427808297057</string>
     <string name="google_api_key" translatable="false">AIzaSyDqCZu6EjdMlOMHyTbRXL7r-W_1wDrXpfk</string>
-    <string name="google_app_id" translatable="false">1:427808297057:android:0ca21748c14bbed1</string>
+    <string name="google_app_id" translatable="false">1:427808297057:android:34c13db6150c7750</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDqCZu6EjdMlOMHyTbRXL7r-W_1wDrXpfk</string>
     <string name="google_storage_bucket" translatable="false">nr-glam-squad.appspot.com</string>
     <string name="project_id" translatable="false">nr-glam-squad</string>

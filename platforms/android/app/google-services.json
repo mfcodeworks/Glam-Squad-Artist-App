@@ -10,6 +10,37 @@
       "client_info": {
         "mobilesdk_app_id": "1:427808297057:android:0ca21748c14bbed1",
         "android_client_info": {
+          "package_name": "com.nygmarosebeauty.nrglamsquad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427808297057-g8ganbj0pcpqcr7b07l0ip7po8n8bqqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqCZu6EjdMlOMHyTbRXL7r-W_1wDrXpfk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427808297057:android:34c13db6150c7750",
+        "android_client_info": {
           "package_name": "com.nygmarosebeauty.nrglamsquadartist"
         }
       },
