@@ -28,30 +28,41 @@ var app = {
         // Check network connection (!important for API)
         tools.monitorNetwork()
             .then(function() {
+                var promises = [];
+
                 // Notification handler
-                push.handle();
+                promises.push(push.handle());
 
                 // UI handlers
                 tools.handleLogout();
-                api.getNewEvents();
+                promises.push(api.getNewEvents());
                 lightbox.start();
 
-                // Auth check
-                map.authenticatedCheck()
-                    .then(map.stripeAccountCheck);
-
                 // Begin map load
-                navigator.geolocation.getCurrentPosition(
-                    map.onMapSuccess, 
-                    map.onMapError, 
-                    { 
-                        enableHighAccuracy: false,
-                        // 5 seconds timeout
-                        timeout: (5 * 1000),
-                        // max age for cache use 5 seconds 
-                        maximumAge: (5 * 1000), 
-                    }
+                promises.push(
+                    new Promise(function(resolve) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                resolve(map.onMapSuccess(position));
+                            },
+                            function(error) {
+                                resolve(map.onMapError(error));
+                            }, 
+                            { 
+                                enableHighAccuracy: false,
+                                // 5 seconds timeout
+                                timeout: (5 * 1000),
+                                // max age for cache use 5 seconds 
+                                maximumAge: (5 * 1000), 
+                            }
+                        )
+                    })
                 );
+
+                // Auth check
+                promises.push(map.authenticatedCheck());
+
+                return Promise.all(promises);
                 
                 // Network connection error alert
             }, function(e) {
@@ -63,7 +74,8 @@ var app = {
                     e,
                     "Okay"
                 );
-            });
+            })
+            .then(map.stripeAccountCheck);
     },
 
     // Back button handler

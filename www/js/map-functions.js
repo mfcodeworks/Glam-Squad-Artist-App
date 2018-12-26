@@ -37,138 +37,164 @@ export function onMapSuccess(position) {
 
     saveUserLocale();
     
-    loadMap();
-};
+    return loadMap();
+}
 
 function mapDefault() {
     lat = 34.072;
     long = -118.358;
-    loadMap();
+    return loadMap();
 }
 
 function loadMap() {
-    $(document).ready(function() {
-        // Add map to app
-        makeMap();
+    return new Promise(function(resolve) {
+        $(document).ready(function() {
+            var promises = [];
 
-        // Add geocoder to map
-        addGeocoder();
-        
-        // Observe map for clicks and reverse geocode
-        addMapClickMarker();
+            // Add map to app
+            promises.push(makeMap());
+    
+            // Add geocoder to map
+            promises.push(addGeocoder());
+            
+            // Observe map for clicks and reverse geocode
+            addMapClickMarker();
+    
+            // Add artist locations
+            getLocations();
 
-        // Add artist locations
-        getLocations();
+            Promise.all(promises)
+                .then(resolve);
+        })
     });
 }
 
 // Handle location errors TODO: handle errors on device
 export function onMapError(error) {
-    console.log('code: ' + error.code + '\n' +'message: ' + error.message + '\n');
-    switch(error.code) {
-        case 1:
-            navigator.notification.alert(
-                "It's recommended to enable location to make booking events easier.", 
-                mapDefault,
-                "Location Access Denied",
-                "Continue"
-            );
-            break;
+    console.log(`code: ${error.code} \nmessage: ${error.message}\n`);
 
-        case 2:
-            navigator.notification.alert(
-                "Unable to access location. Ensure device is connected to a network and GPS is enabled.", 
-                mapDefault,
-                "Location Access Error",
-                "Continue"
-            );
-            break;
-
-        case 3:
-            navigator.notification.alert(
-                "Unable to access location. Please enable location access to make booking events easier.",
-                mapDefault,
-                "Location Access Error",
-                "Continue"
-            );
-            break;
-    }
-};
+    return new Promise(function(resolve) {
+        switch(error.code) {
+            case 1:
+                navigator.notification.alert(
+                    "It's recommended to enable location to make booking events easier.",
+                    function() {
+                        resolve(mapDefault());
+                    },
+                    "Location Access Denied",
+                    "Continue"
+                );
+                break;
+    
+            case 2:
+                navigator.notification.alert(
+                    "Unable to access location. Ensure device is connected to a network and GPS is enabled.",
+                    function() {
+                        resolve(mapDefault());
+                    },
+                    "Location Access Error",
+                    "Continue"
+                );
+                break;
+    
+            case 3:
+                navigator.notification.alert(
+                    "Unable to access location. Please enable location access to make booking events easier.",
+                    function() {
+                        resolve(mapDefault());
+                    },
+                    "Location Access Error",
+                    "Continue"
+                );
+                break;
+        }
+    });
+}
 
 /** 
  * API: Mapbox GL JS API 
  */
 
 function saveUserLocale() {
-    var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
+    return new Promise(function(resolve) {
+        var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
 
-    $.get(
-        reverseGeocodeURL,
-        {
-            access_token: accessToken,
-            types: "country"
-        },
-        function(data) {
-            var locale = {
-                country: data.features[0].text,
-                code: data.features[0].properties.short_code.toUpperCase()
-            };
+        $.get(
+            reverseGeocodeURL,
+            {
+                access_token: accessToken,
+                types: "country"
+            },
+            function(data) {
+                var locale = {
+                    country: data.features[0].text,
+                    code: data.features[0].properties.short_code.toUpperCase()
+                };
 
-            storage.save("locale", JSON.stringify(locale))
-                .then(function() {
-                    push.subscribe(locale.country);
-                });
-        }
-    );
+                storage.save("locale", JSON.stringify(locale))
+                    .then(function() {
+                        push.subscribe(locale.country)
+                            .then(resolve);
+                    });
+            }
+        );
+    })
 }
 
 // Make map from location
 function makeMap() {
-    // Set user position array
-    var position = [long, lat];
-
-    // Make Mapbox GL Map
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWZzb2Z0d29ya3MiLCJhIjoiY2pudmZ5N3cwMDUwcTNwbm44ZzNnM201cCJ9.EsNcDPIULJ5_mhJYwOZEgA';
-    map = new mapboxgl.Map(
-        {
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
-            center: position,
-            zoom: 16,
-            doubleClickZoom: false,
-            refreshExpiredTiles: false,
-            renderWorldCopies: false,
-        }
-    );
-
-    // On map loaded, remove splash screen
-    map.on('load', function() {
-        ui.removeSplash();
+    return new Promise(function(resolve) {
+        // Set user position array
+        var position = [long, lat];
+    
+        // Make Mapbox GL Map
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWZzb2Z0d29ya3MiLCJhIjoiY2pudmZ5N3cwMDUwcTNwbm44ZzNnM201cCJ9.EsNcDPIULJ5_mhJYwOZEgA';
+        map = new mapboxgl.Map(
+            {
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
+                center: position,
+                zoom: 16,
+                doubleClickZoom: false,
+                refreshExpiredTiles: false,
+                renderWorldCopies: false,
+            }
+        );
+    
+        // On map loaded, remove splash screen
+        map.on('load', function() {
+            ui.removeSplash();
+            resolve(true);
+        });
     });
-};
+}
 
 // Create geocoder for map
 function addGeocoder() {
-    var geocoder = new MapboxGeocoder(
-        {
-            accessToken: accessToken,
-            proximity: 
+    return new Promise(function(resolve) {
+        var geocoder = new MapboxGeocoder(
             {
-                longitude: long,
-                latitude: lat
-            },
-            trackProximity: true,
-        }
-    );
-
-    // Add geocoder to screen
-    $("#geocoder").append(geocoder.onAdd(map));
-
-    // On geocoder result click, log the result and add a marker
-    geocoder.on('result', function(e) {
-        makeMapMarker(e.result.center, e.result.place_name);
+                accessToken: accessToken,
+                proximity: 
+                {
+                    longitude: long,
+                    latitude: lat
+                },
+                trackProximity: true,
+            }
+        );
+    
+        // Add geocoder to screen
+        $("#geocoder").append(geocoder.onAdd(map));
+    
+        // On geocoder result click, log the result and add a marker
+        geocoder.on('result', function(e) {
+            makeMapMarker(e.result.center, e.result.place_name);
+        });
+    
+        resolve(true);
     });
-};
+}
 
 // Get location from map click
 function addMapClickMarker() {
@@ -326,6 +352,7 @@ export function authenticatedCheck() {
     return api.isAuthenticated()
         .then(function(r) {
             if(!r) tools.load("login.html");
+            return true;
         });
 }
 
@@ -342,7 +369,7 @@ export function stripeAccountCheck() {
             navigator.notification.alert(
                 `NR uses the Stripe platform to handle all your payments safely, after you click connect we'll help you create a Stripe account for NR and get your payments ready.`,
                 function() {
-                    var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write");
+                    var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write", "_blank", "location=no");
                     
                     stripeAuth.addEventListener('exit', function(event) {
                         if(!account) {
