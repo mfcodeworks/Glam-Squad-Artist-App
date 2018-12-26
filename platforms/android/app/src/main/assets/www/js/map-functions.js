@@ -330,43 +330,51 @@ export function authenticatedCheck() {
 }
 
 export function stripeAccountCheck() {
-    var account = null;
+    storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            // If account has stripe token, end
+            if(u.stripe_account_token) return;
 
-    navigator.notification.alert(
-        `NR uses the Stripe platform to handle all your payments safely, after you click connect we'll help you create a Stripe account for NR and get your payments ready.`,
-        function() {
-            var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write");
-            
-            stripeAuth.addEventListener('exit', function(event) {
-                if(!account) {
-                    stripeAccountCheck();
-                } else {
-                    payment.getStripeId(account)
-                        .then(api.saveStripeToken)
-                        .then(stripeInfoMessage)
-                        .catch(function() {
-                            navigator.notification.alert(
-                                "Failed to save Stripe account info. Please try again later.",
-                                navigator.app.exitApp,
-                                "Error",
-                                "Okay"
-                            );
-                        });
-                }
-            })
-
-            stripeAuth.addEventListener('loadstart', function(event) {
-                if(event.url.indexOf("glam-squad-stripeoauth.nygmarosebeauty.com") > -1) {
-                    //Loaded the redirect url
-                    var link = new URL(event.url);
-                    account = link.searchParams.get("code");
-                    stripeAuth.close();
-                }
-            });
-        },
-        "Welcome to NR Glam Squad!",
-        "Connect"
-    );
+            // If no token, get stripe token with OAuth
+            var account = null;
+        
+            navigator.notification.alert(
+                `NR uses the Stripe platform to handle all your payments safely, after you click connect we'll help you create a Stripe account for NR and get your payments ready.`,
+                function() {
+                    var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write");
+                    
+                    stripeAuth.addEventListener('exit', function(event) {
+                        if(!account) {
+                            stripeAccountCheck();
+                        } else {
+                            payment.getStripeId(account)
+                                .then(api.saveStripeToken)
+                                .then(stripeInfoMessage)
+                                .catch(function() {
+                                    navigator.notification.alert(
+                                        "Failed to save Stripe account info. Please try again later.",
+                                        navigator.app.exitApp,
+                                        "Error",
+                                        "Okay"
+                                    );
+                                });
+                        }
+                    })
+        
+                    stripeAuth.addEventListener('loadstart', function(event) {
+                        if(event.url.indexOf("glam-squad-stripeoauth.nygmarosebeauty.com") > -1) {
+                            //Loaded the redirect url
+                            var link = new URL(event.url);
+                            account = link.searchParams.get("code");
+                            stripeAuth.close();
+                        }
+                    });
+                },
+                "Welcome to NR Glam Squad!",
+                "Connect"
+            );
+        });
 }
 
 function stripeInfoMessage() {
