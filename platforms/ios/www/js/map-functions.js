@@ -6,6 +6,7 @@ import * as api from './api';
 import * as tools from './tools';
 import * as push from './push';
 import * as storage from './storage';
+import * as payment from './payment';
 
 // map var
 var map;
@@ -326,4 +327,53 @@ export function authenticatedCheck() {
         .then(function(r) {
             if(!r) tools.load("login.html");
         });
+}
+
+export function stripeAccountCheck() {
+    var account = null;
+
+    navigator.notification.alert(
+        `NR uses the Stripe platform to handle all your payments safely, after you click connect we'll help you create a Stripe account for NR and get your payments ready.`,
+        function() {
+            var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write");
+            
+            stripeAuth.addEventListener('exit', function(event) {
+                if(!account) {
+                    stripeAccountCheck();
+                } else {
+                    payment.getStripeId(account)
+                        .then(api.saveStripeToken)
+                        .then(stripeInfoMessage)
+                        .catch(function() {
+                            navigator.notification.alert(
+                                "Failed to save Stripe account info. Please try again later.",
+                                navigator.app.exitApp,
+                                "Error",
+                                "Okay"
+                            );
+                        });
+                }
+            })
+
+            stripeAuth.addEventListener('loadstart', function(event) {
+                if(event.url.indexOf("glam-squad-stripeoauth.nygmarosebeauty.com") > -1) {
+                    //Loaded the redirect url
+                    var link = new URL(event.url);
+                    account = link.searchParams.get("code");
+                    stripeAuth.close();
+                }
+            });
+        },
+        "Welcome to NR Glam Squad!",
+        "Connect"
+    );
+}
+
+function stripeInfoMessage() {
+    navigator.notification.alert(
+        "Welcome lovelie! Thank you for connecting with Stripe, you'll be able to manage where you want your money to go and withdraw your earnings by logging in to Stripe at https://dashboard.stripe.com/.",
+        null, 
+        "Thank you!", 
+        "Okay"
+    );
 }

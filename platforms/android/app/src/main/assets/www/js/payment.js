@@ -1,4 +1,5 @@
 import * as storage from './storage';
+import * as api from './api';
 
 /**
  * API: Stripe.js Card API
@@ -49,18 +50,29 @@ export function updateStripeCustomer(token) {
     });
 }
 
-export function makeStripeAccount(user) {
-    return new Promise(function(resolve) {
+export function getStripeId(token) {
+    return new Promise(function(resolve, reject) {
+        var data = {
+            "client_secret" : "sk_test_ccu7Gl8YxOlksae8zncTMTiE",
+            "code" : token,
+            "grant_type" : "authorization_code"
+        }
+
         $.ajax({
-            url: "https://api.stripe.com/v1/accounts",
+            url: "https://connect.stripe.com/oauth/token",
             headers: {
                 'Authorization' : 'Bearer sk_test_ccu7Gl8YxOlksae8zncTMTiE'
             },
             method: "POST",
-            data: `type=custom&country=${user.country}&email="${user.email}"`,
+            data: data,
             success: function(r) {
                 console.log(r);
-                resolve(r);
+                
+                if(r.stripe_user_id) {
+                    resolve(r.stripe_user_id);
+                } else {
+                    reject(false);
+                }
             }
         });
     });

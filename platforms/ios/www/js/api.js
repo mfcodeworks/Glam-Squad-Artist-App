@@ -65,54 +65,53 @@ export function registerUser() {
             blobs.forEach(function(blob) {
                 form.portfolio.push(blob);
             });
-        })
-        .then(function() {
+
             console.log(form);
-            postData(form)
-                .then(function(r) {
-                    switch (r.response) {
-                        // If successful alert
-                        case true:
-                            navigator.notification.alert(
-                                "Registration received. You will receive an email shortly notifying you of your next step.",
-                                null,
-                                "Registration Success",
-                                "Okay"
-                            );
-                            $("#btn-cancel-register").click();
-                            payment.makeStripeAccount(form);
-                            break;
-        
-                        // If SQL unsuccessful alert
-                        case false:
-                            navigator.notification.alert(
-                                `${r.error_code}: ${r.error}`,
-                                null,
-                                "Error",
-                                "Okay"
-                            );
-                            break;
-        
-                        default:
-                        // If malformed/null response alert error
-                            navigator.notification.alert(
-                                `An unknown error occured. Please try agian later.\n${JSON.stringify(r)}`,
-                                null,
-                                "Error",
-                                "Okay"
-                            );
-                            break;
-                    }
-                })
-                .then(ui.endLoader)
-                .catch(function(err) {
+            return form;
+        })
+        .then(postData)
+        .then(function(r) {
+            switch (r.response) {
+                // If successful alert
+                case true:
                     navigator.notification.alert(
-                        `An error occured, please try again later.\n${err}`,
+                        "Registration received. You will receive an email shortly notifying you of your next step.",
+                        null,
+                        "Registration Success",
+                        "Okay"
+                    );
+                    $("#btn-cancel-register").click();
+                    break;
+
+                // If SQL unsuccessful alert
+                case false:
+                    navigator.notification.alert(
+                        `${r.error_code}: ${r.error}`,
                         null,
                         "Error",
                         "Okay"
                     );
-                });
+                    break;
+
+                default:
+                // If malformed/null response alert error
+                    navigator.notification.alert(
+                        `An unknown error occured. Please try agian later.\n${JSON.stringify(r)}`,
+                        null,
+                        "Error",
+                        "Okay"
+                    );
+                    break;
+            }
+        })
+        .then(ui.endLoader)
+        .catch(function(err) {
+            navigator.notification.alert(
+                `An error occured, please try again later.\n${err}`,
+                null,
+                "Error",
+                "Okay"
+            );
         });
 }
 
@@ -499,6 +498,38 @@ export function saveFcmTopic(topic, type = "artist") {
         });
 }
 
+export function saveStripeToken(token) {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            // Save ID to JSON
+            var form = {
+                token: token,
+                userId: parseInt(u.userId),
+                formContext: "artist-stripe-id",
+            };
+
+            // Send to API Server
+            return postData(form)
+        })
+        .then(function(r) {
+            switch(r.response) {
+                case true:
+                    console.log(`Saved Stripe ID`);
+                    return true;
+
+                case false:
+                    console.warn(`Failed to save Stripe ID`);
+                    console.warn(`${r.error_code}: ${r.error}`);
+                    return false;
+
+                default:
+                    console.warn("Unknown error occured communicating with API server.");
+                    break;
+            }
+        });
+}
+
 export function getLocations() {
     return storage.get("login")
         .then(JSON.parse)
@@ -733,6 +764,6 @@ function postData(form) {
 }
 
 // Create HMAC for message
-function getHMAC(message) {
+export function getHMAC(message) {
     return CryptoJS.HmacSHA512(message, apiSecret);
 }

@@ -37,7 +37,8 @@ var app = {
                 lightbox.start();
 
                 // Auth check
-                map.authenticatedCheck();
+                map.authenticatedCheck()
+                    .then(map.stripeAccountCheck);
 
                 // Begin map load
                 navigator.geolocation.getCurrentPosition(
