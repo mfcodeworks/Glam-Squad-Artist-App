@@ -258,6 +258,20 @@ export function getArtistRoles() {
     return postData(form);
 }
 
+export function getFinishedEvents() {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            var form = {
+                formContext: "event-recently-completed",
+                type: "artist",
+                userId: u.userId
+            }
+
+            return postData(form);
+        });
+}
+
 export function getEvent(jobId) {
     var form = {
         formContext: "event-get",
@@ -265,6 +279,22 @@ export function getEvent(jobId) {
     }
 
     return postData(form);
+}
+
+export function saveClientAttendance(event, client, response) {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            var form = {
+                formContext: "event-client-attendance",
+                clientId: client,
+                userId: u.userId,
+                eventId: event,
+                attendance: response
+            }
+
+            return postData(form);
+        });
 }
 
 export function acceptEventBooking() {

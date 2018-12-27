@@ -62,6 +62,9 @@ var app = {
                 // Auth check
                 promises.push(map.authenticatedCheck());
 
+                // Event check
+                promises.push(map.confirmRecentEvents());
+
                 return Promise.all(promises);
                 
                 // Network connection error alert

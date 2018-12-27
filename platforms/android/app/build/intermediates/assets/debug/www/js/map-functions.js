@@ -412,3 +412,85 @@ function stripeInfoMessage() {
         "Okay"
     );
 }
+
+export function confirmRecentEvents() {
+    return api.getFinishedEvents()
+        .then(function(d) {
+            if(d.hasOwnProperty('data') === false) return;
+
+            var events = d.data;
+
+            if(!events) return;
+
+            events.forEach(function(event) {
+                console.log(event);
+
+                var dialog =
+                `<div class="modal event-confirmation-modal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content clr-dark">
+                
+                            <!-- Modal Header -->
+                            <div class="modal-header clr-dark">
+                                <p class="modal-title display-4 strong">Confirm Booking</p>
+                            </div>
+                
+                            <!-- Modal body -->
+                            <div class="modal-body clr-dark text-center">
+                                <p>
+                                    Booking complete? Make sure to confirm with us your client attended and we'll proceed with payment. If you don't confirm within 3 days we'll go ahead and process the payment for the booking.
+                                </p>
+                                <p>
+                                    ${event.address}
+                                    <br>
+                                    <span class="small">${new Date(event.datetime).toLocaleString()}</span>
+                                </p>
+                                <p>
+                                    Did the client attend the event? (We don't like clients who book and never show up)
+                                    <br>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons" data-client="${event.clientId}">
+                                        <label class="btn btn-secondary active">
+                                            <input type="radio" name="true" value="true" autocomplete="off" checked> Yes
+                                        </label>
+                                        <label class="btn btn-secondary">
+                                            <input type="radio" name="false" value="false" autocomplete="off"> No
+                                        </label>
+                                    </div>
+                                </p>
+                            </div>
+                        
+                            <!-- Modal footer -->
+                            <div class="modal-footer clr-dark">
+                                <button type="button" class="btn clr-cancel" data-dismiss="modal">Not Finished Yet</button>
+                                <button type="button" class="btn clr-primary btn-confirm-event" data-client="${event.clientId}" data-event="${event.id}">Confirm</button>
+                            </div>
+                
+                        </div>
+                    </div>
+                </div>`;
+
+                $("body").append(dialog);
+            });
+
+            $(".event-confirmation-modal").modal("show");
+
+            $(".btn-confirm-event").click(function() {
+                ui.startLoader();
+                var client = $(this).data("client");
+                var event = $(this).data("event");
+                var response;
+
+                $(`div[data-client="${client}"]`).children("label").each(function() {
+                    if($(this).hasClass("active")) {
+                        response = $(this).children("input").first().val();
+                    }
+                });
+
+                api.saveClientAttendance(event, client, response)
+                    .then(ui.endLoader)
+                    .then(function() {
+                        $(this).siblings('btn[data-dismiss="modal"]').click();
+                    });
+            });
+        });
+}
