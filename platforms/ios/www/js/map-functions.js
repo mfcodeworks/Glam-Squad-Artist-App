@@ -451,7 +451,7 @@ export function confirmRecentEvents() {
                                     Did the client attend the event? (We don't like clients who book and never show up)
                                     <br>
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons" data-client="${event.clientId}">
-                                        <label class="btn btn-secondary active">
+                                        <label class="btn btn-secondary">
                                             <input type="radio" name="true" value="true" autocomplete="off" checked> Yes
                                         </label>
                                         <label class="btn btn-secondary">
