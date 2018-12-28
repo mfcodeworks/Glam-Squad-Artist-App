@@ -66,8 +66,6 @@ export function getStripeId(token) {
             method: "POST",
             data: data,
             success: function(r) {
-                console.log(r);
-                
                 if(r.stripe_user_id) {
                     resolve(r.stripe_user_id);
                 } else {

@@ -365,14 +365,14 @@ export function stripeAccountCheck() {
 
             // If no token, get stripe token with OAuth
             var account = null;
+            var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write", "_blank", "location=no,hidden=yes");
         
             navigator.notification.alert(
                 `NR uses the Stripe platform to handle all your payments safely, after you click connect we'll help you create a Stripe account for NR and get your payments ready.`,
                 function() {
-                    var stripeAuth = cordova.InAppBrowser.open("https://connect.stripe.com/oauth/authorize?response_type=code&client_id=ca_Dtemp3RTqA3RHzlGbSxwdAKTTn4n6fGl&scope=read_write", "_blank", "location=no");
-                    
+                    // Listen for exit and check status
                     stripeAuth.addEventListener('exit', function(event) {
-                        if(!account) {
+                        if(account === null) {
                             stripeAccountCheck();
                         } else {
                             payment.getStripeId(account)
@@ -387,8 +387,8 @@ export function stripeAccountCheck() {
                                     );
                                 });
                         }
-                    })
-        
+                    });
+                    // Listen for OAuth return code
                     stripeAuth.addEventListener('loadstart', function(event) {
                         if(event.url.indexOf("glam-squad-stripeoauth.nygmarosebeauty.com") > -1) {
                             //Loaded the redirect url
@@ -397,6 +397,8 @@ export function stripeAccountCheck() {
                             stripeAuth.close();
                         }
                     });
+                    // Show browser
+                    stripeAuth.show();
                 },
                 "Welcome to NR Glam Squad!",
                 "Connect"
