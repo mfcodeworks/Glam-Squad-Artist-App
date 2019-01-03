@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:maxSdkVersion="28"
-        android:minSdkVersion="19"
+        android:minSdkVersion="22"
         android:targetSdkVersion="26" />
 
     <supports-screens
@@ -62,7 +62,6 @@
     <uses-permission android:name="com.nygmarosebeauty.nrglamsquadartist.permission.C2D_MESSAGE" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
         android:debuggable="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/icon"
