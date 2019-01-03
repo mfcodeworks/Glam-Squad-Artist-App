@@ -1,4 +1,4 @@
-#Fri Dec 28 15:41:18 SGT 2018
+#Thu Jan 03 11:17:27 SGT 2019
 base.0=D\:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\9
 path.1=classes2.dex
 renamed.1=classes2.dex

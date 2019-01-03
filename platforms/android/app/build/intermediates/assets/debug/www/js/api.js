@@ -281,20 +281,15 @@ export function getEvent(jobId) {
     return postData(form);
 }
 
-export function saveClientAttendance(event, client, response) {
-    return storage.get("login")
-        .then(JSON.parse)
-        .then(function(u) {
-            var form = {
-                formContext: "event-client-attendance",
-                clientId: client,
-                userId: u.userId,
-                eventId: event,
-                attendance: response
-            }
+export function saveArtistAttendance(event, artist, response) {
+    var form = {
+        formContext: "event-artist-attendance",
+        userId: artist,
+        eventId: event,
+        attendance: response
+    }
 
-            return postData(form);
-        });
+    return postData(form);
 }
 
 export function acceptEventBooking() {
