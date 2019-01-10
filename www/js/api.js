@@ -5,10 +5,9 @@ import * as tools from './tools';
 import * as CryptoJS from 'crypto-js';
 import * as push from './push';
 import * as ui from './ui-tools';
-import * as payment from './payment';
 
 // NR Server Endpoint
-const endpoint = 'https://glam-squad-db.nygmarosebeauty.com/';
+const endpoint = 'https://glam-squad-db.nygmarosebeauty.com/api/v1';
 const apiSecret = '1GSqDjCYAXeBLuLLVBx3bXlpC5NKUPqC';
 
 export function registerUser() {
@@ -40,7 +39,6 @@ export function registerUser() {
 
     // Create a registration form
     var form = {
-        formContext: "artist-registration",
         country: $("#reg-country").children("option:selected").val(),
         username: $("#reg-username").val(),
         email: $("#reg-email").val(),
@@ -69,7 +67,9 @@ export function registerUser() {
             console.log(form);
             return form;
         })
-        .then(postData)
+        .then(function(form) {
+            return apiSend("POST", `${endpoint}/artists`, form);
+        })
         .then(function(r) {
             switch (r.response) {
                 // If successful alert
@@ -119,7 +119,7 @@ export function authenticateUser() {
     // Verify inputs
     $("#login-username").removeClass("is-invalid");
     $("#login-password").removeClass("is-invalid");
-    if(!tools.validate("username",$("#login-username").val())) {
+    if(!tools.validate("username", $("#login-username").val())) {
         $("#login-username").addClass("is-invalid");
         return;
     }
@@ -131,27 +131,20 @@ export function authenticateUser() {
     // Create authentication form
     ui.startLoader();
     var form = {
-        formContext: "artist-login",
         username: $("#login-username").val(),
         password: $("#login-password").val()
     };
 
     // POST to API server
-    return postData(form)
+    return apiSend("POST", `${endpoint}/artists/authenticate`, form)
         .then( function(r) {
             ui.endLoader();
 
             switch (r.response) {
                 case true:
-                    var user = r.data[0];
+                    console.log("Making session: " + JSON.stringify(r.data[0],null,"\t"));
 
-                    var data = user;
-                    data.userId = user.id
-                    delete data.id;
-
-                    console.log("Making session: "+JSON.stringify(data,null,"\t"));
-
-                    storage.save("login",JSON.stringify(data))
+                    storage.save("login",JSON.stringify(r.data[0]))
                         .then(function(res) {
                             if(res) tools.load("map.html");
                         }, function(err) {
@@ -161,7 +154,7 @@ export function authenticateUser() {
 
                 case false:
                     // If SQL error login incorrect
-                    if(r.error == "Incorrect login details.") {
+                    if(r.error === "Incorrect login details.") {
                         navigator.notification.alert(
                             "Incorrect login details.",
                             null,
@@ -200,18 +193,13 @@ export function authenticateUser() {
                 "Okay"
             );
         });
-};
+}
 
 export function getNewEvents() {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            var form = {
-                formContext: "artist-fetch-new-events",
-                userId: u.userId
-            }
-
-            return postData(form);
+            return apiSend("GET", `${endpoint}/events/new/artist/${u.id}`);
         })
         .then(function(r) {
             switch(r.response) {
@@ -227,11 +215,10 @@ export function getNewEvents() {
                             storageProgress.push(storage.save("event-" + events[i].id, JSON.stringify(events[i])));
                         }
 
+                        // Set notification count
                         var number;
-                        if(events.length > 99) number = "99+";
-                        else number = events.length;
-                        var count = '<span id="notification-count">' + number + '</span>';
-                        $('.notification-menu-toggler').prepend(count);
+                        (events.length > 99) ? number = "99+" : number = events.length;
+                        $('.notification-menu-toggler').prepend(`<span id="notification-count">${number}</span>`);
 
                         return Promise.all(storageProgress);
                     }
@@ -242,7 +229,7 @@ export function getNewEvents() {
                     break;
 
                 default:
-                    console.warn(`Warning. Server error fetching events. ${r}`);
+                    console.error(`Warning. Server error fetching events. ${r}`);
                     break;
             }
         })
@@ -251,63 +238,44 @@ export function getNewEvents() {
 }
 
 export function getArtistRoles() {
-    var form = {
-        formContext: "roles-get"
-    }
-
-    return postData(form);
+    return apiSend("GET", `${endpoint}/artists/roles`);
 }
 
 export function getFinishedEvents() {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            var form = {
-                formContext: "event-recently-completed",
-                type: "artist",
-                userId: u.userId
-            }
-
-            return postData(form);
+            return apiSend("GET", `${endpoint}/artists/${u.id}/events/recent/unpaid`);
         });
 }
 
-export function getEvent(jobId) {
-    var form = {
-        formContext: "event-get",
-        jobId: jobId
-    }
-
-    return postData(form);
+export function getEvent(id) {
+    return apiSend("GET", `${endpoint}/events/${id}`);
 }
 
 export function saveArtistAttendance(event, artist, response) {
     var form = {
-        formContext: "event-artist-attendance",
-        userId: artist,
-        eventId: event,
+        artistId: artist,
         attendance: response
     }
 
-    return postData(form);
+    return apiSend("PUT", `${endpoint}/events/${event}/attendance/artist`, form);
 }
 
 export function acceptEventBooking() {
     $("#btn-accept-event").click(function() {
         ui.startLoader();
-        var eventId = $("#btn-accept-event").data("event-id");
-        console.log(eventId);
+        var event = $("#btn-accept-event").data("event-id");
+        console.log(`Accepting event: ${event}`);
 
         storage.get("login")
             .then(JSON.parse)
             .then(function(u) {
                 var form = {
-                    formContext: "artist-apply-job",
-                    userId: u.userId,
-                    eventId: eventId
+                    userId: u.id
                 }
 
-                return postData(form);
+                return apiSend("POST", `${endpoint}/events/${event}/apply`, form);
             })
             .then(function(r) {
                 console.log(r);
@@ -321,10 +289,10 @@ export function acceptEventBooking() {
                             "Okay"
                         );
 
-                        var topic = `event-${eventId}-artist`;
+                        var topic = `event-${event}-artist`;
                         push.subscribe(topic)
                             .then(function() {
-                                return cache.getEvent(eventId);
+                                return cache.getEvent(event);
                             })
                             .then(function(e) {
                                 push.notification(
@@ -357,7 +325,7 @@ export function acceptEventBooking() {
             })
             .then(function() {
                 // Remove notification
-                $('a[data-event-id="' + eventId + '"]').parent().remove();
+                $(`a[data-event-id="${event}"]`).parent().remove();
                 // Collapse notifications
                 $("#notification-menu").collapse();
                 // Set new count
@@ -375,17 +343,11 @@ export function acceptEventBooking() {
     });
 }
 
-export function deleteEvent(id) {
+export function deleteEvent(event) {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            var form = {
-                formContext: "artist-cancel-job",
-                userId: u.userId,
-                jobId: id
-            }
-
-            return postData(form);
+            return apiSend("DELETE", `${endpoint}/clients/${u.id}/events/${event}`);
         });
 }
 
@@ -402,58 +364,44 @@ export function isAuthenticated() {
     
                 // Build validation form
                 var form = {
-                    formContext: "artist-session-check",
-                    userId: parseInt(u.userId),
                     usernameHash: u.usernameHash
                 };
             
                 // Return validation response
-                postData(form)
-                    .then(function(res) {
-                        console.log("User authenticated: " + JSON.stringify(res.valid));
+                return apiSend("POST", `${endpoint}/artists/${u.id}/validate`, form)
+            })
+            .then(function(r) {
+                console.log("User authenticated: " + JSON.stringify(r.valid));
 
-                        // If user is valid update storage
-                        if(res.valid) {
-                            storage.remove("login");
-                            var data = res.data;
-                            data.userId = data.id;
-                            delete data.id;
-                            storage.save("login", JSON.stringify(data));
-                        }
+                // If user is valid update storage
+                if(r.valid) {
+                    storage.remove("login");
+                    storage.save("login", JSON.stringify(r.data));
+                }
 
-                        resolve(res.valid);
-                    });
+                resolve(r.valid);
             });
     })
 }
 
 export function getFcmTopics(type = "artist") {
     return storage.get("login")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(u) {
-            // Save form
-            var form = {
-                formContext: "fcm-topic-fetch",
-                type: type,
-                userId: u.userId
-            };
-        
-            postData(form)
-                .then(function(r) {
-                    console.log("FCM Topics' Retreived.");
+            return apiSend("GET", `${endpoint}/${type}s/${u.id}/fcm/topic`);
+        })
+        .then(function(r) {
+            console.log("FCM Topics' Retreived.");
 
-                    // Subscribe all topics
-                    if(r.data) {
-                        var topics = r.data;
-                        for(var i = 0; i < topics.length; i++) {
-                            push.subscribe(topics[i].fcm_topic);
-                        }
-                    }
-                }, function(err) {
-                    console.warn("Error retreiving FCM Topics':\n" + err.error_code + ": " + err.error);
+            // Subscribe all topics
+            if(r.hasOwnProperty("data")) {
+                var topics = r.data;
+                topics.forEach(function(topic) {
+                    push.subscribe(topic.fcm_topic);
                 });
+            }
+        }, function(e) {
+            console.warn("Error retreiving FCM Topics'\n" + e.error);
         });
 }
 
@@ -461,16 +409,13 @@ export function saveFcmToken(token) {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-
             // Save ID to JSON
             var form = {
-                token: token,
-                userId: parseInt(u.userId),
-                formContext: "fcm-token-registration",
+                token: token
             };
 
             // Send to API Server
-            return postData(form)
+            return apiSend("PUT", `${endpoint}/artists/${u.id}/fcm/token`, form);
         })
         .then(function(r) {
             switch(r.response) {
@@ -480,11 +425,11 @@ export function saveFcmToken(token) {
 
                 case false:
                     console.warn(`Failed to save FCM Token: ${token}`);
-                    console.warn(`${r.error_code}: ${r.error}`);
+                    console.warn(`${r.error}`);
                     break;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     break;
             }
         });
@@ -496,14 +441,11 @@ export function saveFcmTopic(topic, type = "artist") {
         .then(function(u) {
             // Save ID to JSON
             var form = {
-                topic: topic,
-                type: type,
-                userId: parseInt(u.userId),
-                formContext: "fcm-topic-registration",
+                topic: topic
             };
 
             // Send to API Server
-            return postData(form)
+            return apiSend("PUT", `${endpoint}/${type}s/${u.id}/fcm/topic`, form);
         })
         .then(function(r) {
             switch(r.response) {
@@ -517,7 +459,7 @@ export function saveFcmTopic(topic, type = "artist") {
                     break;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     break;
             }
         });
@@ -529,13 +471,11 @@ export function saveStripeToken(token) {
         .then(function(u) {
             // Save ID to JSON
             var form = {
-                token: token,
-                userId: parseInt(u.userId),
-                formContext: "artist-stripe-id",
+                token: token
             };
 
             // Send to API Server
-            return postData(form)
+            return apiSend("PUT", `${endpoint}/artists/${u.id}/payment/id`, form);
         })
         .then(function(r) {
             switch(r.response) {
@@ -549,7 +489,7 @@ export function saveStripeToken(token) {
                     return false;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     break;
             }
         });
@@ -559,14 +499,8 @@ export function getLocations() {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            // Save ID to JSON
-            var form = {
-                userId: parseInt(u.userId),
-                formContext: "artist-location-fetch",
-            };
-
             // Send to API Server
-            return postData(form)
+            return apiSend("GET", `${endpoint}/artists/${u.id}/locations`);
         })
         .then(function(r) {
             switch(r.response) {
@@ -582,28 +516,21 @@ export function getLocations() {
                     return r;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     ui.endLoader();
                     return r;
             }
         });
 }
 
-export function deleteLocation(locId) {
+export function deleteLocation(location) {
     ui.startLoader();
 
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            // Save ID to JSON
-            var form = {
-                locId: parseInt(locId),
-                userId: parseInt(u.userId),
-                formContext: "artist-location-delete",
-            };
-
             // Send to API Server
-            return postData(form)
+            return apiSend("DELETE", `${endpoint}/artists/${u.id}/locations/${location}`);
         })
         .then(function(r) {
             switch(r.response) {
@@ -617,7 +544,7 @@ export function deleteLocation(locId) {
                     break;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     break;
             }
         });
@@ -634,12 +561,10 @@ export function saveLocation() {
                 name: $("#location-shortname").val(),
                 lat: parseFloat($("#location-shortname").data("lat")),
                 lng: parseFloat($("#location-shortname").data("lng")),
-                userId: parseInt(u.userId),
-                formContext: "artist-location",
             };
 
             // Send to API Server
-            return postData(form)
+            return apiSend("PUT", `${endpoint}/artists/${u.id}/locations`, form);
         })
         .then(function(r) {
             switch(r.response) {
@@ -653,7 +578,7 @@ export function saveLocation() {
                     break;
 
                 default:
-                    console.warn("Unknown error occured communicating with API server.");
+                    console.error("Unknown error occured communicating with API server.");
                     break;
             }
         })
@@ -671,10 +596,10 @@ export function fillUserInfo() {
     // Update user info
     storage.get("login")
         .then(JSON.parse)
-        .then(function(data) {
-            console.log(data);
-            $("#new-username").val(data.username);
-            $("#new-email").val(data.email);
+        .then(function(u) {
+            console.log(u);
+            $("#new-username").val(u.username);
+            $("#new-email").val(u.email);
         });
 }
 
@@ -705,14 +630,12 @@ export function updateUser() {
         .then(JSON.parse)
         .then(function(u) {
             var form = {
-                formContext: "artist-info-update",
-                userId: parseInt(u.userId),
                 username: $("#new-username").val(),
                 email: $("#new-email").val(),
                 password: $("#new-password").val()
             }
         
-            return postData(form)
+            return apiSend("PUT", `${endpoint}/artists/${u.id}`, form);
         })
         .then(function(r) {
             console.log("User update response:\n" + JSON.stringify(r,null,"\t"));
@@ -720,13 +643,8 @@ export function updateUser() {
             if(r.response === true) {
                 storage.remove("login")
                     .then(function() {
-                        var u = r.data[0];
-                        u.userId = u.id
-
-                        console.log(data);
-
-                        storage.save("login",JSON.stringify(data));
-
+                        console.log(r.data[0]);
+                        storage.save("login",JSON.stringify(r.data[0]));
                         fillUserInfo();
                     });
                 $("#alert-container").append("\
@@ -734,18 +652,16 @@ export function updateUser() {
                         Successfully updated user info. \
                     </div> \
                 ");
-            }
-            else {
+            } else {
                 navigator.notification.alert(
-                    "An error occured, please try again later.\n"+JSON.stringify(res.error),
+                    "An error occured, please try again later.\n"+JSON.stringify(r.error),
                     null,
                     "Error",
                     "Okay"
                 );
             }
         }, function(err) {
-            console.warn(err);
-            ui.endLoader();
+            console.error(err);
             $("#alert-container").append("\
                 <div class='alert alert-danger alert-custom' role='alert'>\
                     Failed to update user info. \
@@ -761,15 +677,16 @@ export function updateUser() {
         });
 }
 
-function postData(form) {
-    var message = JSON.stringify(form);
+function apiSend(method = "GET", url, form = null) {
+    var message;
+    (form === null) ? message = null : message = JSON.stringify(form);
 
     var hmac = getHMAC(message);
 
     return new Promise(function(resolve, reject) {
         $.ajax({
-            method: "POST",
-            url: endpoint,
+            method: method,
+            url: url,
             headers: {
                 'NR-HASH': hmac
             },

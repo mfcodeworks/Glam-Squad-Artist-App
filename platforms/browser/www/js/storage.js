@@ -6,7 +6,7 @@ export function save(key, data) {
         get(key)
         .then(function(d) {
             if(d) resolve(true);
-            else reject(Error("Failed to save "+key+" to local storage."));
+            else reject(Error(`Failed to save ${key} to local storage.`));
         });
     });
 }

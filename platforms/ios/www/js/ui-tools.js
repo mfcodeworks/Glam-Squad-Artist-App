@@ -37,7 +37,7 @@ export function formToggle() {
     return new Promise(function(resolve) {
         $('[data-role="toggleFormInput"]').click(function() {
             var id = $(this).data("target");
-            $("#"+id).slideToggle();
+            $(`#${id}`).slideToggle();
         });
         resolve(true);
     });
@@ -45,19 +45,17 @@ export function formToggle() {
 
 export function notificationEvent(event) {
     storage.get("locale")
-        .then(function(d) {
-            return JSON.parse(d);
-        })
+        .then(JSON.parse)
         .then(function(l) {
             var date = new Date(event.datetime);
-            var html = '\
-            <li class="list-group-item clr-primary event-notification-item p-0">\
-                <a class="text-white p" href="#" data-event-id=' + event.id + '>\
-                    ' + event.address + '\
-                    <br><br>\
-                    ' + date.toLocaleString(`en-${l.code}`) + '\
-                </a>\
-            </li>';
+            var html = `
+            <li class="list-group-item clr-primary event-notification-item p-0">
+                <a class="text-white p" href="#" data-event-id='${event.id}'>
+                    ${event.address}
+                    <br><br>
+                    ${date.toLocaleString(`en-${l.code}`)}
+                </a>
+            </li>`;
             $(".notification-menu-display").append(html);
         })
 }
@@ -77,9 +75,7 @@ export function handleEventNotificationClick() {
             .then(function(event) {
                 // Get user locale for formatting
                 storage.get("locale")
-                    .then(function(d) {
-                        return JSON.parse(d);
-                    })
+                    .then(JSON.parse)
                     .then(function(l) {
                         // Structure and append event info
                         var date = new Date(event.datetime);
@@ -90,17 +86,15 @@ export function handleEventNotificationClick() {
                         </div>
                         <p class="event-datetime">${date.toLocaleString(`en-${l.code}`)}</p>`;
 
-                        if(event.note !== null && event.note !== "") {
-                            html += `<p class="text-left">Note: </br> ${event.note}</p>`;
-                        }
+                        (event.note) ? html += `<p class="text-left">Note: </br> ${event.note}</p>` : null;
 
-                        html += `<ul class="form-group clr-dark p-0" id="reg-portfolio-preview">`;
                         if(event.references !== null) {
+                            html += `<ul class="form-group clr-dark p-0" id="reg-portfolio-preview">`;
                             event.references.forEach(function(image) {
                                 html += `<li class='reg-portfolio-preview-image' ><img class="lightbox-img" src='${image.photo}' /></li>`
                             });
+                            html += `</ul>`;
                         }
-                        html += `</ul>`;
                         
                         $("#event-information").append(html);
 
@@ -145,6 +139,7 @@ export function addSettingsEvent(event) {
                 .then(JSON.parse)
                 .then(function(l) {
                     var buttons = "";
+                    
                     if(nowDate.getTime() < eventDate.getTime()) {
                         buttons += 
                         `<div class="text-right clr-dark mb-1">
@@ -179,7 +174,7 @@ export function updatePortfolioImages() {
                 tools.readFile(photos[i])
                     .then(function(e) {
                         $("#reg-portfolio-preview").append(
-                            "<li class='reg-portfolio-preview-image' ><img src='" + e +"' /></li>"
+                            `<li class='reg-portfolio-preview-image'><img src="${e}" /></li>`
                         );
                     });
             }
@@ -189,7 +184,7 @@ export function updatePortfolioImages() {
 }
 
 export function startLoader(color = "black") {
-    $("body").prepend("<div class='loader-" + color + "'></div>");
+    $("body").prepend(`<div class='loader-${color}'></div>`);
 }
 export function endLoader() {
     $("[class^='loader-']").remove();

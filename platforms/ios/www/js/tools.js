@@ -3,7 +3,7 @@ import * as storage from './storage';
 // Change Cordova URL
 export function load(url) {
     window.location.assign(url);
-};
+}
 
 // Logout user
 export function handleLogout() {

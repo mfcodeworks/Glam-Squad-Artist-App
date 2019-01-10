@@ -108,15 +108,18 @@ export function handle() {
 
 export function subscribe(topic) {
     return new Promise(function(resolve, reject) {
+        // Remove illegal spaces
+        topic = topic.replace(" ", "-");
+
         push.subscribe(
             topic,
             function() {
-                console.log("FCM subscribed to "+topic);
+                console.log(`FCM subscribed to ${topic}`);
                 api.saveFcmTopic(topic);
                 resolve(true);
             },
             function(e) {
-                console.log("FCM failed to subscribe to "+topic);
+                console.warn(`FCM failed to subscribe to ${topic}`);
                 reject(new Error(e));
             }
         );
@@ -128,11 +131,11 @@ export function unsubscribe(topic) {
         push.unsubscribe(
             topic,
             function() {
-                console.log("FCM unsubscribed to "+topic);
+                console.log(`FCM unsubscribed to ${topic}`);
                 resolve(true);
             },
             function(e) {
-                console.log("FCM failed to unsubscribe to "+topic);
+                console.warn(`FCM failed to unsubscribe to ${topic}`);
                 reject(new Error(e));
             }
         );
@@ -166,7 +169,7 @@ function send(message) {
             dataType: "json",
             contentType: "application/json",
             headers: {
-                "Authorization" : "key="+serverKey
+                "Authorization" : `key=${serverKey}`
             },
             data: JSON.stringify(message),
             success: function(response) {

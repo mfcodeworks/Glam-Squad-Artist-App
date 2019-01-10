@@ -12,7 +12,7 @@ import * as payment from './payment';
 var map;
 // user lat/lng
 var lat;
-var long;
+var lng;
 // markers
 var markers = [];
 var locations = [];
@@ -33,7 +33,7 @@ export function onMapSuccess(position) {
     );
 
     lat = parseFloat(position.coords.latitude.toFixed(3));
-    long = parseFloat(position.coords.longitude.toFixed(3));
+    lng = parseFloat(position.coords.longitude.toFixed(3));
 
     saveUserLocale();
     
@@ -42,7 +42,7 @@ export function onMapSuccess(position) {
 
 function mapDefault() {
     lat = 34.072;
-    long = -118.358;
+    lng = -118.358;
     return loadMap();
 }
 
@@ -71,44 +71,48 @@ function loadMap() {
 
 // Handle location errors TODO: handle errors on device
 export function onMapError(error) {
-    console.log(`code: ${error.code} \nmessage: ${error.message}\n`);
-
-    return new Promise(function(resolve) {
-        switch(error.code) {
-            case 1:
-                navigator.notification.alert(
-                    "It's recommended to enable location to make booking events easier.",
-                    function() {
-                        resolve(mapDefault());
-                    },
-                    "Location Access Denied",
-                    "Continue"
-                );
-                break;
+    if(error.hasOwnProperty("code")) {
+        console.log(`code: ${error.code} \nmessage: ${error.message}\n`);
     
-            case 2:
-                navigator.notification.alert(
-                    "Unable to access location. Ensure device is connected to a network and GPS is enabled.",
-                    function() {
-                        resolve(mapDefault());
-                    },
-                    "Location Access Error",
-                    "Continue"
-                );
-                break;
-    
-            case 3:
-                navigator.notification.alert(
-                    "Unable to access location. Please enable location access to make booking events easier.",
-                    function() {
-                        resolve(mapDefault());
-                    },
-                    "Location Access Error",
-                    "Continue"
-                );
-                break;
-        }
-    });
+        return new Promise(function(resolve) {
+            switch(error.code) {
+                case 1:
+                    navigator.notification.alert(
+                        "It's recommended to enable location to make booking events easier.",
+                        function() {
+                            resolve(mapDefault());
+                        },
+                        "Location Access Denied",
+                        "Continue"
+                    );
+                    break;
+        
+                case 2:
+                    navigator.notification.alert(
+                        "Unable to access location. Ensure device is connected to a network and GPS is enabled.",
+                        function() {
+                            resolve(mapDefault());
+                        },
+                        "Location Access Error",
+                        "Continue"
+                    );
+                    break;
+        
+                case 3:
+                    navigator.notification.alert(
+                        "Unable to access location. Please enable location access to make booking events easier.",
+                        function() {
+                            resolve(mapDefault());
+                        },
+                        "Location Access Error",
+                        "Continue"
+                    );
+                    break;
+            }
+        });
+    } else {
+        return mapDefault();
+    }
 }
 
 /** 
@@ -117,10 +121,8 @@ export function onMapError(error) {
 
 function saveUserLocale() {
     return new Promise(function(resolve) {
-        var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+long+","+lat+".json";
-
         $.get(
-            reverseGeocodeURL,
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json`,
             {
                 access_token: accessToken,
                 types: "country"
@@ -133,9 +135,9 @@ function saveUserLocale() {
 
                 storage.save("locale", JSON.stringify(locale))
                     .then(function() {
-                        push.subscribe(locale.country)
-                            .then(resolve);
-                    });
+                        return push.subscribe(locale.country)
+                    })
+                    .then(resolve);
             }
         );
     })
@@ -143,29 +145,43 @@ function saveUserLocale() {
 
 // Make map from location
 function makeMap() {
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         // Set user position array
-        var position = [long, lat];
+        var position = [lng, lat];
     
-        // Make Mapbox GL Map
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWZzb2Z0d29ya3MiLCJhIjoiY2pudmZ5N3cwMDUwcTNwbm44ZzNnM201cCJ9.EsNcDPIULJ5_mhJYwOZEgA';
-        map = new mapboxgl.Map(
-            {
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
-                center: position,
-                zoom: 16,
-                doubleClickZoom: false,
-                refreshExpiredTiles: false,
-                renderWorldCopies: false,
-            }
-        );
-    
-        // On map loaded, remove splash screen
-        map.on('load', function() {
+        // Try to load map
+        try {
+            // Make Mapbox GL Map
+            mapboxgl.accessToken = accessToken;
+            map = new mapboxgl.Map(
+                {
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
+                    center: position,
+                    zoom: 16,
+                    doubleClickZoom: false,
+                    refreshExpiredTiles: false,
+                    renderWorldCopies: false,
+                }
+            );
+        
+            // On map loaded, remove splash screen
+            map.on('load', function() {
+                ui.removeSplash();
+                resolve(true);
+            });
+        }
+        catch (e) {
+            navigator.notification.alert(
+                `Your device may not support this app, please reload the app and try again`,
+                null,
+                "Error Loading Map",
+                "Okay"
+            );
+            console.error(e);
             ui.removeSplash();
-            resolve(true);
-        });
+            reject(e);
+        }
     });
 }
 
@@ -177,7 +193,7 @@ function addGeocoder() {
                 accessToken: accessToken,
                 proximity: 
                 {
-                    longitude: long,
+                    longitude: lng,
                     latitude: lat
                 },
                 trackProximity: true,
@@ -199,19 +215,13 @@ function addGeocoder() {
 // Get location from map click
 function addMapClickMarker() {
     map.on('dblclick', function (e) {
-        var reverseGeocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+e.lngLat.lng+","+e.lngLat.lat+".json";
-
         $.get(
-            reverseGeocodeURL,
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json`,
             {
                 access_token: accessToken,
                 types: "poi,address",
             },
             function(data) {
-                for(var i = 0; i < data.features.length; i++) {
-                    var geoResult = data.features[i];
-                }
-                
                 var place = data.features[0]
 
                 // Add marker to map at lat/lng
@@ -220,7 +230,7 @@ function addMapClickMarker() {
             }
         );
     });
-};
+}
 
 // Make map marker
 function makeMapMarker(lnglat, address) {
@@ -242,18 +252,18 @@ function makeMapMarker(lnglat, address) {
             closeButton: false,
             className: "marker-popup"
         })
-        .setHTML('\
-            <h6>' + address + '</h6> \
-            <form id="artist-location"> \
-                <div class="form-group"> \
-                    <input type="text" class="form-control" name="location-shortname" id="location-shortname" placeholder="Home" data-lat="' + lnglat[1] + '" data-lng="' + lnglat[0] + '"> \
-                </div> \
-                <div class="form-group mb-0"> \
-                    <button type="button" class="btn-delete-marker btn clr-cancel">Cancel</button>&nbsp; \
-                    <button type="submit" class="btn clr-primary" >Save</button> \
+        .setHTML(`
+            <h6>${address}</h6>
+            <form id="artist-location">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="location-shortname" id="location-shortname" placeholder="Home" data-lat="${lnglat[1]}" data-lng="${lnglat[0]}">
+                </div>
+                <div class="form-group mb-0">
+                    <button type="button" class="btn-delete-marker btn clr-cancel">Cancel</button>&nbsp;
+                    <button type="submit" class="btn clr-primary" >Save</button>
                 </div>\
-            </form> \
-        ');
+            </form>
+        `);
 
     // Make marker with popup on map
     var marker = new mapboxgl.Marker(point)
@@ -272,7 +282,7 @@ function makeMapMarker(lnglat, address) {
 
         api.saveLocation().then(getLocations);
     });
-};
+}
 
 function makeLocationMarker(loc) {
     // Create marker point div
@@ -288,15 +298,15 @@ function makeLocationMarker(loc) {
             closeButton: false,
             className: "marker-popup"
         })
-        .setHTML('\
-            <h4>' + loc.name + '</h4> \
-            <form id="artist-saved-location"> \
-                <div class="form-group mb-0"> \
-                    <button type="button" class="btn-location-close btn clr-cancel">Cancel</button>&nbsp; \
-                    <button type="submit" class="btn-location-delete btn clr-primary" data-location-id="' + loc.id + '">Delete</button> \
-                </div>\
-            </form> \
-        ');
+        .setHTML(`
+            <h4>${loc.name}</h4> 
+            <form id="artist-saved-location"> 
+                <div class="form-group mb-0"> 
+                    <button type="button" class="btn-location-close btn clr-cancel">Cancel</button>&nbsp; 
+                    <button type="submit" class="btn-location-delete btn clr-primary" data-location-id="${loc.id}">Delete</button> 
+                </div>
+            </form> 
+        `);
 
     // Make marker with popup on map
     var marker = new mapboxgl.Marker(point)
@@ -339,9 +349,9 @@ export function getLocations() {
 function deleteLocation(e) {
     e.preventDefault();
 
-    var locId = $(".btn-location-delete").data("location-id");
+    var id = $(".btn-location-delete").data("location-id");
 
-    api.deleteLocation(locId)
+    api.deleteLocation(id)
         .then(function() {
             $(".mapboxgl-popup").remove()
         })

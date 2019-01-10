@@ -65,20 +65,20 @@ export function deleteBookingHandler() {
 
             cache.getEvent(event)
                 .then(function(event) {
-                    api.deleteEvent(event.id)
-                        .then(console.log)
-                        .then(function() {
-                            return push.notification(
-                                event,
-                                `event-${event.id}-client`,
-                                "Artist Cancelled",
-                                `Artist cancelled booking for ${event.address}. Requesting new glam squad now.`
-                            );
-                        })
-                        .then(api.isAuthenticated)
-                        .then(getBookings)
-                        .then(ui.endLoader);
-                });
+                    return api.deleteEvent(event.id)
+                })
+                .then(console.log)
+                .then(function() {
+                    return push.notification(
+                        event,
+                        `event-${event.id}-client`,
+                        "Artist Cancelled",
+                        `Artist cancelled booking for ${event.address}. Requesting new glam squad now.`
+                    );
+                })
+                .then(api.isAuthenticated)
+                .then(getBookings)
+                .then(ui.endLoader);
         });
         resolve(true);
     });
