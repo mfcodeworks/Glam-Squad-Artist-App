@@ -371,7 +371,7 @@ export function stripeAccountCheck() {
         .then(JSON.parse)
         .then(function(u) {
             // If account has stripe token, end
-            if(u.stripe_account_token) return;
+            if(u.stripe_account_token && u.stripe_account_token !== null) return;
 
             // If no token, get stripe token with OAuth
             var account = null;
@@ -428,7 +428,8 @@ function stripeInfoMessage() {
 export function confirmRecentEvents() {
     return api.getFinishedEvents()
         .then(function(d) {
-            if(d.hasOwnProperty('data') === false) return;
+            console.warn(d);
+            if(d.hasOwnProperty('data') === false || d.data === null) return;
 
             var dialogs = [];
             var events = d.data;
