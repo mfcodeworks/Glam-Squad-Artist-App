@@ -25,6 +25,15 @@ export function loginUserHandler() {
     });
 }
 
+export function forgotPasswordHandler() {
+    return new Promise(function(resolve) {
+        $("#btn-confirm-forgot-password").click(function() {
+            api.forgotPassword();
+        });
+        resolve(true);
+    });
+}
+
 // Splash screen functions
 export function showSplash() {
     $("#splash-screen").show();

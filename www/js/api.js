@@ -262,6 +262,62 @@ export function saveArtistAttendance(event, artist, response) {
     return apiSend("PUT", `${endpoint}/events/${event}/attendance/artist`, form);
 }
 
+export function forgotPassword() {
+    ui.startLoader();
+
+    // Save the username to form
+    var form = {
+        username: $("#forgot-username").val()
+    };
+
+    // POST to API server
+    apiSend("POST", `${endpoint}/artists/forgot-password`, form)
+        .then( function(r) {
+            ui.endLoader();
+
+            switch (r.response) {
+                // If successful alert
+                case true:
+                    navigator.notification.alert(
+                        "Submitted successfully, you'll be sent an email to reset your password.",
+                        null,
+                        "Forgot Password",
+                        "Okay"
+                    );
+                    $("#btn-cancel-register").click();
+                    break;
+
+                // If SQL unsuccessful alert
+                case false:
+                    navigator.notification.alert(
+                        "An error occured, please try again later.\n"+JSON.stringify(r.error),
+                        null,
+                        "Error",
+                        "Okay"
+                    );
+                    break;
+
+                default:
+                // If malformed/null response alert error
+                    navigator.notification.alert(
+                        "An unknown error occured. Please try agian later.\n"+JSON.stringify(r),
+                        null,
+                        "Error",
+                        "Okay"
+                    );
+                    break;
+            }
+        }, function(err) {
+            ui.endLoader();
+            navigator.notification.alert(
+                "An error occured, please try again later.\n" + err,
+                null,
+                "Error",
+                "Okay"
+            );
+        });
+}
+
 export function acceptEventBooking() {
     $("#btn-accept-event").click(function() {
         ui.startLoader();

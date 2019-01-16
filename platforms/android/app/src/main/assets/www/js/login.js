@@ -29,6 +29,7 @@ var app = {
                 // Register form handlers
                 ui.loginUserHandler();
                 ui.registerUserHandler();
+                ui.forgotPasswordHandler();
                 ui.updatePortfolioImages();
                 ui.fillArtistRoles();
 
