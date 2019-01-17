@@ -1,6 +1,21 @@
 {
     "logs": [
         {
+            "outputFile": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-v16_values-v16.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\10aef66471d7877d6b693a4514cfad31\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        },
+        {
             "outputFile": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-ru_values-ru.arsc.flat",
             "map": [
                 {
@@ -52,21 +67,6 @@
                         "startOffsets": "321",
                         "endColumns": "104",
                         "endOffsets": "421"
-                    }
-                }
-            ]
-        },
-        {
-            "outputFile": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-v16_values-v16.arsc.flat",
-            "map": [
-                {
-                    "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\10aef66471d7877d6b693a4514cfad31\\res\\values-v16\\values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
                     }
                 }
             ]

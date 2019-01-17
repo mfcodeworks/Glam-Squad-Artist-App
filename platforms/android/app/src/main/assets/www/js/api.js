@@ -413,9 +413,8 @@ export function isAuthenticated() {
         storage.get("login")
             .then(JSON.parse)
             .then(function(u) {
-                if(u === null) {
-                    resolve(false);
-                    return;
+                if(u == null) {
+                    return false;
                 }
     
                 // Build validation form
@@ -427,6 +426,11 @@ export function isAuthenticated() {
                 return apiSend("POST", `${endpoint}/artists/${u.id}/validate`, form)
             })
             .then(function(r) {
+                if(r === false) {
+                    resolve(r);
+                    return;
+                }
+
                 console.log("User authenticated: " + JSON.stringify(r.valid));
 
                 // If user is valid update storage
@@ -450,9 +454,8 @@ export function getFcmTopics(type = "artist") {
             console.log("FCM Topics' Retreived.");
 
             // Subscribe all topics
-            if(r.hasOwnProperty("data")) {
-                var topics = r.data;
-                topics.forEach(function(topic) {
+            if(r.hasOwnProperty("data") && r.data != null) {
+                r.data.forEach(function(topic) {
                     push.subscribe(topic.fcm_topic);
                 });
             }

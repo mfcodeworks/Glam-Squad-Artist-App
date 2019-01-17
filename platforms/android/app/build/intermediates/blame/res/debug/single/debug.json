@@ -36,12 +36,12 @@
         "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-xhdpi\\logo.png"
     },
     {
-        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_logo.png.flat",
-        "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\logo.png"
-    },
-    {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_notification_bg_low_pressed.9.png.flat",
         "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\10aef66471d7877d6b693a4514cfad31\\res\\drawable-mdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_logo.png.flat",
+        "source": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\logo.png"
     },
     {
         "merged": "D:\\Projects\\NR-Glam-Squad\\NR-Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_action_remove.png.flat",
