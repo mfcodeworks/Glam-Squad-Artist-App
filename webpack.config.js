@@ -7,7 +7,7 @@ module.exports = {
     settings: ['./www/js/settings.js']
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: './www/js/dist/[name].bundle.js',
     path: path.resolve(__dirname, '')
   },
   node: {

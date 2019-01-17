@@ -1,1 +1,1 @@
-npx webpack --config ./www/js/webpack.config.js
+npx webpack --config ./webpack.config.js
