@@ -1,7 +1,7 @@
 {
   "name": "com.nygmarosebeauty.nrglamsquadartist",
   "displayName": "NR Glam Squad Artist",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "NR Glam Squad Artist.",
   "private": true,
   "scripts": {

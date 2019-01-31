@@ -47,12 +47,13 @@ export function getBookings() {
             else {
                 $('#events-form-inputs').empty();
 
-                $('#events-form-inputs').append("<p>No events accepted.</p>");
+                $('#events-form-inputs').append(`<a href="#" class="list-group-item list-group-item-action flex-column align-items-start clr-dark event-package-selection" data-event="${event.id}"><p>No events accepted.</p></a>`);
             }
 
             return Promise.all(progress);
         })
-        .then(deleteBookingHandler);
+        .then(deleteBookingHandler)
+        .then(ui.rateClientHandler);
 }
 
 export function deleteBookingHandler() {

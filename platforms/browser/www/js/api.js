@@ -237,6 +237,20 @@ export function getNewEvents() {
         .then(acceptEventBooking);
 }
 
+export function clientRating(event, client, rating) {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            var form = {
+                clientId: client,
+                artistId: u.id,
+                rating: rating
+            }
+
+            return apiSend("PUT", `${endpoint}/events/${event}/ratings/client`, form);
+        });
+}
+
 export function getArtistRoles() {
     return apiSend("GET", `${endpoint}/artists/roles`);
 }
@@ -404,6 +418,15 @@ export function deleteEvent(event) {
         .then(JSON.parse)
         .then(function(u) {
             return apiSend("DELETE", `${endpoint}/clients/${u.id}/events/${event}`);
+        });
+}
+
+export function client(id) {
+    return apiSend("GET", `${endpoint}/clients/${id}`)
+        .then(function(c) {
+            var client = c.data[0];
+            storage.save(`client-${client.id}`, JSON.stringify(client));
+            return client;
         });
 }
 

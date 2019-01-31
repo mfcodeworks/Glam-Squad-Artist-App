@@ -135,8 +135,9 @@ export function fillArtistRoles() {
 }
 
 export function addSettingsEvent(event) {
-    return cache.getEvent(event.id)
+    return cache.getEvent(event.id, true)
         .then(function(event) {
+            console.log(event);
             var addressArray = event.address.split(",");
             var address = addressArray[0];
             if(addressArray[1]) address += "," + addressArray[1];
@@ -156,6 +157,26 @@ export function addSettingsEvent(event) {
                                 <i class="fas fa-times"></i> Cancel
                             </button>
                         </div>`;
+                    } else {
+                        // If no ratings exist then require a rating
+                        var ratingsRequired;
+                        (event.ratings.clients.hasOwnProperty(`${event.clientId}`) == true) ? ratingsRequired = false : ratingsRequired = true;
+        
+                        if(ratingsRequired === true) {
+                            buttons += 
+                            `<div class="text-right clr-dark mb-1">
+                                <button type="button" class="btn-rate-client btn input-dark btn-md" data-event-id="${event.id}">
+                                    <i class="fas fa-star"></i> Rate Client
+                                </button>
+                            </div>`;
+                        } else {
+                            buttons += 
+                            `<div class="text-right clr-dark mb-1">
+                                <button type="button" class="btn input-dark btn-md" disabled>
+                                    <i class="fas fa-star"></i> Rated
+                                </button>
+                            </div>`;
+                        }
                     }
                 
                     var html = 
@@ -170,6 +191,95 @@ export function addSettingsEvent(event) {
                     $("#events-form-inputs").append(html);
                 });
         });
+}
+
+export function rateClientHandler() {
+    $(document).on("click", ".btn-rate-client", function() {
+        // Handle Rate Client Button Click
+        $("#rate-client-form").empty();
+        cache.getEvent($(this).data('event-id'))
+            .then(function(event) {
+                // if client has rating display, if no rating prompt for rating
+                return api.client(event.clientId)
+                    .then(function(client) {
+                        if(event.ratings.clients.hasOwnProperty(`${client.id}`) != true) {
+                            // If no ratings exist then require a rating
+                            var html = `
+                            <div class="text-center client-rating" data-event="${event.id}" data-client="${client.id}">
+                                <p>${client.username}</p>
+                                <div class="star-rating">
+                                    <i class="far fa-star" data-star="1"></i>
+                                    <i class="far fa-star" data-star="2"></i>
+                                    <i class="far fa-star" data-star="3"></i>
+                                    <i class="far fa-star" data-star="4"></i>
+                                    <i class="far fa-star" data-star="5"></i>
+                                </div>
+                            </div>`;
+
+                            $("#rate-client-form").append(html);
+                            $("#rate-client-modal").modal("show");
+                        }
+                });
+            })
+            .then(starRatingHandler)
+            .then(clientRatingFormHandler);
+    });
+    return true;
+}
+
+export function clientRatingFormHandler() {
+    $("#btn-submit-rate-client").click(function() {
+        // Declare event variable
+        var eventId;
+
+        $(".client-rating").each(function() {
+            // Get id info
+            var clientId = $(this).data("client");
+            eventId = $(this).data("event");
+
+            // Get artist rating
+            var rating = 0;
+            $(this).find(".star-rating").children(".fa-star").each(function() {
+                if($(this).hasClass("fas")) rating++;
+            });
+
+            // Submit rating
+            api.clientRating(eventId, clientId, rating)
+                .then(function() {
+                    // Close dialog
+                    $("#btn-close-rate-client").click();
+                });
+        });
+
+        // Disable rating button
+        $(`.btn-rate-client[data-event-id="${eventId}"]`).attr("disabled", true);
+        $(`.btn-rate-client[data-event-id="${eventId}"]`).text("Rated");
+    });
+}
+
+export function starRatingHandler() {
+    $(".fa-star").click(function() {
+        // Save star level
+        var starWeight = $(this).data("star");
+
+        // Fill in star
+        $(this).removeClass("far");
+        $(this).addClass("fas");
+
+        // Loop sibling stars
+        $(this).siblings(".fa-star").each(function() {
+            if($(this).data("star") < starWeight) {
+                // If lower star make it filled as well
+                $(this).removeClass("far");
+                $(this).addClass("fas");
+
+            } else {
+                // If higher star 
+                $(this).removeClass("fas");
+                $(this).addClass("far");
+            }
+        });
+    });
 }
 
 export function updatePortfolioImages() {

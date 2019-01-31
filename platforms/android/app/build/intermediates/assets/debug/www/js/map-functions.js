@@ -488,7 +488,7 @@ export function confirmRecentEvents() {
                                 storage.get("login")
                                     .then(JSON.parse)
                                     .then(function(u) {
-                                        return api.saveArtistAttendance(event, u.userId, false);
+                                        return api.saveArtistAttendance(event, u.id, false);
                                     })
                                     .then(ui.endLoader);
                                 break;
@@ -497,7 +497,7 @@ export function confirmRecentEvents() {
                                 storage.get("login")
                                     .then(JSON.parse)
                                     .then(function(u) {
-                                        return api.saveArtistAttendance(event, u.userId, true);
+                                        return api.saveArtistAttendance(event, u.id, true);
                                     })
                                     .then(ui.endLoader);
                                 break;
