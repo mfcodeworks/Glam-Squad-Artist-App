@@ -1,3 +1,3 @@
 #!/bin/bash
 ./scripts/bundle-js.sh
-cordova serve
+cordova run browser 

@@ -428,14 +428,12 @@ function stripeInfoMessage() {
 export function confirmRecentEvents() {
     return api.getFinishedEvents()
         .then(function(d) {
-            console.warn(d);
             if(d.hasOwnProperty('data') === false || d.data === null) return;
 
             var dialogs = [];
             var events = d.data;
 
             events.forEach(function(event) {
-                console.log(event);
 
                 dialogs.push(
                     storage.get("locale")

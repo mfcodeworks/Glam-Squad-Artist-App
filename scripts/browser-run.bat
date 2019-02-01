@@ -1,2 +1,2 @@
 CALL scripts\bundle-js.bat
-CALL cordova serve
+CALL cordova run browser 
