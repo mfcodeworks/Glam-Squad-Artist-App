@@ -73,7 +73,7 @@ export function handle() {
 
         push.on('registration', function(data) {
             console.log('registration id ' + data.registrationId);
-            api.saveFcmToken(data.registrationId);
+            api.saveFcmToken({fcm_token: data.registrationId});
         });
     
         push.on('notification', function(notif) {

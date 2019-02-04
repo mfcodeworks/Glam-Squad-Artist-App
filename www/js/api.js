@@ -491,13 +491,8 @@ export function saveFcmToken(token) {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            // Save ID to JSON
-            var form = {
-                token: token
-            };
-
             // Send to API Server
-            return apiSend("PUT", `${endpoint}/artists/${u.id}/fcm/token`, form);
+            return apiSend("PUT", `${endpoint}/artists/${u.id}/fcm/token`, token);
         })
         .then(function(r) {
             switch(r.response) {
