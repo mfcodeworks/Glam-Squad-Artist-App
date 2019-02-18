@@ -43,6 +43,9 @@ export function onMapSuccess(position) {
 function mapDefault() {
     lat = 34.072;
     lng = -118.358;
+
+    saveUserLocale();
+    
     return loadMap();
 }
 
@@ -110,9 +113,8 @@ export function onMapError(error) {
                     break;
             }
         });
-    } else {
-        return mapDefault();
-    }
+    } 
+    return mapDefault();
 }
 
 /** 

@@ -4,7 +4,8 @@ module.exports = {
   entry: {
     map: ['./www/js/map.js'],
     login: ['./www/js/login.js'],
-    settings: ['./www/js/settings.js']
+    settings: ['./www/js/settings.js'],
+    chat: ['./www/js/chat.js']
   },
   output: {
     filename: './www/js/dist/[name].bundle.js',

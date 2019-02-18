@@ -542,6 +542,14 @@ export function saveFcmTopic(topic, type = "artist") {
         });
 }
 
+export function getChatToken() {
+    return storage.get("login")
+        .then(JSON.parse)
+        .then(function(u) {
+            return apiSend("GET", `${endpoint}/chat/artist/${u.username}/token`);
+        });
+}
+
 export function saveStripeToken(token) {
     return storage.get("login")
         .then(JSON.parse)

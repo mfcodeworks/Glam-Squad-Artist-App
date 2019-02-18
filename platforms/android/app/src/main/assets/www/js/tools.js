@@ -48,6 +48,76 @@ export function validatePassword(password1, password2) {
     return false;
 }
 
+export function checkChatMedia() {
+    // Store input and file
+    var input = $(this);
+    var media = input[0].files[0];
+
+    console.log(media);
+
+    // Check filesize
+    if(media && media.size > 20971520) {
+        input.val(null);
+        navigator.notification.alert(
+            "Filesize cannot exceed 20MB.",
+            null,
+            "File too large",
+            "Okay"
+        );
+        input.val(null);
+        console.log(input.val());
+    }
+
+    // If media removed exit
+    if(!media) {
+        $("textarea.type_msg").val("");
+        $("textarea.type_msg").prop("disabled", false);
+        return;
+    }
+    // Disable text input
+    $("textarea.type_msg").val("Send media?");
+    $("textarea.type_msg").prop("disabled", true);
+}
+
+// To download a file directly simply <a href="<base64string>" download="<filename.ext>"></a>
+export function readBase64(string, filename, mimeType){
+    return (
+        fetch(string)
+        .then(function(res){
+            return res.arrayBuffer();
+        })
+        .then(function(buf){
+            return new File([buf], filename, {type:mimeType});
+        })
+    );
+}
+
+// TODO: Implement file downloading for Chat
+export function readFileURL(url) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.responseType = 'blob';
+        xhr.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200) {
+                var res = this.response;
+                var reader = new FileReader();
+                reader.readAsDataURL(res); 
+                reader.onloadend = function(e) {
+                    resolve(e.target.result);
+                }
+                reader.onerror = function(e) {
+                    reader.abort();
+                    reject(Error(reader.error));
+                }
+            }
+        }
+        // Timeout after 1 minute
+        xhr.timeout = (60 * 1000);
+        xhr.send(null);
+    });
+}
+
 export function readFile(file) {
     return new Promise(function(resolve, reject) {
         var reader = new FileReader();
