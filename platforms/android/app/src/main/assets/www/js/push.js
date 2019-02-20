@@ -1,5 +1,6 @@
 // imports
 import * as api from './api';
+import * as chat from './chat-functions';
 
 var push;
 var fcmTopics = ['all', 'artists'];
@@ -74,6 +75,8 @@ export function handle() {
         push.on('registration', function(data) {
             console.log('registration id ' + data.registrationId);
             api.saveFcmToken({fcm_token: data.registrationId});
+            chat.pushSub(data.registrationId)
+            .then(console.log);
         });
     
         push.on('notification', function(notif) {

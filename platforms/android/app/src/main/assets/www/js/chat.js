@@ -37,6 +37,10 @@ var app = {
 
                 // Chat setup
                 chat.init()
+                // Token Expiry Handler
+                .then(chat.expiryHandler)
+                // Notification handler
+                .then(push.handle)
                 // Handle chat functions
                 .then(ui.chatHandler)
                 // List all channels
@@ -50,9 +54,6 @@ var app = {
 
                 // Media lightbox handling
                 lightbox.start();
-
-                // Notification handler
-                push.handle();
 
                 // Network connection error alert
             }, function(e) {

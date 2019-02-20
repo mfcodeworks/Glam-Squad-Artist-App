@@ -9,6 +9,7 @@ import * as tools from './tools';
 import * as map from './map-functions';
 import * as api from './api';
 import * as lightbox from './lightbox';
+import * as chat from './chat-functions';
 
 // app var
 var app = {
@@ -31,7 +32,10 @@ var app = {
                 var promises = [];
 
                 // Notification handler
-                promises.push(push.handle());
+                promises.push(
+                    chat.init()
+                    .then(push.handle)
+                );
 
                 // UI handlers
                 tools.handleLogout();

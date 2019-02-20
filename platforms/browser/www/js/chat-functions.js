@@ -15,8 +15,6 @@ var token;
 var identity;
 // Chat Client (Twilio communication)
 var chatClient;
-// Chat Push Notification Service ID
-var chatPushId = "CRc7257c39cca267e38e5a6d559a180097";
 
 // Authenticate user session
 export function authenticatedCheck() {
@@ -28,19 +26,24 @@ export function authenticatedCheck() {
 
 // API: Chat API Functions
 
+/** 
+ * TODO: 
+ * - On channelAdded print channel
+ * - On channelRemoved delete div[data-sid="sid"]
+ */
+
 // Get Chat API Token
 export function init() {
     return api.getChatToken()
-        .then(function(d) {
-            // Save and log token
-            token = d;
-            console.log(token);
-        })
-        // Set and log identity
-        .then(setUsername)
-        .then(clientInit)
-        .then(pushSub)
-        .finally(console.log);
+    .then(function(d) {
+        // Save and log token
+        token = d;
+        console.log(token);
+    })
+    // Set and log identity
+    .then(setUsername)
+    .then(clientInit)
+    .finally(console.log);
 }
 
 export function createChannel(name, readableName, attributes, privateChat = true) {
@@ -62,27 +65,27 @@ export function createChannel(name, readableName, attributes, privateChat = true
 export function listChannels() {
     // Get all subscribed rooms
     return getUserRooms()
-        .then(function(channels) {
-            // Log rooms
-            console.log(channels);
+    .then(function(channels) {
+        // Log rooms
+        console.log(channels);
 
-            // Create progress array
-            var progress = [];
+        // Create progress array
+        var progress = [];
 
-            // Loop each room found
-            channels.items.forEach(function(channel) {
-                // Cache channel
-                var cache = channel.state;
-                cache.sid = channel.sid;
-                storage.save(`channel-${cache.sid}`, JSON.stringify(cache));
+        // Loop each room found
+        channels.items.forEach(function(channel) {
+            // Cache channel
+            var cache = channel.state;
+            cache.sid = channel.sid;
+            storage.save(`channel-${cache.sid}`, JSON.stringify(cache));
 
-                // Print event to list
-                progress.push(ui.printChannel(channel));
-            });
-
-            // Handle event hover 
-            return Promise.all(progress)
+            // Print event to list
+            progress.push(ui.printChannel(channel));
         });
+
+        // Handle event hover 
+        return Promise.all(progress)
+    });
 }
 
 export function getChannel(sid) {
@@ -103,14 +106,19 @@ function setUsername() {
 }
 
 function clientInit() {
-    return Twilio.Client.create(token)
-        .then(function (client) {
-            chatClient = client;
-        });
+    return Twilio.Client.create(token, {logLevel: "debug"})
+    .then(function (client) {
+        chatClient = client;
+        return chatClient;
+    });
 }
 
-function pushSub() {
-    return chatClient.setPushRegistrationId("fcm", chatPushId);
+export function pushSub(pushId) {
+    return chatClient.setPushRegistrationId("fcm", pushId);
+}
+
+export function expiryHandler() {
+    chatClient.on("tokenExpired", init);
 }
 
 function getUserRooms() {

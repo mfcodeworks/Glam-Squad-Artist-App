@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "427808297057-fld2lned4ih2qnb2ubk22i2g4eda2mu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nygmarosebeauty.nrglamsquad",
+            "certificate_hash": "a149556c043749d084bf15dc9291ad5c7fe3ab76"
+          }
+        },
+        {
           "client_id": "427808297057-g8ganbj0pcpqcr7b07l0ip7po8n8bqqb.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427808297057-g8ganbj0pcpqcr7b07l0ip7po8n8bqqb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "427808297057-p8g7eoe4oo5ojgm8sk2m7ul2kejgr14h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nygmarosebeauty.nrglamsquadartist"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2
