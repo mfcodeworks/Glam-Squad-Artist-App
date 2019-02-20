@@ -417,7 +417,7 @@ export function deleteEvent(event) {
     return storage.get("login")
         .then(JSON.parse)
         .then(function(u) {
-            return apiSend("DELETE", `${endpoint}/clients/${u.id}/events/${event}`);
+            return apiSend("POST", `${endpoint}/events/${event}/artist/${u.id}/cancel`);
         });
 }
 
