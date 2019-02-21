@@ -35,6 +35,8 @@
 		E3B4F8820C2F49808B3D25A6 /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FC9A24E2CC44E12B292F993 /* AppDelegate+notification.m */; };
 		95D274BF5C774053970A35BD /* PushPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 972E9B4A367044969A7EBE7E /* PushPlugin.m */; };
 		0EED833B3B1B42EBB43FF0CC /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBCA190C6EA94287B3242414 /* PushKit.framework */; };
+		05FC3450A21941628DBC1546 /* CDVFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 35B53CCE02E347CC81C3BB36 /* CDVFileTransfer.m */; };
+		21699CD1BF54429CBAA20C09 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = D31786378CD54A1FBE788877 /* CDVDevice.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +108,10 @@
 		4B744D08102341A6BE776487 /* AppDelegate+notification.h */ = {isa = PBXFileReference; name = "AppDelegate+notification.h"; path = "phonegap-plugin-push/AppDelegate+notification.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		8F5905E0514B433A988C0896 /* PushPlugin.h */ = {isa = PBXFileReference; name = "PushPlugin.h"; path = "phonegap-plugin-push/PushPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		CBCA190C6EA94287B3242414 /* PushKit.framework */ = {isa = PBXFileReference; name = "PushKit.framework"; path = "System/Library/Frameworks/PushKit.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		35B53CCE02E347CC81C3BB36 /* CDVFileTransfer.m */ = {isa = PBXFileReference; name = "CDVFileTransfer.m"; path = "cordova-plugin-file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		D4FA82B91342481D81997968 /* CDVFileTransfer.h */ = {isa = PBXFileReference; name = "CDVFileTransfer.h"; path = "cordova-plugin-file-transfer/CDVFileTransfer.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		D31786378CD54A1FBE788877 /* CDVDevice.m */ = {isa = PBXFileReference; name = "CDVDevice.m"; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		A935DE84CC6345FCA36C8597 /* CDVDevice.h */ = {isa = PBXFileReference; name = "CDVDevice.h"; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +251,10 @@
 				972E9B4A367044969A7EBE7E /* PushPlugin.m */,
 				4B744D08102341A6BE776487 /* AppDelegate+notification.h */,
 				8F5905E0514B433A988C0896 /* PushPlugin.h */,
+				35B53CCE02E347CC81C3BB36 /* CDVFileTransfer.m */,
+				D4FA82B91342481D81997968 /* CDVFileTransfer.h */,
+				D31786378CD54A1FBE788877 /* CDVDevice.m */,
+				A935DE84CC6345FCA36C8597 /* CDVDevice.h */,
 			);
 			name = Plugins;
 			path = "NR Glam Squad Artist/Plugins";
@@ -371,6 +381,8 @@
 				EE33685DA17A4AEF8E6D4568 /* CDVVibration.m in Sources */,
 				E3B4F8820C2F49808B3D25A6 /* AppDelegate+notification.m in Sources */,
 				95D274BF5C774053970A35BD /* PushPlugin.m in Sources */,
+				05FC3450A21941628DBC1546 /* CDVFileTransfer.m in Sources */,
+				21699CD1BF54429CBAA20C09 /* CDVDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

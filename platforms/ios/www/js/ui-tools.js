@@ -1,3 +1,4 @@
+/* eslint-disable nonblock-statement-body-position */
 // imports
 import * as api from './api';
 import * as storage from './storage';
@@ -610,15 +611,15 @@ function getMediaInfo(message) {
     .then(function(url) {
         // Create image placeholder
         if(message.media.contentType.indexOf("image") > -1)
-            mediaPlaceholder = `<img src="${url}" class="lightbox-img msg_container_send_img" data-sid="${message.media.sid}">`;
+            mediaPlaceholder = `<img src="${url}" class="lightbox-img msg_container_send_img" data-sid="${message.media.sid}" data-filename="${message.media.filename}">`;
         
         // Create video placeholder
         else if(message.media.contentType.indexOf("video") > -1)
             mediaPlaceholder = 
-            `<video class="msg_container_send_vid" data-sid="${message.media.sid}" preload="metadata" controls>
+            `<video class="msg_container_send_vid" data-sid="${message.media.sid}" preload="metadata" data-filename="${message.media.filename}" controls>
                 <source src="${url}" type="${message.media.contentType}">
                 Your device does not support in-app video.
-            </video>`
+            </video>`;
         
         // Create file placeholder
         else mediaPlaceholder = `<a href="${url}" data-sid="${message.media.sid}" download="${message.media.filename}">${message.media.filename}</a>`;
@@ -649,6 +650,14 @@ function getMediaInfo(message) {
             // If not base64
             if(url.indexOf("data") !== 0) mediaCache(url, message);
         });
+    });
+}
+
+export function fileDownloadHandler() {
+    $(document).on("click","a[download]", function() {
+        var uri = $(this).attr("href");
+        var filename = $(this).attr("download");
+        tools.downloadFile(uri, filename);
     });
 }
 

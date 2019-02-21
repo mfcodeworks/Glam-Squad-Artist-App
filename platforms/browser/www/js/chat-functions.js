@@ -106,7 +106,7 @@ function setUsername() {
 }
 
 function clientInit() {
-    return Twilio.Client.create(token, {logLevel: "debug"})
+    return Twilio.Client.create(token, {logLevel: "warn"})
     .then(function (client) {
         chatClient = client;
         return chatClient;

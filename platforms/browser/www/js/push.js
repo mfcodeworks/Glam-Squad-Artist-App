@@ -105,7 +105,7 @@ export function handle() {
         
         api.getFcmTopics();
 
-        resolve(true);
+        resolve(push);
     });
 }
 

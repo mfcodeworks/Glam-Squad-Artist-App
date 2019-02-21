@@ -47,6 +47,8 @@ var app = {
                 .then(chat.listChannels)
                 // Handle channel functions
                 .then(ui.channelListHandler)
+                // Handle file downloading
+                .then(ui.fileDownloadHandler)
                 // Check list every 30 seconds
                 .then(function(){setInterval(chat.listChannels, 30000);})
                 // End loading
@@ -54,6 +56,9 @@ var app = {
 
                 // Media lightbox handling
                 lightbox.start();
+
+                // Create media directory
+                tools.createMediaDir();
 
                 // Network connection error alert
             }, function(e) {
