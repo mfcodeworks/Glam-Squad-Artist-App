@@ -94,6 +94,8 @@ ext {
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../cordova-support-google-services/nrglamsquadartist-build.gradle"
 apply from: "../phonegap-plugin-multidex/nrglamsquadartist-multidex.gradle"
+apply from: "../cordova-plugin-badge/nrglamsquadartist-badge.gradle"
+apply from: "../cordova-plugin-local-notification/nrglamsquadartist-localnotification.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -272,6 +274,7 @@ dependencies {
     compile "com.android.support:support-v13:27.+"
     compile "me.leolin:ShortcutBadger:1.1.17@aar"
     compile "com.google.firebase:firebase-messaging:11.6.2"
+    compile "com.android.support:support-v4:26.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 

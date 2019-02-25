@@ -36,11 +36,17 @@
     },
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-local-notification": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-file": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquad"
+    },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   }
 }

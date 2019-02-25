@@ -160,3 +160,4 @@ styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_a
 styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery
 styleable FontFamilyFont android_font android_fontWeight android_fontStyle font fontStyle fontWeight
 xml config
+xml localnotification_provider_paths

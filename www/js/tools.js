@@ -1,5 +1,11 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-alert */
 import * as storage from './storage';
+
+// Track highest notification for file downloads
+var downloadId = 0,
+    progressEv,
+    progressInterval;
 
 // Change Cordova URL
 export function load(url) {
@@ -97,15 +103,14 @@ export function createMediaDir() {
     // Set file save location
     switch (device.platform) {
         case "Android":
-            storageLocation = `${cordova.file.externalRootDirectory}GlamSquad/media`;
-            console.log(cordova.file.externalRootDirectory);
+            storageLocation = `${cordova.file.externalRootDirectory}Glam Squad Artist/media`;
             console.log(storageLocation);
-            return createDir(cordova.file.externalRootDirectory, "GlamSquad/media");
+            return createDir(cordova.file.externalRootDirectory, "Glam Squad Artist/media");
 
         case "browser":
-            storageLocation = "cdvfile://localhost/persistent/GlamSquad";
+            storageLocation = "cdvfile://localhost/persistent/Glam Squad Artist";
             console.log(storageLocation);
-            return createDir("cdvfile://localhost/persistent", "GlamSquad");
+            return createDir("cdvfile://localhost/persistent", "Glam Squad Artist");
 
         case "iOS":
             storageLocation = cordova.file.documentsDirectory;
@@ -183,10 +188,7 @@ function createFile(dirEntry, fileName) {
 }
 
 // Write to file on device
-function writeFile(fileEntry, data) {
-    console.log(fileEntry);
-    console.log(data);
-
+function writeFile(fileEntry, data, id = 0) {
     return new Promise(function(resolve, reject) {
         // Create a FileWriter object for FileEntry
         fileEntry.createWriter(function (fileWriter) {
@@ -201,33 +203,51 @@ function writeFile(fileEntry, data) {
                 reject(e);
             };
     
+            cordova.plugins.notification.local.on(
+                'cancel', 
+                function (notification) { 
+                    console.log(notification);
+                    if(notification.id == id) {
+                        fileWriter.abort();
+                        cordova.plugins.notification.local.clear(id);
+                    }
+                }
+            );
+
             fileWriter.write(data);
+
+            cordova.plugins.notification.local.update({
+                id: id,
+                progressBar: {indeterminate: true},
+                actions: [],
+                vibrate: false,
+                sound: false
+            });
         });
     })
 }
 
 // Download file from URI
 export function downloadFile(uri, filename) {
-    var storageLocation;
+    var id = downloadId++;
+
+    // Create download notification
+    cordova.plugins.notification.local.schedule({
+        id: id,
+        smallIcon: "res://img/logo.png",
+        title: filename,
+        text: `Downloading`,
+        progressBar: {value: 0},
+        actions: [
+            {id: 'cancel', title: 'Cancel'}
+        ],
+        foreground: true,
+        color: "black",
+        vibrate: false,
+        sound: false,
+        sticky: true
+    });
     
-    // Set file save location
-    switch (device.platform) {
-        case "Android":
-            storageLocation = `${cordova.file.externalRootDirectory}GlamSquad/media`;
-            console.log(storageLocation);
-            break;
-
-        case "browser":
-            storageLocation = "cdvfile://localhost/persistent/GlamSquad/media";
-            console.log(storageLocation);
-            break;
-
-        case "iOS":
-            storageLocation = cordova.file.documentsDirectory;
-            console.log(storageLocation);
-            break;
-    }
-
     // Check if base64 or URI
     switch(uri.indexOf("data") === 0) {
         // For base64 read base64 to file
@@ -242,18 +262,55 @@ export function downloadFile(uri, filename) {
                 return createFile(dir, filename, data);
             })
             .then(function(fileEntry) {
-                return writeFile(fileEntry, data);
+                return writeFile(fileEntry, data, id);
+            })
+            .then(function(e) {
+                cordova.plugins.notification.local.schedule({
+                    id: id,
+                    smallIcon: "res://img/logo.png",
+                    title: filename,
+                    text: `Complete`,
+                    progressBar: {value: 100},
+                    actions: [],
+                    foreground: true,
+                    color: "black",
+                    vibrate: false,
+                    sound: false,
+                    autoClear: true
+                });
+            })
+            .catch(function(err) {
+                console.warn(err);
+                cordova.plugins.notification.local.clear(id);
             });
         
         // For non-base64 download file URI to file
         case false:
             console.log("File transfer initiated");
-            return fileTransferDownload(uri, filename);
+            return fileTransferDownload(uri, filename, id)
+            .then(function(e) {
+                cordova.plugins.notification.local.schedule({
+                    id: id,
+                    smallIcon: "res://img/logo.png",
+                    title: filename,
+                    text: `Complete`,
+                    progressBar: {value: 100},
+                    actions: [],
+                    foreground: true,
+                    color: "black",
+                    vibrate: false,
+                    autoClear: true
+                });
+            })
+            .catch(function(err) {
+                console.warn(err);
+                cordova.plugins.notification.local.clear(id);
+            });
     }
 }
 
 // FileTransfer URI download for external files
-function fileTransferDownload(uri, filename) {
+function fileTransferDownload(uri, filename, id) {
     var fileTransfer = new FileTransfer();
 
     // Do file write
@@ -262,18 +319,59 @@ function fileTransferDownload(uri, filename) {
         return createFile(dir, filename);
     })
     .then(function(fileEntry) {
-        return fileTransfer.download(
-            uri,
-            fileEntry.toURL(),
-            function(entry) {
-                console.log(entry);
-            },
-            function(error) {
-                console.warn(error);
-            },
-            false,
-            {}
-        );
+        return new Promise(function(resolve, reject) {
+            // Begin file download
+            fileTransfer.download(
+                uri,
+                fileEntry.toURL(),
+                function(entry) {
+                    console.log(entry);
+                    clearInterval(progressInterval);
+                    resolve(entry);
+                },
+                function(error) {
+                    console.warn(error);
+                    clearInterval(progressInterval);
+                    reject(error);
+                },
+                false,
+                {}
+            );
+            // Update download progress notification
+            fileTransfer.onprogress = function(progressEvent) {
+                // Set progress event var
+                progressEv = progressEvent
+
+                if(!progressInterval) {
+                    // Update progress
+                    progressInterval = setInterval(function() {
+                        var loaded;
+                        // Update with download progress
+                        (progressEv.lengthComputable) ? loaded = Math.floor(progressEv.loaded / progressEv.total * 100) : loaded = 20;
+                        console.log(loaded);
+                        cordova.plugins.notification.local.update({
+                            id: id,
+                            progressBar: {value: loaded},
+                            actions: [],
+                            vibrate: false,
+                            sound: false
+                        });
+                    // Run every 1 second
+                    }, 1*1000);
+                }
+            }
+            // On cancel abort download
+            cordova.plugins.notification.local.on(
+                'cancel', 
+                function (notification) { 
+                    console.log(notification);
+                    if(notification.id == id) {
+                        fileTransfer.abort();
+                        cordova.plugins.notification.local.clear(id);
+                    }
+                }
+            );
+        });
     });
 }
 
@@ -320,7 +418,7 @@ export function readFile(file) {
 }
 
 export function monitorNetwork() {
-    return new Promise(function(resolve) {
+    return new Promise(function(resolve, reject) {
         setInterval(
             onNoNetwork,
             (5 * 1000)

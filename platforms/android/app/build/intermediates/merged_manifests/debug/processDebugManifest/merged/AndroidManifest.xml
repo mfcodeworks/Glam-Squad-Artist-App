@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nygmarosebeauty.nrglamsquadartist"
     android:hardwareAccelerated="true"
-    android:versionCode="903"
-    android:versionName="0.9.3" >
+    android:versionCode="904"
+    android:versionName="0.9.4" >
 
     <uses-sdk
         android:maxSdkVersion="28"
@@ -99,6 +99,29 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="de.appplant.cordova.plugin.notification.util.AssetProvider"
+            android:authorities="com.nygmarosebeauty.nrglamsquadartist.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/localnotification_provider_paths" />
+        </provider>
+
+        <receiver
+            android:name="de.appplant.cordova.plugin.localnotification.TriggerReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="de.appplant.cordova.plugin.localnotification.ClearReceiver"
+            android:exported="false" />
+
+        <activity
+            android:name="de.appplant.cordova.plugin.localnotification.ClickReceiver"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent" />
         <!--
          FirebaseMessagingService performs security checks at runtime,
              no need for explicit permissions despite exported="true"

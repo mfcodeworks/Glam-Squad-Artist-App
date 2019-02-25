@@ -168,6 +168,10 @@
         "source": "C:\\Users\\arranf\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\10aef66471d7877d6b693a4514cfad31\\res\\layout\\notification_action.xml"
     },
     {
+        "merged": "D:\\Projects\\NR-Glam-Squad\\Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\xml_localnotification_provider_paths.xml.flat",
+        "source": "D:\\Projects\\NR-Glam-Squad\\Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\xml\\localnotification_provider_paths.xml"
+    },
+    {
         "merged": "D:\\Projects\\NR-Glam-Squad\\Glam-Squad-Artist-App\\platforms\\android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_action_previous_item.png.flat",
         "source": "D:\\Projects\\NR-Glam-Squad\\Glam-Squad-Artist-App\\platforms\\android\\app\\src\\main\\res\\drawable-xxhdpi\\ic_action_previous_item.png"
     },
