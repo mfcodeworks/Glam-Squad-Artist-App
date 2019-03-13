@@ -442,7 +442,7 @@ export function isAuthenticated() {
     
                 // Build validation form
                 var form = {
-                    usernameHash: u.usernameHash
+                    key: u.key
                 };
             
                 // Return validation response

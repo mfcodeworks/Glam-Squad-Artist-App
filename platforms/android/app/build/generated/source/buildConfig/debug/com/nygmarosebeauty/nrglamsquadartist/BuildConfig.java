@@ -8,6 +8,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.nygmarosebeauty.nrglamsquadartist";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "";
-  public static final int VERSION_CODE = 904;
-  public static final String VERSION_NAME = "0.9.4";
+  public static final int VERSION_CODE = 905;
+  public static final String VERSION_NAME = "0.9.5";
 }
