@@ -459,7 +459,7 @@ export function isAuthenticated() {
                 // If user is valid update storage
                 if(r.valid) {
                     storage.remove("login");
-                    storage.save("login", JSON.stringify(r.data));
+                    storage.save("login", JSON.stringify(r.data[0]));
                 }
 
                 resolve(r.valid);
@@ -767,26 +767,39 @@ function apiSend(method = "GET", url, form = null) {
     (form === null) ? message = null : message = JSON.stringify(form);
 
     var hmac = getHMAC(message);
-
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            method: method,
-            url: url,
-            headers: {
-                'NR-HASH': hmac
-            },
-            data: message,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            // timeout 300 seconds in milliseconds
-            timeout: (300 * 1000),
-            success: function(res) {
-                resolve(res);
-            },
-            error: function(xhr,status,err) {
-                reject(err);
-            }
+    return getAuthHeader()
+    .then(function(auth) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                method: method,
+                url: url,
+                headers: {
+                    'NR-HASH': hmac,
+                    'NR-AUTH': auth
+                },
+                data: message,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                // timeout 300 seconds in milliseconds
+                timeout: (300 * 1000),
+                success: function(res) {
+                    resolve(res);
+                },
+                error: function(xhr,status,err) {
+                    reject(err);
+                }
+            });
         });
+    });
+}
+
+// Create Auth header for message
+function getAuthHeader() {
+    return storage.get("login")
+    .then(JSON.parse)
+    .then(function(u) {
+        if(u && u.key) return u.key;
+        return null;
     });
 }
 

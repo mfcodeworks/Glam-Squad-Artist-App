@@ -57,19 +57,19 @@ INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\
 INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:1-43:12
 INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:1-43:12
 	package
-		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:100-147
+		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:102-149
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 	android:versionName
-		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:72-99
+		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:73-101
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 	android:hardwareAccelerated
 		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:11-45
 	xmlns:android
-		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:148-206
+		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:150-208
 	android:versionCode
-		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:46-71
+		ADDED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml:2:46-72
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\src\main\AndroidManifest.xml
 supports-screens
