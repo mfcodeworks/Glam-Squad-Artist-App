@@ -363,6 +363,9 @@ export function chatHandler() {
         // Log click
         console.log("Send button was clicked");
 
+        // Disable send button
+        $("span.send_btn").prop("disabled", true);
+
         var media;
         var message;
 
@@ -380,10 +383,14 @@ export function chatHandler() {
             $("textarea.type_msg").val("");
         }
 
+        // Log message
         console.log(message);
 
         // If message is empty cancel send
-        if(message instanceof FormData !== true && !message.length) return;
+        if(message instanceof FormData !== true && !message.length) {
+            $("span.send_btn").prop("disabled", false);
+            return;
+        }
 
         // Get channel sid
         var sid = $("#chat").data("sid");
@@ -391,13 +398,15 @@ export function chatHandler() {
         // Get channel object
         chat.getChannel(sid)
         .then(function(channel) {
-            // Return send message result (message index)
-            return channel.sendMessage(message);
+            // Send message 
+            channel.sendMessage(message);
         })
-        .then(console.log)
         .finally(function() {
             $("textarea.type_msg").val("");
+            $("textarea.type_msg").attr("placeholder","Type your message...");
             $("textarea.type_msg").prop("disabled", false);
+            $("span.send_btn").prop("disabled", true);
+            input.val(null);
         });
     });
 }

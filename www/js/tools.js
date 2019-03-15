@@ -64,7 +64,6 @@ export function checkChatMedia() {
 
     // Check filesize
     if(media && media.size > 20971520) {
-        input.val(null);
         navigator.notification.alert(
             "Filesize cannot exceed 20MB.",
             null,
@@ -82,7 +81,7 @@ export function checkChatMedia() {
         return;
     }
     // Disable text input
-    $("textarea.type_msg").val("Send media?");
+    $("textarea.type_msg").attr("placeholder","Send media?");
     $("textarea.type_msg").prop("disabled", true);
 }
 
