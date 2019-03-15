@@ -1,1 +1,1 @@
-CALL cordova run android -- --gradleArg=-PcdvMinSdkVersion=22
+CALL cordova run android

@@ -82,6 +82,8 @@ var app = {
         if(channelsView.hasClass("d-none")) {
             chatView.addClass("d-none");
             channelsView.removeClass("d-none");
+            // Pause all videos on chat close
+            $("video").each(function (){this.pause();});
         } else {
             tools.load("map.html");
         }
