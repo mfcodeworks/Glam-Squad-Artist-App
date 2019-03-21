@@ -1,1 +1,0 @@
-CALL scripes\android-run.bat

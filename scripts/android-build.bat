@@ -1,1 +1,0 @@
-CALL cordova build android -- --gradleArg=-PcdvMinSdkVersion=22

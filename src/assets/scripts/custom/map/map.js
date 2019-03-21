@@ -1,0 +1,110 @@
+// imports
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
+import 'bootstrap';
+import '@fortawesome/fontawesome-free';
+import * as push from '../push';
+import * as tools from '../tools';
+import * as map from '../map';
+import * as api from '../api';
+import * as lightbox from '../lightbox';
+import * as chat from '../chat';
+
+// app var
+var app = {
+    // Application Constructor
+    initialize: function() {
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+    },
+
+    // deviceready Event Handler
+    //
+    // Bind any cordova events here. Common events are:
+    // 'pause', 'resume', etc.
+    onDeviceReady: function() {
+        // Handle back button
+        document.addEventListener("backbutton", this.onBackButton.bind(this), false);
+
+        // Check network connection (!important for API)
+        tools.monitorNetwork()
+            .then(function() {
+                var promises = [];
+
+                // Notification handler
+                promises.push(
+                    chat.init()
+                    .then(push.handle)
+                );
+
+                // UI handlers
+                tools.handleLogout();
+                promises.push(api.getNewEvents());
+                lightbox.start();
+
+                // Begin map load
+                promises.push(
+                    new Promise(function(resolve) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                resolve(map.onMapSuccess(position));
+                            },
+                            function(error) {
+                                resolve(map.onMapError(error));
+                            }, 
+                            { 
+                                enableHighAccuracy: false,
+                                // 5 seconds timeout
+                                timeout: (5 * 1000),
+                                // max age for cache use 5 seconds 
+                                maximumAge: (5 * 1000), 
+                            }
+                        )
+                    })
+                );
+
+                // Auth check
+                promises.push(map.authenticatedCheck());
+
+                // Event check
+                promises.push(map.confirmRecentEvents());
+
+                return Promise.all(promises);
+                
+                // Network connection error alert
+            }, function(e) {
+                navigator.notification.alert(
+                    "Please conect to the internet before opening NR Glam Squad.",
+                    function() {
+                        navigator.app.exitApp();
+                    },
+                    e,
+                    "Okay"
+                );
+            })
+            .then(map.stripeAccountCheck);
+    },
+
+    // Back button handler
+    onBackButton: function() {
+        if( ($("#create-card-modal").data("bs.modal") || {})._isShown ) {
+            $("#btn-close-create-card").click();
+        }
+        else if( ($("#event-dialog-modal").data("bs.modal") || {})._isShown ) {
+            $("#btn-close-event").click();
+        }
+        else {
+            navigator.notification.confirm(
+                "Close NR Glam Squad?",
+                function(index) {
+                    if(index == 1) navigator.app.exitApp();
+                },
+                "Exit",
+                ["Exit", "Cancel"]
+            );
+        }
+    }
+};
+
+// start app
+app.initialize();
