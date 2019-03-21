@@ -1,5 +1,10 @@
+const loaders = [
+    {
+        loader: 'file-loader',
+    },
+];
+
 module.exports = {
-  test: /\.(eot|svg|ttf|woff|woff2)$/,
-  exclude : /(node_modules)/,
-  use     : ['file-loader'],
+    test: /\.(eot|ttf|svg|woff|woff2)(\?\S*)?$/,
+    use     : loaders,
 };

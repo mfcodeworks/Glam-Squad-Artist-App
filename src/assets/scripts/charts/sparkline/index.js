@@ -3,7 +3,7 @@ import 'jquery-sparkline';
 import { debounce } from 'lodash';
 import { COLORS } from '../../constants/colors';
 
-export default (function () {
+export default function () {
   // ------------------------------------------------------
   // @Dashboard Sparklines
   // ------------------------------------------------------
@@ -245,4 +245,4 @@ export default (function () {
     borderWidth: 1,
     borderColor: '000',
   });
-}())
+}

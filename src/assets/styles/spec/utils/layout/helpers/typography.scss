@@ -29,12 +29,14 @@ $responsive: true;
 .ta-c { text-align: center !important; }
 .ta-l { text-align: left !important; }
 .ta-r { text-align: right !important; }
+.ta-j { text-align: justify !important; }
 
 @if ($responsive == true) {
   @include generateResponsive() {
     .ta-c\@#{$breakpointAlias} { text-align: center !important; }
     .ta-l\@#{$breakpointAlias} { text-align: left !important; }
     .ta-r\@#{$breakpointAlias} { text-align: right !important; }
+    .ta-j\@#{$breakpointAlias} { text-align: justify !important; }
   }
 }
 

@@ -60,6 +60,9 @@
     },
     "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   },
   "dependent_plugins": {},
@@ -453,6 +456,7 @@
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-badge": "0.8.8",
-    "cordova-plugin-local-notification": "0.9.0-beta.2"
+    "cordova-plugin-local-notification": "0.9.0-beta.2",
+    "cordova-support-google-services": "1.1.0"
   }
 }

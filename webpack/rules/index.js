@@ -3,5 +3,6 @@ module.exports = [
   require('./images'),
   require('./css'),
   require('./sass'),
+  // require('./fontawesome'),
   require('./fonts'),
 ];

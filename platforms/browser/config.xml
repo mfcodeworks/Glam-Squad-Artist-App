@@ -9,7 +9,7 @@
     <author email="mf@nygmarosebeauty.com" href="https://mf.nygmarosebeauty.com">
         MF Softworks
     </author>
-    <content src="signin.html" />
+    <content src="map.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

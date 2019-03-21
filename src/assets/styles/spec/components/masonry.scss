@@ -1,1 +1,32 @@
+/** GRID */
+* { box-sizing: border-box; }
+// .grid {}
+.grid:after {
+  display: block;
+  content: '';
+  clear: both;
+}
 
+/** COLUMNS */
+.grid-col {
+  float: left;
+  width: 50%;
+}
+.grid-col--4 { margin-right: 0; }
+/* hide two middle in small screens */
+.grid-col--2, .grid-col--3 { display: none; }
+@media ( min-width: 768px ) {
+  .grid-col { width: 33%; }
+  .grid-col--2 { display: block; }
+}
+@media ( min-width: 1200px ) {
+  .grid-col { width: 25%; }
+  .grid-col--2, .grid-col--3 { display: block; }
+}
+
+/** ITEMS */
+// .grid-item {}
+.grid-item img {
+  display: block;
+  width: 100%;
+}

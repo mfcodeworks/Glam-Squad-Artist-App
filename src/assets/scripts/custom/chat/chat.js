@@ -11,10 +11,10 @@ import * as tools from '../tools';
 import * as ui from '../ui';
 
 
-// app var
-var app = {
+// app const
+const app = {
     // Application Constructor
-    initialize: function() {
+    initialize: () => {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
@@ -22,13 +22,13 @@ var app = {
     //
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
-    onDeviceReady: function() {
+    onDeviceReady: () => {
         // Handle back button
-        document.addEventListener("backbutton", this.onBackButton.bind(this), false);
+        document.addEventListener('backbutton', this.onBackButton.bind(this), false);
 
         // Check network connection (!important for API)
         tools.monitorNetwork()
-            .then(function() {
+            .then(() => {
                 // Start loading
                 ui.startLoader()
 
@@ -50,7 +50,7 @@ var app = {
                 // Handle file downloading
                 .then(ui.fileDownloadHandler)
                 // Check list every 30 seconds
-                .then(function(){setInterval(chat.listChannels, 30000);})
+                .then((){setInterval(chat.listChannels, 30000);}) =>
                 // End loading
                 .finally(ui.endLoader);
 
@@ -61,31 +61,31 @@ var app = {
                 tools.createMediaDir();
 
                 // Network connection error alert
-            }, function(e) {
+            }, (e) => {
                 navigator.notification.alert(
                     "Please conect to the internet before opening NR Glam Squad.",
-                    function() {
+                    () => {
                         navigator.app.exitApp();
                     },
                     e,
-                    "Okay"
+                    'Okay'
                 );
             });
     },
 
     // Back button handler
-    onBackButton: function() {
-        var channelsView = $("div#channels");
-        var chatView = $("div#chat");
+    onBackButton: () => {
+        const channelsView = $('div#channels');
+        const chatView = $('div#chat');
 
         // Check which view is shown
-        if(channelsView.hasClass("d-none")) {
-            chatView.addClass("d-none");
-            channelsView.removeClass("d-none");
+        if (channelsView.hasClass('d-none')) {
+            chatView.addClass('d-none');
+            channelsView.removeClass('d-none');
             // Pause all videos on chat close
-            $("video").each(function (){this.pause();});
+            $('video').each((index, e) => { e.currentTarget.pause(); });
         } else {
-            tools.load("map.html");
+            tools.load('map.html');
         }
     }
 }

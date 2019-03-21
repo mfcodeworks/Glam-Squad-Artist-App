@@ -1,7 +1,12 @@
 #loader {
+  position: absolute;
   transition: all 0.3s ease-in-out;
   opacity: 1;
   display: default;
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  z-index: 1000;
 }
 
 #loader.fadeOut {
@@ -9,18 +14,16 @@
   display: none;
 }
 
-
-
 .spinner {
-  width: 40px;
-  height: 40px;
+  height: 100vh;
+  width: 100vw;
   position: absolute;
-  top: calc(50% - 20px);
-  left: calc(50% - 20px);
-  background-color: #333;
-  border-radius: 100%;
-  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
-  animation: sk-scaleout 1.0s infinite ease-in-out;
+  background-image: url("../static/images/lips-loading_transparent.gif");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 50%;
+  z-index: 10000;
+  background-color: #fff;
 }
 
 @-webkit-keyframes sk-scaleout {

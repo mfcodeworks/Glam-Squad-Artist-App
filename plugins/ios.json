@@ -7,13 +7,22 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
     "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
     "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
     "cordova-plugin-media": {
@@ -29,30 +38,21 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
     "phonegap-plugin-push": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
-    },
-    "cordova-plugin-file-transfer": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
-    },
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
-    },
-    "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   },
   "dependent_plugins": {
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
     "cordova-plugin-file": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     },
-    "cordova-support-google-services": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
-    },
     "phonegap-plugin-multidex": {
-      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
-    },
-    "cordova-plugin-badge": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   }

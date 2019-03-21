@@ -1,8 +1,8 @@
 import * as $ from 'jquery';
+import { debounce } from 'lodash';
 import 'jvectormap';
 import 'jvectormap/jquery-jvectormap.css';
 import './jquery-jvectormap-world-mill.js';
-import { debounce } from 'lodash';
 
 export default (function () {
   const vectorMapInit = () => {
@@ -91,4 +91,4 @@ export default (function () {
 
   vectorMapInit();
   $(window).resize(debounce(vectorMapInit, 150));
-})();
+}());

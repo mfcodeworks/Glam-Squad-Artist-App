@@ -1,0 +1,195 @@
+/* Global */
+::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+}
+.modal {
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+.display-4 {
+    font-size: 2.5rem;
+}
+*, *:focus {
+    outline: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+/* User */
+.user-photo {
+    object-fit: cover;
+}
+
+/* Navbar */
+.header .header-container .nav-right .notifications .dropdown-menu {
+    position: fixed;
+    min-width: 80vw;
+    top: 65px;
+    right: 10px;
+}
+
+/* Sidebar */
+.logo img {
+    max-width: 40px;
+    margin-top: 15px;
+}
+
+/* Loading Screen */
+.loader-black {
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50000;
+    background-image: url("../static/images/circle-loading-white.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.loader-white {
+    background-color: rgba(255,255,255,0.5);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 50000;
+    background-image: url("../static/images/circle-loading-black.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Branding - Colours */
+.clr-white {
+    background-color: #fff;
+}
+.clr-primary, .clr-primary:active {
+    background-color: #f25f70;
+    border-color: #f25f70;
+    color: #fff;
+}
+.clr-primary:hover {
+    background-color: #ec8893;
+    border-color: #ec8893;
+    color: #fff;
+}
+.clr-cancel, .clr-cancel:active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+.clr-cancel:hover {
+    background-color: #489efb;
+    border-color: #489efb;
+    color: #fff;
+}
+.clr-facebook {
+    background-color: #4a65a0;
+    border-color: #4a65a0;
+    color: #fff;
+    font-size: 14pt;
+}
+.fill-facebook {
+    color: #4a65a0;
+}
+.clr-twitter {
+    background-color:#1da1f2;
+    border-color: #1da1f2;
+    color: #fff;
+    font-size: 14pt;
+}
+.fill-twitter {
+    color: #1da1f2;
+}
+.clr-google {
+    background-color: #dd4b39;
+    border-color: #dd4b39;
+    color: #fff;
+    font-size: 14pt;
+}
+.fill-google {
+    color: #dd4b39;
+}
+.clr-instagram {
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+    color: #fff;
+    font-size: 14pt;
+}
+.fill-instagram {
+    background: #bc1888;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f09433', endColorstr='#bc1888',GradientType=1 );
+    color:transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.clr-dark,
+.clr-dark:hover,
+.clr-dark:active {
+    background-color: #444;
+    color: #fff;
+    border-color: #333;
+}
+.input-dark,
+.input-dark:active,
+.input-dark::placeholder {
+    background-color: grey !important;
+    border-color: grey !important;
+    color: #fff !important;
+}
+
+/* Chat */
+.btn-vm {
+    transform: translate(-50%, -50%);
+}
+
+/* Forms */
+.card-brand {
+    font-size: 14pt;
+}
+#user-info-form-inputs,
+#payment-info-form-inputs,
+#events-form-inputs {
+    display: none;
+}
+#event-photos-label {
+    display: block;
+    text-align: center;
+}
+.event-package-selection {
+    cursor: pointer;
+}
+.event-package-selection.active,
+.event-package-selection.active:hover {
+    color: #495057 !important;
+    border-color: #ccc !important;
+    background-color: #ccc !important;
+}
+.input-warning {
+    border: 1px solid red !important;
+}
+#login-form-container,
+#user-info-form-container,
+#payment-info-form-container,
+#events-form-container {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem;
+    margin: auto;
+}
+.btn-social {
+    margin: 5px;
+}
+#btn-add-card {
+    margin: 15px 0;
+}
+.alert-custom {
+    margin-bottom: 0;
+    margin-top: 1rem;
+}
+.price-padding {
+    padding-left: 15px;
+}

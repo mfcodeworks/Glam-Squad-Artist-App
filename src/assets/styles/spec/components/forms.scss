@@ -51,9 +51,10 @@
 }
 
 .checkbox input[type="checkbox"]:checked + label::after {
-  font-family: 'FontAwesome';
+  font-family: 'Font Awesome 5 Free';
   content: "\f00c";
   font-size: 13px;
+  font-weight: 900;
 }
 
 .checkbox input[type="checkbox"]:disabled + label {

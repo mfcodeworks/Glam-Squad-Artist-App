@@ -5,7 +5,5 @@ import * as ui from '../ui';
 
 export function authenticatedCheck() {
     return api.isAuthenticated()
-        .then(function(res) {
-            (res) ? tools.load("map.html") : ui.removeSplash();
-        });
+    .then((res) => { (res) ? tools.load('map.html') : ui.endPageLoading(); });
 }

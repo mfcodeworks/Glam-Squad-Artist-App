@@ -1,2 +1,0 @@
-# Referenced at D:\Projects\NR-Glam-Squad\Glam-Squad-Artist-App\platforms\android\app\build\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:64
--keep class android.support.multidex.MultiDexApplication { <init>(...); }

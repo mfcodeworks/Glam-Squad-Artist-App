@@ -1,0 +1,55 @@
+/* Custom */
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* API: Mapbox GL JS */
+.saved-location-marker,
+.location-marker {
+    background-image: url("../static/images/logo-marker.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 58px;
+    cursor: pointer;
+    z-index: 10 !important;
+}
+.marker-popup {
+    text-align: center;
+}
+.geocoder {
+    width: 70px;
+}
+.geocoder-icon,
+.geocoder-pin-right,
+.mapboxgl-popup-close-button {
+    display: none;
+}
+.mapboxgl-ctrl-geocoder {
+    box-shadow: none;
+}
+.mapboxgl-ctrl-geocoder input[type=text] {
+    position: absolute;
+    height: 100%;
+    width: 80px;
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 6px;
+}
+.mapboxgl-ctrl-geocoder ul.suggestions {
+    margin-top: 50px;
+    margin-left: -30px;
+}
+.mapboxgl-canvas {
+    z-index: 0;
+}
+.mapboxgl-marker {
+    z-index: 10 !important;
+}
+.mapboxgl-popup {
+    z-index: 50 !important;
+}

@@ -29,5 +29,4 @@ package-lock.json
 # Project Folders
 # ----------------------------
 
-build/
 node_modules

@@ -39,6 +39,9 @@
     },
     "cordova-plugin-local-notification": {
       "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "com.nygmarosebeauty.nrglamsquadartist"
     }
   },
   "dependent_plugins": {

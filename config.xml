@@ -9,7 +9,7 @@
     <author email="mf@nygmarosebeauty.com" href="https://mf.nygmarosebeauty.com">
         MF Softworks
     </author>
-    <content src="signin.html" />
+    <content src="map.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -63,22 +63,23 @@
         <icon height="100" src="res/icon/ios/icon-50@2x.png" width="100" />
         <icon height="167" src="res/icon/ios/icon-83.5@2x.png" width="167" />
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-media" spec="^5.0.2">
         <variable name="KEEP_AVAUDIOSESSION_ALWAYS_ACTIVE" value="NO" />
     </plugin>
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-dialogs" spec="^2.0.1" />
-    <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
-    <plugin name="phonegap-plugin-push" spec="^2.2.3">
+    <plugin name="cordova-plugin-vibration" spec="~3.1.0" />
+    <plugin name="phonegap-plugin-push" spec="~2.2.3">
         <variable name="ANDROID_SUPPORT_V13_VERSION" value="27.+" />
         <variable name="FCM_VERSION" value="11.6.2" />
     </plugin>
-    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~3.0.0" />
+    <plugin name="cordova-plugin-file-transfer" spec="~1.7.1" />
+    <plugin name="cordova-plugin-device" spec="~2.0.2" />
+    <plugin name="cordova-plugin-local-notification" spec="~0.9.0-beta.2" />
+    <plugin name="cordova-support-google-services" spec="~1.1.0" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
