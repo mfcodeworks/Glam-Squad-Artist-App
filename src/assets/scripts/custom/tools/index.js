@@ -231,15 +231,14 @@ export function createMediaDir() {
     // Set file save location
     switch (device.platform) {
         case 'Android':
-            storageLocation = `${cordova.file.externalRootDirectory}Glam Squad/media`;
+            storageLocation = `${cordova.file.externalRootDirectory}Glam Squad/Glam Squad Media`;
             console.log(cordova.file.externalRootDirectory);
             console.log(storageLocation);
-            return createDir(cordova.file.externalRootDirectory, 'Glam Squad/media');
+            return createDir(cordova.file.externalRootDirectory, 'Glam Squad/Glam Squad Media');
 
         case 'browser':
-            storageLocation = 'cdvfile://localhost/persistent/GlamSquad';
-            console.log(storageLocation);
-            return createDir('cdvfile://localhost/persistent', 'GlamSquad');
+            console.log('Browser detected, downloads will be done through browser.');
+            return null;
 
         case 'iOS':
             storageLocation = cordova.file.documentsDirectory;
