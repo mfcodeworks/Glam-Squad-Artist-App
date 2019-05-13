@@ -89,12 +89,12 @@ const app = {
                 map.stripeAccountCheck();
                 tools.fillUserData();
                 settings.profilePhotoHandler();
+                settings.updateUserHandler();
+                api.fillUserInfo();
                 /**
                  * TODO: Update for Artist App
                  */
                 api.getNewEvents();
-                api.fillUserInfo();
-                settings.updateUserHandler();
 
                 /* Settings UI */
                 /**

@@ -334,7 +334,9 @@ export function getNewEvents() {
                     $('[data-role="notification-menu-display"]').empty();
 
                     r.data.forEach((event) => {
+                        // Create notification item
                         ui.notificationEvent(event);
+                        // Cache event
                         storage.save(`event-${event.id}`, JSON.stringify(event));
                     });
 
@@ -683,6 +685,19 @@ export function saveLocation() {
         .then(() => {
             $('.btn-delete-marker').click();
         });
+}
+
+export function updateProfilePic(picture) {
+    return storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        const form = {
+            picture,
+        };
+        console.log(form);
+
+        return apiSend('PUT', `${endpoint}/artists/${u.id}/photo`, form);
+    });
 }
 
 export function fillUserInfo() {
