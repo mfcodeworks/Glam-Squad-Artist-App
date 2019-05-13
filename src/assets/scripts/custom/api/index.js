@@ -7,6 +7,7 @@ import * as cache from '../cache';
 import * as tools from '../tools';
 import * as push from '../push';
 import * as ui from '../ui';
+import * as settings from '../settings';
 
 // NR Server Endpoint
 const endpoint = 'https://glam-squad-db.nygmarosebeauty.com/api/v1';
@@ -243,6 +244,10 @@ export function authenticateUser() {
     .finally(ui.endLoader);
 }
 
+export function getEvent(id) {
+    return apiSend('GET', `${endpoint}/events/${id}`);
+}
+
 export function acceptEventBooking() {
     $('#btn-accept-event').click(() => {
         ui.startLoader();
@@ -260,6 +265,7 @@ export function acceptEventBooking() {
 
             switch (r.response) {
                 case true:
+                    // Alert success
                     navigator.notification.alert(
                         'Event accepted! You\'ll be notified when the event is near.',
                         null,
@@ -267,19 +273,27 @@ export function acceptEventBooking() {
                         'Okay'
                     );
 
+                    // Subscribe to event topic
                     topic = `event-${event}-artist`;
                     push.subscribe(topic)
-                        .then(() => {
-                            return cache.getEvent(event);
-                        })
-                        .then((e) => {
-                            push.notification(
-                                e.id,
-                                topic,
-                                'Event Accepted',
-                                `Successfully accepted event at ${e.address}`
-                            );
-                        });
+                    .then(() => {
+                        return cache.getEvent(event);
+                    })
+                    .then((e) => {
+                        push.notification(
+                            e.id,
+                            topic,
+                            'Event Accepted',
+                            `Successfully accepted event at ${e.address}`
+                        );
+                    });
+
+                    // Add event to calendar
+                    getEvent(event)
+                    .then(settings.addCalendarEvent);
+
+                    // Add event to login cache
+                    isAuthenticated();
                     break;
 
                 case false:
@@ -302,22 +316,75 @@ export function acceptEventBooking() {
             }
         })
         .then(() => {
-            // FIXME: Remove notification
+            // Remove notification
             $(`a[data-event-id="${event}"]`).parent().remove();
-            // Collapse notifications
-            $('#notification-menu').collapse();
             // Set new count
-            let count = parseInt($('#notification-count').text());
+            let count = parseInt($('[data-src="notification-count"]').text());
             count--;
-            $('#notification-count').text(count.toString());
+            $('[data-src="notification-count"]').text(count.toString());
             if (count === 0) {
-                $('.notification-menu-display').append('<li class="nav-item active"><a class="text-white p" href="#">Empty</a></li>');
+                $('[data-role="notification-menu-display"]').append(
+                    `<li>
+                        <a href="#" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">
+                            <div class="peer peer-greed">
+                                <span class="c-grey-600">No notifications.</span>
+                            </div>
+                        </a>
+                    </li>`);
             }
         })
         .finally(() => {
             $('#btn-close-event').click();
             ui.endLoader();
         });
+    });
+}
+
+export function reportClient(id) {
+    storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        return apiSend('POST',
+            `${endpoint}/clients/${id}/report`,
+            { artistId: u.id, key: u.key }
+        );
+    })
+    .finally((r) => {
+        switch (r.response) {
+            case true:
+                navigator.notification.alert(
+                    'Artist has been successfully reported. This will be followed up by staff.',
+                    null,
+                    'Reported',
+                    'Okay'
+                );
+                break;
+
+            case false:
+                navigator.notification.alert(
+                    r.error,
+                    null,
+                    'Error',
+                    'Okay'
+                );
+                break;
+
+            default:
+                navigator.notification.alert(
+                    `Unknown error occured, please try again.\n${JSON.stringify(r)}`,
+                    null,
+                    'Error',
+                    'Okay'
+                );
+        }
+    })
+    .catch(() => {
+        navigator.notification.alert(
+            'Unknown error occured, please try again.',
+            null,
+            'Error',
+            'Okay'
+        );
     });
 }
 
@@ -354,7 +421,6 @@ export function getNewEvents() {
                 break;
         }
     })
-    .then(ui.handleEventNotificationClick)
     .then(acceptEventBooking);
 }
 
@@ -382,10 +448,6 @@ export function getFinishedEvents() {
         .then((u) => {
             return apiSend('GET', `${endpoint}/artists/${u.id}/events/recent/unpaid`);
         });
-}
-
-export function getEvent(id) {
-    return apiSend('GET', `${endpoint}/events/${id}`);
 }
 
 export function saveArtistAttendance(event, artist, response) {
@@ -459,7 +521,7 @@ export function client(id) {
     return apiSend('GET', `${endpoint}/clients/${id}`)
     .then((c) => {
         const client = c.data[0];
-        storage.save(`client-${client.id}`, JSON.stringify(client));
+        storage.save(`client-${id}`, JSON.stringify(client));
         return client;
     });
 }
@@ -475,9 +537,7 @@ export function isAuthenticated() {
         return apiSend('POST', `${endpoint}/artists/${u.id}/validate`, { key: u.key });
     })
     .then((r) => {
-        if (r === false) {
-            return r;
-        }
+        if (r === false)  return r;
 
         console.log(`User authenticated: ${JSON.stringify(r.valid)}`);
 

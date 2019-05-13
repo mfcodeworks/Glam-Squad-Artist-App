@@ -8,7 +8,6 @@ import '../styles/index.scss';
 /* Theme JS */
 import './charts';
 import './popover';
-import './scrollbar';
 import './search';
 import './sidebar';
 import './skycons';
@@ -91,18 +90,14 @@ const app = {
                 settings.profilePhotoHandler();
                 settings.updateUserHandler();
                 api.fillUserInfo();
-                /**
-                 * TODO: Update for Artist App
-                 */
                 api.getNewEvents();
 
                 /* Settings UI */
-                /**
-                 * TODO: Update for Artist App
-                 */
                 settings.getBookings();
-                // ui.bookingArtistHandler();
-                // settings.reportArtistHandler();
+                ui.handleEventNotificationClick();
+                ui.bookingClientHandler();
+                ui.rateClientHandler();
+                settings.reportClientHandler();
 
                 /* Chat/Notification Init */
                 chat.init()

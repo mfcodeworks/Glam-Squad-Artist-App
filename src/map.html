@@ -470,37 +470,6 @@
                         <div id='mainContent'>
                             <div id="map"></div>
                         </div>
-
-                        <!-- Modal Dialogs -->
-
-                        <!-- Event Modal -->
-                        <div class="modal fade" id="event-info-modal" role="modal" aria-labelledby="eventInfoModal" aria-hidden="true">
-                            <div class="modal-dialog" role="document" data-role="event-info">
-                                <div class="modal-content">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Accept Booking</h5>
-                                    </div>
-
-                                    <!-- Modal body -->
-                                    <div class="modal-body ta-i" id="event-information">
-                                        <!-- Address -->
-                                        <!-- Datetime -->
-                                        <!-- Client -->
-                                        <!-- Client Rating -->
-                                        <!-- Reference photos -->
-                                        <!-- Note -->
-                                    </div>
-
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn clr-cancel" id="btn-close-event" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn clr-primary" id="btn-accept-event">Accept</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /Modal Dialogs -->
                     </div>
                     <!-- /PAGE: Map -->
 
@@ -649,7 +618,7 @@
                                     <div class="modal-footer">
                                         <div class="peers ai-c jc-sb fxw-nw">
                                             <div class="peer">
-                                                <button type="button" class="btn btn-danger btn-delete-event mr-2" data-role="delete-booking" data-event-id="" data-event-address="">Cancel Event</button>
+                                                <button type="button" class="btn btn-danger btn-delete-event mr-2" data-role="delete-booking" data-event-id="0" data-event-address="123 Sesame St">Cancel Event</button>
                                             </div>
                                             <div class="peer">
                                                 <button type="button" class="btn btn-secondary" id="btn-close-event-booking" data-dismiss="modal">Close</button>
@@ -661,22 +630,22 @@
                         </div>
 
                         <!-- Rate Artist Modal -->
-                        <div class="modal fade" id="rate-artists-modal">
+                        <div class="modal fade" id="rate-client-modal">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <!-- Modal Header -->
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Rate Artists</h5>
+                                        <h5 class="modal-title">Rate Client</h5>
                                     </div>
                                     <!-- Modal body -->
                                     <div class="modal-body">
                                         <!-- Event Form Input -->
-                                        <form action="" class="form-horizontal" id="rate-artists-form"></form>
+                                        <form action="" class="form-horizontal" id="rate-client-form"></form>
                                     </div>
                                     <!-- Modal footer -->
                                     <div class="modal-footer">
-                                        <button type="button" class="btn clr-cancel" id="btn-close-rate-artists" data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn clr-primary" id="btn-submit-rate-artists">Submit</button>
+                                        <button type="button" class="btn clr-cancel" id="btn-close-rate-client" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn clr-primary" id="btn-submit-rate-client">Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -842,17 +811,17 @@
                                     <div class="modal-body p-2">
                                         <!-- Profile -->
                                         <div class="ta-c">
-                                            <img class="w-5r h-5r bdrs-50p user-photo  bd bdc-grey-400" data-src="booking-artist-photo">
+                                            <img class="w-5r h-5r bdrs-50p user-photo  bd bdc-grey-400" data-src="booking-client-photo">
                                             <!-- TODO: Add in artist rating -->
-                                            <h4 data-src="booking-artist-username" class="mb-0"></h4>
-                                            <span data-src="booking-artist-rating" class="fsz-xs"></span><br>
+                                            <h4 data-src="booking-client-username" class="mb-0"></h4>
+                                            <span data-src="booking-client-rating" class="fsz-xs"></span><br>
                                         </div>
                                     </div>
 
                                     <!-- Modal footer -->
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" id="btn-report-artist" data-artist-id="0">Report</button>
-                                        <button type="button" class="btn btn-secondary" id="btn-close-artist" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger" id="btn-report-client" data-client-id="0">Report</button>
+                                        <button type="button" class="btn btn-secondary" id="btn-close-client" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>
@@ -877,6 +846,34 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn clr-cancel" id="btn-close-settings" data-dismiss="modal">Close</button>
                                         <!--<button type="button" class="btn clr-primary" id="btn-save-settings">Save</button>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event Modal -->
+                        <div class="modal fade" id="event-info-modal" role="modal" aria-labelledby="eventInfoModal" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document" data-role="event-info">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Accept Booking</h5>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body ta-c" id="event-information">
+                                        <!-- Address -->
+                                        <!-- Datetime -->
+                                        <!-- Client -->
+                                        <!-- Client Rating -->
+                                        <!-- Reference photos -->
+                                        <!-- Note -->
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn clr-cancel" id="btn-close-event" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn clr-primary" id="btn-accept-event">Accept</button>
                                     </div>
                                 </div>
                             </div>

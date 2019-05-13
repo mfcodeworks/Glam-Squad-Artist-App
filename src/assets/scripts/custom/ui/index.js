@@ -7,6 +7,7 @@ import * as storage from '../storage';
 import * as cache from '../cache';
 import * as tools from '../tools';
 import * as chat from '../chat';
+import * as settings from '../settings';
 
 // Listener tracker
 const listeners = [];
@@ -44,18 +45,21 @@ export function forgotPasswordHandler() {
     });
 }
 
-/**
- * TODO: Fix notifications for new UI
- */
 export function notificationEvent(event) {
     api.client(event.clientId)
     .then((client) => {
+        // Cache client
+        storage.save(`client-${client.id}`, JSON.stringify(client));
+
+        // Set datetime object
         const date = new Date(event.datetime);
+
+        // Set notification HTML
         const html = `
         <li>
-            <a href="#" class='peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100' data-role="event-notification-item" data-event-id="${event.id}">
+            <a data-role="event-notification-item" data-event-id="${event.id}" href="#" class="peers fxw-nw td-n p-20 bdB c-grey-800 cH-blue bgcH-grey-100">
                 <div class="peer mR-15">
-                    <img class="w-3r bdrs-50p" src="${client.profile_photo}" alt="">
+                    <img class="w-3r h-3r bdrs-50p user-photo bd bdc-grey-400" src="${client.profile_photo}" alt="">
                 </div>
                 <div class="peer peer-greed">
                     <span>
@@ -68,61 +72,123 @@ export function notificationEvent(event) {
                 </div>
             </a>
         </li>`;
+
+        // Append notification
         $('[data-role="notification-menu-display"]:first').append(html);
     });
 }
 
-/**
- * TODO: Fix notifications for new UI
- */
 export function handleEventNotificationClick() {
-    console.log('Adding notification click event');
+    $(document).on('click', '[data-role="event-notification-item"]', (e) => {
+        e.stopPropagation();
+        let event,
+            client;
 
-    $('[data-role="event-notification-item"]').click(() => {
         // Empty any previous event info
         $('#event-information').empty();
 
         // Get event ID
-        const eventId = $(this).children().data('event-id');
-        console.log(`Event ID ${eventId}`);
+        const eventId = $(e.currentTarget).data('event-id');
 
         // Get event data from cache
         cache.getEvent(eventId)
-        .then((event) => {
-            // Get user locale for formatting
-            storage.get('locale')
-            .then(JSON.parse)
-            .then((l) => {
-                // Structure and append event info
-                const date = new Date(event.datetime);
+        .then((ev) => {
+            event = ev;
+            return event.clientId;
+        })
+        .then(api.client)
+        .then((cl) => {
+            client = cl;
+        })
+        .then(() => {
+            // Create datetime object
+            const date = new Date(event.datetime),
+                price = `$${event.price.toFixed(2)}`;
+            let rating = '';
 
-                let html =
-                `<div class="d-flex w-100 justify-content-between">
-                    <h4 class='mb-3'>${event.address}</h4>
-                </div>
-                <p class='event-datetime'>${date.toLocaleString(`en-${l.code}`)}</p>`;
-
-                (event.note) ? html += `<p class='text-left'>Note: </br> ${event.note}</p>` : null;
-
-                if (event.references !== null) {
-                    html += `<div class="form-group grid" id="reg-portfolio-preview">
-                                <div class='grid-col grid-col--1'></div>
-                                <div class='grid-col grid-col--2'></div>
-                                <div class='grid-col grid-col--3'></div>
-                                <div class='grid-col grid-col--4'></div>`.trim();
-                    event.references.forEach((image) => {
-                        html += `<div class='grid-item bd bdrs-4 bdw-1 bdc-grey-400'><img class='lightbox-img' src='${image.photo}' /></div>`;
-                    });
-                    html += '</div>';
+            // Set rating HTML
+            if (client.rating) {
+                rating = '<span class="fl-r pt-1">';
+                for (let i = 0; i < Math.round(client.rating); i++) {
+                    rating += '<i class="fas fa-star fsz-xs"></i>';
                 }
+                rating += '</span>';
+            }
 
-                $('#event-information').append(html);
-                masonryInit();
+            // Set modal HTML
+            const html =
+            `<div data-event="${event.id}">
+                <h5 class="mb-1">${event.address}</h5>
+                <small>${date.toLocaleString(tools.getLanguage())}</small>
+                <small class="ml-3">${price}</small>
+                <ul class="list-group list-group-flush mb-3 mt-4 ta-l">
+                    <li class='list-group-item' data-role="booking-client" data-client-id="${client.id}">
+                        <img class="w-2r h-2r bdrs-50p user-photo mR-5  bd bdc-grey-400" src="${client.profile_photo}">
+                        <span class="fsz-sm mR-5 fw-500 c-grey-700">${client.username}</span>
+                        ${rating}
+                    </li>
+                </ul>
+                <p class="mb-2 ta-l">Packages:</p>
+                <ul class="list-group list-group-flush mb-3 ta-l">
+                    ${event.packages.map((p) => {
+                        return (p.id === 3) ?
+                            `<li class='list-group-item'>
+                                ${p.name}
+                                <span class='float-right'>${event.extraHours} hours</span>
+                            </li>`
+                        : `<li class='list-group-item'>${p.name}</li>`;
+                    }).join('')}
+                </ul>
+                ${event.note ? `<p class='ta-l mb-4'>Note: </br> ${event.note}</p>` : ''}
+                <div class="grid">
+                    <div class='grid-col grid-col--1'></div>
+                    <div class='grid-col grid-col--2'></div>
+                    <div class='grid-col grid-col--3'></div>
+                    <div class='grid-col grid-col--4'></div>
+                    ${event.references ? event.references.map((img) => {
+                        return `<div class='grid-item'><img class="lightbox-img" src="${img.photo}"/></div>`;
+                    }).join('') : ''}
+                </div>
+            </div>`.trim();
 
-                $('#btn-accept-event').data('event-id', event.id);
+            $('#event-information').append(html);
+            masonryInit();
 
-                $('#event-info-modal').modal('show');
-            });
+            $('#btn-accept-event').data('event-id', event.id);
+
+            $('#event-info-modal').modal('show');
+        });
+    });
+}
+
+export function bookingClientHandler() {
+    $(document).on('click', '[data-role="booking-client"]', (e) => {
+        // Set client ID
+        const id = $(e.currentTarget).data('client-id');
+        // Get client data
+        api.client(id)
+        .then((client) => {
+            // Log client
+            console.log(client);
+
+            // Set rating html
+            let rating = '';
+            if (client.rating > 0) {
+                for (let i = 0; i < Math.round(client.rating); i++) {
+                    rating += '<i class="fas fa-star"></i>';
+                }
+            } else {
+                rating = '<span class="fs-i">client has no rating yet</span>';
+            }
+
+            $('[data-src="booking-client-rating"]').html(rating);
+            $('[data-src="booking-client-username"]').html(`${client.username}`);
+            $('[data-src="booking-client-photo"]').attr('src', client.profile_photo);
+            $('#btn-report-client').data('client-id', client.id);
+
+            // Show client profile
+            $('#client-modal').modal('show');
+            masonryInit();
         });
     });
 }
@@ -145,63 +211,63 @@ export function fillArtistRoles() {
     });
 }
 
-/**
- * TODO: Fix for new UI
- */
 export function addSettingsEvent(event) {
-    return cache.getEvent(event.id, true)
-    .then((event) => {
-        console.log(event);
-        const address = event.address.split(',').slice(0, 2);
+    const price = `$${event.price.toFixed(2)}`,
+          eventDate = new Date(event.datetime),
+          now = new Date();
+    let ratingsRequired;
 
-        const nowDate = new Date();
-        const eventDate = new Date(event.datetime);
+    api.client(event.clientId)
+    .then((client) => {
+        // If event in past and no rating present
+        ratingsRequired = (now.getTime() > eventDate.getTime() && !event.ratings.clients.hasOwnProperty(client.id));
 
-        return storage.get('locale')
-            .then(JSON.parse)
-            .then((l) => {
-                let buttons = '';
+        // Cache client
+        storage.save(`client-${client.id}`, JSON.stringify(client));
 
-                if (nowDate.getTime() < eventDate.getTime()) {
-                    buttons +=
-                    `<div class="text-right clr-dark mb-1">
-                        <button type='button' class="btn-delete-event btn input-dark btn-md" data-event-address="${event.address}" data-event-id="${event.id}">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                    </div>`;
-                } else {
-                    // If no ratings exist then require a rating
-                    let ratingsRequired;
-                    (event.ratings.clients.hasOwnProperty(`${event.clientId}`) === true) ? ratingsRequired = false : ratingsRequired = true;
-
-                    if (ratingsRequired === true) {
-                        buttons +=
-                        `<div class="text-right clr-dark mb-1">
-                            <button type='button' class="btn-rate-client btn input-dark btn-md" data-event-id="${event.id}">
-                                <i class="fas fa-star"></i> Rate Client
-                            </button>
-                        </div>`;
-                    } else {
-                        buttons +=
-                        `<div class="text-right clr-dark mb-1">
-                            <button type='button' class="btn input-dark btn-md" disabled>
-                                <i class="fas fa-star"></i> Rated
-                            </button>
-                        </div>`;
+        const html =
+        `<div data-event="${event.id}" class="ta-c">
+            <h5 class="mb-0">${event.address}</h5>
+            <small>${eventDate.toLocaleString(tools.getLanguage())}</small>
+            <small class="ml-3">${price}</small>
+            <ul class="list-group list-group-flush mb-3 mt-4 ta-l">
+                <li class='list-group-item' data-role="booking-client" data-client-id="${client.id}">
+                    <img class="w-2r h-2r bdrs-50p user-photo mR-5  bd bdc-grey-400" src="${client.profile_photo}">
+                    <span class="fsz-sm mR-5 fw-500 c-grey-700">${client.username}</span>
+                    ${(ratingsRequired) ?
+                        `<button type="button" class="fl-r btn-rate-client btn btn-md mt-1 p-0 c-grey-700" data-event-id="${event.id}">
+                            Rate Client&nbsp;<i class="fas fa-star"></i>
+                        </button>` :
+                        `<button type="button" class="fl-r btn btn-md mt-1 p-0 c-grey-700" data-event-id="${event.id}" disabled>
+                            Client Rated&nbsp;<i class="fas fa-star"></i>
+                        </button>`
                     }
-                }
+                </li>
+            </ul>
+            <p class="mb-2 ta-l">Packages:</p>
+            <ul class="list-group list-group-flush mb-4 ta-l">
+                ${event.packages.map((p) => {
+                    return (p.id === 3) ?
+                        `<li class='list-group-item'>
+                            ${p.name}
+                            <span class='fl-r'>${event.extraHours} hours</span>
+                        </li>`
+                    : `<li class='list-group-item'>${p.name}</li>`;
+                }).join('')}
+            </ul>
+            <div class="grid">
+                <div class='grid-col grid-col--1'></div>
+                <div class='grid-col grid-col--2'></div>
+                <div class='grid-col grid-col--3'></div>
+                <div class='grid-col grid-col--4'></div>
+                ${event.references ? event.references.map((img) => {
+                    return `<div class='grid-item'><img class="lightbox-img" src="${img.photo}"/></div>`;
+                }).join('') : ''}
+            </div>
+        </div>`.trim();
 
-                const html =
-                `<a href='#' class="list-group-item list-group-item-action flex-column align-items-start clr-dark event-package-selection" data-event="${event.id}">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class='mb-3'>${address}</h5>
-                    </div>
-                    <small>${eventDate.toLocaleString(`en-${l.code}`)}</small>
-                    ${buttons}
-                </a>`;
-
-                $('#events-form-inputs').append(html);
-            });
+        $('[data-src="booking-event-body"]').html(html);
+        masonryInit();
     });
 }
 
@@ -209,35 +275,36 @@ export function addSettingsEvent(event) {
  * TODO: Fix notifications for new UI
  */
 export function rateClientHandler() {
-    $(document).on('click', '.btn-rate-client', () => {
+    $(document).on('click', '.btn-rate-client', (e) => {
+        e.stopPropagation();
+
         // Handle Rate Client Button Click
         $('#rate-client-form').empty();
-        cache.getEvent($(this).data('event-id'))
-            .then((event) => {
-                // if client has rating display, if no rating prompt for rating
-                return api.client(event.clientId)
-                    .then((client) => {
-                        if (event.ratings.clients.hasOwnProperty(`${client.id}`) !== true) {
-                            // If no ratings exist then require a rating
-                            const html = `
-                            <div class="text-center client-rating" data-event="${event.id}" data-client="${client.id}">
-                                <p>${client.username}</p>
-                                <div class='star-rating'>
-                                    <i class="far fa-star" data-star='1'></i>
-                                    <i class="far fa-star" data-star='2'></i>
-                                    <i class="far fa-star" data-star='3'></i>
-                                    <i class="far fa-star" data-star='4'></i>
-                                    <i class="far fa-star" data-star='5'></i>
-                                </div>
-                            </div>`;
 
-                            $('#rate-client-form').append(html);
-                            $('#rate-client-modal').modal('show');
-                        }
-                });
-            })
-            .then(starRatingHandler)
-            .then(clientRatingFormHandler);
+        cache.getEvent($(e.currentTarget).data('event-id'))
+        .then((event) => {
+            // if client has rating display, if no rating prompt for rating
+            return api.client(event.clientId)
+            .then((client) => {
+                // If no ratings exist then require a rating
+                const html = `
+                <div class="ta-c client-rating" data-event="${event.id}" data-client="${client.id}">
+                    <span class="mb-2 fsz-md fw-500 c-grey-700">${client.username}</span>
+                    <div class='star-rating'>
+                        <i class="far fa-star" data-star='1'></i>
+                        <i class="far fa-star" data-star='2'></i>
+                        <i class="far fa-star" data-star='3'></i>
+                        <i class="far fa-star" data-star='4'></i>
+                        <i class="far fa-star" data-star='5'></i>
+                    </div>
+                </div>`;
+
+                $('#rate-client-form').append(html);
+                $('#rate-client-modal').modal('show');
+            });
+        })
+        .then(starRatingHandler)
+        .then(clientRatingFormHandler);
     });
     return true;
 }
@@ -247,53 +314,65 @@ export function rateClientHandler() {
  */
 export function clientRatingFormHandler() {
     $('#btn-submit-rate-client').click(() => {
-        // Declare event constiable
-        let eventId;
-
-        $('.client-rating').each((index, e) => {
-            // Get id info
-            const clientId = e.data('client');
+        const e = $('.client-rating:first'),
+            clientId = e.data('client'),
             eventId = e.data('event');
 
-            // Get artist rating
-            let rating = 0;
-            $(e.currentTarget).find('.star-rating').children('.fa-star').each((ind, el) => {
-                if (el.hasClass('fas')) rating++;
-            });
+        // Get artist rating
+        let rating = 0;
+        $('.star-rating').children('.fa-star').each((ind, el) => {
+            if ($(el).hasClass('fas')) rating++;
+        });
 
-            // Submit rating
-            api.clientRating(eventId, clientId, rating)
-            .then(() => {
-                // Close dialog
-                $('#btn-close-rate-client').click();
-            });
+        // Submit rating
+        api.clientRating(eventId, clientId, rating)
+        .then(() => {
+            // Remove unrated event
+            settings.removeCalendarEvent(eventId);
+            // Get updated event and replace booking
+            return api.getEvent(eventId);
+        })
+        .then((event) => {
+            console.log('Updated event');
+            console.log(event);
+            // Add updated event
+            settings.addCalendarEvent(event);
+            // Cache event
+            storage.save(`event-${event.id}`, JSON.stringify(event));
+        })
+        .finally(() => {
+            // Close dialog
+            $('#btn-close-rate-client').click();
         });
 
         // Disable rating button
         $(`.btn-rate-client[data-event-id="${eventId}"]`).attr('disabled', true);
-        $(`.btn-rate-client[data-event-id="${eventId}"]`).text('Rated');
+        $(`.btn-rate-client[data-event-id="${eventId}"]`).html('Client Rated&nbsp;<i class="fas fa-star"></i>');
     });
 }
 
 export function starRatingHandler() {
-    $('.fa-star').click((e) => {
+    $(document).on('click', '.fa-star', (e) => {
+        const ratingHandler = $(e.currentTarget);
+
         // Save star level
-        const starWeight = $(e.currentTarget).data('star');
+        const starWeight = ratingHandler.data('star');
 
         // Fill in star
-        $(e.currentTarget).removeClass('far');
-        $(e.currentTarget).addClass('fas');
+        ratingHandler.removeClass('far');
+        ratingHandler.addClass('fas');
 
         // Loop sibling stars
-        $(e.currentTarget).siblings('.fa-star').each((index, el) => {
-            if (el.data('star') < starWeight) {
+        ratingHandler.siblings('.fa-star').each((ind, ev) => {
+            const star = $(ev);
+            if (star.data('star') < starWeight) {
                 // If lower star make it filled as well
-                el.removeClass('far');
-                el.addClass('fas');
+                star.removeClass('far');
+                star.addClass('fas');
             } else {
                 // If higher star
-                el.removeClass('fas');
-                el.addClass('far');
+                star.removeClass('fas');
+                star.addClass('far');
             }
         });
     });

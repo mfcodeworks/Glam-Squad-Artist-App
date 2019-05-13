@@ -9,9 +9,9 @@ import * as cache from '../cache';
 
 export function authenticatedCheck() {
     return api.isAuthenticated()
-        .then((res) => {
-            if (!res) tools.load('signin.html');
-        });
+    .then((res) => {
+        if (!res) tools.load('signin.html');
+    });
 }
 
 export function updateUserHandler() {
@@ -68,22 +68,22 @@ export function getBookings() {
             },
             titleFormat: 'MMM D',
             height: 800,
+            // TODO: Update event click
             eventClick: (event) => {
                 console.log('Event clicked');
                 console.log(event);
 
                 // Fill Modal
-                $('[data-src="booking-address"]').text(event.title.split(',')[0]);
                 $('[data-src="booking-datetime"]').text(event.start.toLocaleString(tools.getLanguage()));
                 $('[data-role="delete-booking"]').data('event-id', event.id);
                 $('[data-role="delete-booking"]').data('event-address', event.title);
-                $('#event-booking-modal').modal('show');
+                $('[data-src="booking-address"]').text(event.title.split(',')[0]);
                 ui.addSettingsEvent(event.data);
+                $('#event-booking-modal').modal('show');
             },
         });
     })
-    .then(deleteBookingHandler)
-    .then(ui.rateClientHandler);
+    .then(deleteBookingHandler);
 }
 
 export function profilePhotoHandler() {
@@ -113,12 +113,13 @@ export function profilePhotoHandler() {
     });
 }
 
+// TODO: Update to cancel event
 export function deleteBookingHandler() {
-    $('.btn-delete-event').click(() => {
+    $('.btn-delete-event').click((e) => {
         ui.startLoader();
         console.log('Deleting event');
 
-        const eventId = $(this).data('event-id');
+        const eventId = $(e.currentTarget).data('event-id');
         let event;
 
         cache.getEvent(eventId)
@@ -128,21 +129,29 @@ export function deleteBookingHandler() {
         })
         .then(console.log)
         .then(() => {
-            return push.notification(
+            // Notify client of cacncellation
+            push.notification(
                 event.id,
                 `event-${event.id}-client`,
                 'Artist Cancelled',
                 `Artist cancelled booking for ${event.address}. Requesting new glam squad now.`
             );
+            // Remove calendar object
+            removeCalendarEvent(event.id);
+            // Remove cache
+            storage.remove(`event-${event.id}`);
+            // Remove booking from login
+            api.isAuthenticated();
+            // Close modal
+            $('#btn-close-event-booking').click();
         })
-        .then(getBookings)
         .finally(ui.endLoader);
     });
 }
 
 export function reportClientHandler() {
     $('#btn-report-client').click((e) => {
-        api.reportArtist($(e.currentTarget).data('client-id'));
+        api.reportClient($(e.currentTarget).data('client-id'));
     });
 }
 
