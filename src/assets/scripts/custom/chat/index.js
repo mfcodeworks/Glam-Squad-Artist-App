@@ -19,12 +19,6 @@ export function authenticatedCheck() {
 
 // API: Chat API Functions
 
-/**
- * TODO:
- * - On channelAdded print channel
- * - On channelRemoved delete div[data-sid="sid"]
- */
-
 export function getChannel(sid) {
     return chatClient.getChannelBySid(sid);
 }

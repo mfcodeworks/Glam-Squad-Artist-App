@@ -84,21 +84,6 @@ const app = {
                 /* Auth Check */
                 tools.authenticatedCheck();
 
-                /* Map UI */
-                map.stripeAccountCheck();
-                tools.fillUserData();
-                settings.profilePhotoHandler();
-                settings.updateUserHandler();
-                api.fillUserInfo();
-                api.getNewEvents();
-
-                /* Settings UI */
-                settings.getBookings();
-                ui.handleEventNotificationClick();
-                ui.bookingClientHandler();
-                ui.rateClientHandler();
-                settings.reportClientHandler();
-
                 /* Chat/Notification Init */
                 chat.init()
                 .then(chat.tokenListener)
@@ -111,6 +96,22 @@ const app = {
                 .then(chat.chatListeners)
                 .then(ui.selectFirstChat)
                 .finally(ui.endLoader);
+
+                /* Map UI */
+                map.stripeAccountCheck();
+                map.confirmRecentEvents();
+                tools.fillUserData();
+                settings.profilePhotoHandler();
+                settings.updateUserHandler();
+                api.fillUserInfo();
+                api.getNewEvents();
+
+                /* Settings UI */
+                settings.getBookings();
+                ui.handleEventNotificationClick();
+                ui.bookingClientHandler();
+                ui.rateClientHandler();
+                settings.reportClientHandler();
 
                 /* Create media directory */
                 tools.createMediaDir();

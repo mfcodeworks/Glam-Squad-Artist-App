@@ -63,6 +63,30 @@ function apiSend(method = 'GET', url, form = null) {
     });
 }
 
+export function isAuthenticated() {
+    // Get login session
+    return storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        if (u == null) return false;
+
+        // Return validation response
+        return apiSend('POST', `${endpoint}/artists/${u.id}/validate`, { key: u.key });
+    })
+    .then((r) => {
+        if (r === false)  return r;
+
+        console.log(`User authenticated: ${JSON.stringify(r.valid)}`);
+
+        // If user is valid update storage
+        if (r.valid) {
+            storage.remove('login');
+            storage.save('login', JSON.stringify(r.data[0]));
+            return r.valid;
+        }
+    });
+}
+
 export function registerUser() {
     // Verify inputs
     $('#reg-username').removeClass('is-invalid');
@@ -444,10 +468,10 @@ export function getArtistRoles() {
 
 export function getFinishedEvents() {
     return storage.get('login')
-        .then(JSON.parse)
-        .then((u) => {
-            return apiSend('GET', `${endpoint}/artists/${u.id}/events/recent/unpaid`);
-        });
+    .then(JSON.parse)
+    .then((u) => {
+        return apiSend('GET', `${endpoint}/artists/${u.id}/events/recent/unpaid`);
+    });
 }
 
 export function saveArtistAttendance(event, artist, response) {
@@ -523,30 +547,6 @@ export function client(id) {
         const client = c.data[0];
         storage.save(`client-${id}`, JSON.stringify(client));
         return client;
-    });
-}
-
-export function isAuthenticated() {
-    // Get login session
-    return storage.get('login')
-    .then(JSON.parse)
-    .then((u) => {
-        if (u == null) return false;
-
-        // Return validation response
-        return apiSend('POST', `${endpoint}/artists/${u.id}/validate`, { key: u.key });
-    })
-    .then((r) => {
-        if (r === false)  return r;
-
-        console.log(`User authenticated: ${JSON.stringify(r.valid)}`);
-
-        // If user is valid update storage
-        if (r.valid) {
-            storage.remove('login');
-            storage.save('login', JSON.stringify(r.data[0]));
-            return r.valid;
-        }
     });
 }
 
@@ -729,11 +729,11 @@ export function saveLocation() {
             console.log(r);
             switch (r.response) {
                 case true:
-                    console.log(`Saved location`);
+                    console.log('Saved location');
                     break;
 
                 case false:
-                    console.warn(`Failed to save location`);
+                    console.warn('Failed to save location');
                     console.warn(`${r.error_code}: ${r.error}`);
                     break;
 

@@ -113,7 +113,6 @@ export function profilePhotoHandler() {
     });
 }
 
-// TODO: Update to cancel event
 export function deleteBookingHandler() {
     $('.btn-delete-event').click((e) => {
         ui.startLoader();
@@ -149,6 +148,7 @@ export function deleteBookingHandler() {
     });
 }
 
+// TODO: Check fixed
 export function reportClientHandler() {
     $('#btn-report-client').click((e) => {
         api.reportClient($(e.currentTarget).data('client-id'));

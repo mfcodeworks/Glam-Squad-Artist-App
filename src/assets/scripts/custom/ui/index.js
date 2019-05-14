@@ -271,9 +271,6 @@ export function addSettingsEvent(event) {
     });
 }
 
-/**
- * TODO: Fix notifications for new UI
- */
 export function rateClientHandler() {
     $(document).on('click', '.btn-rate-client', (e) => {
         e.stopPropagation();
@@ -309,9 +306,6 @@ export function rateClientHandler() {
     return true;
 }
 
-/**
- * TODO: Fix notifications for new UI
- */
 export function clientRatingFormHandler() {
     $('#btn-submit-rate-client').click(() => {
         const e = $('.client-rating:first'),
