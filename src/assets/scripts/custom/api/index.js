@@ -365,7 +365,9 @@ export function acceptEventBooking() {
 }
 
 export function reportClient(id) {
-    storage.get('login')
+    ui.startLoader();
+    
+    return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
         return apiSend('POST',
@@ -373,11 +375,11 @@ export function reportClient(id) {
             { artistId: u.id, key: u.key }
         );
     })
-    .finally((r) => {
-        switch (r.response) {
+    .then((res) => {
+        switch (res.response) {
             case true:
                 navigator.notification.alert(
-                    'Artist has been successfully reported. This will be followed up by staff.',
+                    'Client has been successfully reported. This will be followed up by staff.',
                     null,
                     'Reported',
                     'Okay'
@@ -386,7 +388,7 @@ export function reportClient(id) {
 
             case false:
                 navigator.notification.alert(
-                    r.error,
+                    res.error,
                     null,
                     'Error',
                     'Okay'
@@ -395,13 +397,14 @@ export function reportClient(id) {
 
             default:
                 navigator.notification.alert(
-                    `Unknown error occured, please try again.\n${JSON.stringify(r)}`,
+                    `Unknown error occured, please try again.\n${JSON.stringify(res)}`,
                     null,
                     'Error',
                     'Okay'
                 );
         }
     })
+    .finally(ui.endLoader)
     .catch(() => {
         navigator.notification.alert(
             'Unknown error occured, please try again.',

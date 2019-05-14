@@ -82,7 +82,8 @@ const app = {
                 );
 
                 /* Auth Check */
-                tools.authenticatedCheck();
+                tools.authenticatedCheck()
+                .then(settings.getBookings);
 
                 /* Chat/Notification Init */
                 chat.init()
@@ -107,7 +108,6 @@ const app = {
                 api.getNewEvents();
 
                 /* Settings UI */
-                settings.getBookings();
                 ui.handleEventNotificationClick();
                 ui.bookingClientHandler();
                 ui.rateClientHandler();

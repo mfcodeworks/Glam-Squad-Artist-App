@@ -25,26 +25,28 @@ export function fillUserInfo() {
 }
 
 export function getBookings() {
-    const eventslist = [];
+    const events = [],
+        promises = [];
 
     return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
+        // If no bookings continue
         if (!u.bookings) return;
+
+        // If bookings exist create event objects
         u.bookings.forEach((ev) => {
-            return cache.getEvent(ev.id)
+            promises.push(cache.getEvent(ev.id)
             .then((event) => {
                 // Set start/end datetime
                 const dateStart = new Date(event.datetime);
                 const dateEnd = new Date(event.datetime);
-                if (event.extraHours) {
-                    dateEnd.setHours(dateEnd.getHours() + (event.extraHours + 1));
-                } else {
+                (event.extraHours) ?
+                    dateEnd.setHours(dateEnd.getHours() + (event.extraHours + 1)) :
                     dateEnd.setHours(dateEnd.getHours() + 1);
-                }
 
-                // Set event object array
-                eventslist.push({
+                // Save event object
+                events.push({
                     id: event.id,
                     title: event.address,
                     desc: event.address,
@@ -53,12 +55,13 @@ export function getBookings() {
                     allDay: false,
                     data: event,
                 });
-            });
+            }));
         });
+        return Promise.all(promises);
     })
     .then(() => {
         $('#full-calendar').fullCalendar({
-            events: eventslist,
+            events,
             defaultView: 'listWeek',
             header: {
                 right: 'prev,next',
