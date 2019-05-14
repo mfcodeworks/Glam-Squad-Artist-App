@@ -304,7 +304,7 @@ export function stripeAccountCheck() {
 export function confirmRecentEvents() {
     return api.getFinishedEvents()
     .then((d) => {
-        if (!d.hasOwnProperty('data')) return;
+        if (!d.data) return;
 
         d.data.forEach((event) => {
             console.log(event);

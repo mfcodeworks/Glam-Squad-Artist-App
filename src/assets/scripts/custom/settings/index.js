@@ -30,34 +30,31 @@ export function getBookings() {
     return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
-        const progress = [];
+        if (!u.bookings) return;
         u.bookings.forEach((ev) => {
-            progress.push(
-                cache.getEvent(ev.id)
-                .then((event) => {
-                    // Set start/end datetime
-                    const dateStart = new Date(event.datetime);
-                    const dateEnd = new Date(event.datetime);
-                    if (event.extraHours) {
-                        dateEnd.setHours(dateEnd.getHours() + (event.extraHours + 1));
-                    } else {
-                        dateEnd.setHours(dateEnd.getHours() + 1);
-                    }
+            return cache.getEvent(ev.id)
+            .then((event) => {
+                // Set start/end datetime
+                const dateStart = new Date(event.datetime);
+                const dateEnd = new Date(event.datetime);
+                if (event.extraHours) {
+                    dateEnd.setHours(dateEnd.getHours() + (event.extraHours + 1));
+                } else {
+                    dateEnd.setHours(dateEnd.getHours() + 1);
+                }
 
-                    // Set event object array
-                    eventslist.push({
-                        id: event.id,
-                        title: event.address,
-                        desc: event.address,
-                        start: dateStart,
-                        end: dateEnd,
-                        allDay: false,
-                        data: event,
-                    });
-                })
-            );
+                // Set event object array
+                eventslist.push({
+                    id: event.id,
+                    title: event.address,
+                    desc: event.address,
+                    start: dateStart,
+                    end: dateEnd,
+                    allDay: false,
+                    data: event,
+                });
+            });
         });
-        return Promise.all(progress);
     })
     .then(() => {
         $('#full-calendar').fullCalendar({
@@ -68,7 +65,6 @@ export function getBookings() {
             },
             titleFormat: 'MMM D',
             height: 800,
-            // TODO: Update event click
             eventClick: (event) => {
                 console.log('Event clicked');
                 console.log(event);
