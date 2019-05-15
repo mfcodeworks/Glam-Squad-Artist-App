@@ -201,13 +201,10 @@ function writeFile(fileEntry, data, id = 0) {
             };
 
             cordova.plugins.notification.local.on(
-                'cancel',
-                (notification) => {
+                'cancel', (notification) => {
                     console.log(notification);
-                    if (notification.id === id) {
-                        fileWriter.abort();
-                        cordova.plugins.notification.local.clear(id);
-                    }
+                    fileWriter.abort();
+                    cordova.plugins.notification.local.clear({ id });
                 }
             );
 
@@ -216,7 +213,7 @@ function writeFile(fileEntry, data, id = 0) {
             cordova.plugins.notification.local.update({
                 id,
                 progressBar: { indeterminate: true },
-                actions: [],
+                clock: false,
                 vibrate: false,
                 sound: false,
             });
@@ -293,10 +290,11 @@ function fileTransferDownload(uri, filename, id) {
                         cordova.plugins.notification.local.update({
                             id,
                             progressBar: { value: loaded },
-                            actions: [],
+                            clock: false,
                             vibrate: false,
                             sound: false,
                         });
+                        if (loaded > 99) clearInterval(progressInterval);
                     // Run every 1 second
                     }, 1 * 1000);
                 }
@@ -306,10 +304,8 @@ function fileTransferDownload(uri, filename, id) {
                 'cancel',
                 (notification) => {
                     console.log(notification);
-                    if (notification.id === id) {
-                        fileTransfer.abort();
-                        cordova.plugins.notification.local.clear(id);
-                    }
+                    fileTransfer.abort();
+                    cordova.plugins.notification.local.clear({ id });
                 }
             );
         });
@@ -325,13 +321,14 @@ export function downloadFile(uri, filename) {
     cordova.plugins.notification.local.schedule({
         id,
         smallIcon: 'res://img/logo.png',
-        title: filename,
-        text: 'Downloading',
+        text: filename,
+        title: 'Downloading',
         progressBar: { value: 0 },
         actions: [{
             id: 'cancel',
             title: 'Cancel',
         }],
+        clock: false,
         foreground: true,
         color: 'black',
         vibrate: false,
@@ -354,9 +351,36 @@ export function downloadFile(uri, filename) {
             .then((fileEntry) => {
                 return writeFile(fileEntry, data, id);
             })
+            .then(() => {
+                cordova.plugins.notification.local.schedule({
+                    id,
+                    smallIcon: 'res://img/logo.png',
+                    text: filename,
+                    title: 'Complete',
+                    progressBar: { enabled: false },
+                    actions: [],
+                    clock: false,
+                    foreground: true,
+                    color: 'black',
+                    vibrate: false,
+                    autoClear: true,
+                });
+            })
             .catch((err) => {
                 console.warn(err);
-                cordova.plugins.notification.local.clear(id);
+                cordova.plugins.notification.local.schedule({
+                    id,
+                    smallIcon: 'res://img/logo.png',
+                    text: JSON.stringify(err),
+                    title: 'Error',
+                    progressBar: { enabled: false },
+                    actions: [],
+                    clock: false,
+                    foreground: true,
+                    color: 'black',
+                    vibrate: false,
+                    autoClear: true,
+                });
             });
 
         // For non-base64 download file URI to file
@@ -367,10 +391,11 @@ export function downloadFile(uri, filename) {
                 cordova.plugins.notification.local.schedule({
                     id,
                     smallIcon: 'res://img/logo.png',
-                    title: filename,
-                    text: 'Complete',
-                    progressBar: { value: 100 },
+                    text: filename,
+                    title: 'Complete',
+                    progressBar: { enabled: false },
                     actions: [],
+                    clock: false,
                     foreground: true,
                     color: 'black',
                     vibrate: false,
@@ -379,7 +404,19 @@ export function downloadFile(uri, filename) {
             })
             .catch((err) => {
                 console.warn(err);
-                cordova.plugins.notification.local.clear(id);
+                cordova.plugins.notification.local.schedule({
+                    id,
+                    smallIcon: 'res://img/logo.png',
+                    text: JSON.stringify(err),
+                    title: 'Error',
+                    progressBar: { enabled: false },
+                    actions: [],
+                    clock: false,
+                    foreground: true,
+                    color: 'black',
+                    vibrate: false,
+                    autoClear: true,
+                });
             });
 
         default:

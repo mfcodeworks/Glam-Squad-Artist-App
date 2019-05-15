@@ -10,7 +10,12 @@ function lightboxObserver() {
 function imgObserver() {
     $(document).on('click', '.lightbox-img', (e) => {
         const src = $(e.currentTarget).attr('src');
-        const filename = src.split('/').pop();
+        let filename = src.split('/').pop();
+
+        if (!filename.includes('.')) {
+            const date = new Date();
+            filename = `${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}.${src.split(';')[0].split('/')[1]}`;
+        }
 
         $('body').prepend(
             `<div id='lightbox-display'>
@@ -31,9 +36,14 @@ function vidObserver() {
     $(document).on('click', '.lightbox-vid', (e) => {
         const vid = e.currentTarget;
 
-        const src = $(vid).find('source').attr('src');
-        const type = $(vid).find('source').attr('type');
-        const filename = src.split('/').pop();
+        const src = $(vid).find('source').attr('src'),
+            type = $(vid).find('source').attr('type');
+        let filename = src.split('/').pop();
+
+        if (!filename.includes('.')) {
+            const date = new Date();
+            filename = `${date.getFullYear()}_${date.getMonth()}_${date.getDate()}_${Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}.${src.split(';')[0].split('/')[1]}`;
+        }
 
         console.log('Opening lightbox.');
 
