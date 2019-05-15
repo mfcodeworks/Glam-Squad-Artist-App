@@ -2,6 +2,7 @@
 import * as api from '../api';
 import * as storage from '../storage';
 import * as chat from '../chat';
+import * as ui from '../ui';
 
 let push;
 const fcmTopics = ['all', 'artists', 'deals'];
@@ -135,13 +136,13 @@ export function handle() {
         push.on('notification', (notif) => {
             console.log(JSON.stringify(notif, null, '\t'));
 
-            if (notif.hasOwnProperty('weblink')) {
+            if (notif.additionalData.hasOwnProperty('weblink')) {
                 // Load with timeout to allow for device ready
                 setTimeout(() => {
                     navigator.notification.confirm(
                         'Open notification link?',
                         (index) => {
-                            if (index === 1) cordova.InAppBrowser.open(notif.additionalData.extra.weblink);
+                            if (index === 1) cordova.InAppBrowser.open(notif.additionalData.weblink);
                         },
                         'Notification',
                         ['Yes', 'No']
@@ -149,6 +150,14 @@ export function handle() {
 
                 // Allow 3 seconds
                 }, 3 * 1000);
+            }
+
+            if (notif.additionalData.hasOwnProperty('newEvent')) {
+                // Add new notification
+                ui.notificationEvent(notif.additionalData.newEvent);
+                // Set notification count
+                const count = $('a[data-role="event-notification-item"]').length;
+                $('[data-src="notification-count"]').text((count > 99) ? '99+' : count + 1);
             }
         });
 

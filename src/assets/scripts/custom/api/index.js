@@ -366,7 +366,7 @@ export function acceptEventBooking() {
 
 export function reportClient(id) {
     ui.startLoader();
-    
+
     return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
@@ -425,15 +425,13 @@ export function getNewEvents() {
         switch (r.response) {
             case true:
                 if (r.data.length > 0) {
-                    $('[data-role="notification-menu-display"]').empty();
-
+                    r.data = r.data.reverse();
                     r.data.forEach((event) => {
                         // Create notification item
                         ui.notificationEvent(event);
                         // Cache event
                         storage.save(`event-${event.id}`, JSON.stringify(event));
                     });
-
                     // Set notification count
                     $('[data-src="notification-count"]').text((r.data.length > 99) ? '99+' : r.data.length);
                 }

@@ -51,6 +51,13 @@ export function notificationEvent(event) {
         // Cache client
         storage.save(`client-${client.id}`, JSON.stringify(client));
 
+        // If no notifications, remove 'notitifications' message
+        if ($('a[data-event-id]').length === 0) $('[data-role="notification-menu-display"]').empty();
+
+        // Remove existing notifications
+        const existingNotif = $(`a[data-event-id="${event.id}"]`);
+        if (existingNotif.length) existingNotif.parent().remove();
+
         // Set datetime object
         const date = new Date(event.datetime);
 
@@ -74,7 +81,7 @@ export function notificationEvent(event) {
         </li>`;
 
         // Append notification
-        $('[data-role="notification-menu-display"]:first').append(html);
+        $('[data-role="notification-menu-display"]:first').prepend(html);
     });
 }
 

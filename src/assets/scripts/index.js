@@ -102,12 +102,12 @@ const app = {
                 map.stripeAccountCheck();
                 map.confirmRecentEvents();
                 tools.fillUserData();
-                settings.profilePhotoHandler();
-                settings.updateUserHandler();
                 api.fillUserInfo();
                 api.getNewEvents();
 
                 /* Settings UI */
+                settings.profilePhotoHandler();
+                settings.updateUserHandler();
                 ui.handleEventNotificationClick();
                 ui.bookingClientHandler();
                 ui.rateClientHandler();
