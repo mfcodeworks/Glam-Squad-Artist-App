@@ -146,6 +146,8 @@ $responsive: true;
 
 .mw-100p { max-width: 100%; }
 .mh-100p { max-height: 100%; }
+.mw-80p { max-width: 100% }
+.mh-80p { max-height: 100% }
 
 @if ($responsive == true) {
   @include generateResponsive() {

@@ -542,7 +542,9 @@ export function videoCache() {
             return tools.readFileURL(url)
             .then((file) => {
                 console.log(file);
+                // Replace URL links with cache file
                 source.attr('src', file);
+                $(`a[data-sid="${sid}"]`).attr('href', file);
                 return storage.save(`media-${sid}`, file);
             })
             .catch(console.warn);
@@ -580,19 +582,24 @@ function getMediaInfo(message) {
     .then((url) => {
         // Create image placeholder
         if (message.media.contentType.indexOf('image') > -1) {
-            mediaPlaceholder = `<img src="${url}" class="lightbox-img w-70p" data-sid="${message.media.sid}">`;
-
+            mediaPlaceholder = `<img src="${url}" class="lightbox-img w-100p" data-sid="${message.media.sid}">`;
         // Create video placeholder
         } else if (message.media.contentType.indexOf('video') > -1) {
             mediaPlaceholder =
-            `<video class="msg_container_send_vid" data-sid="${message.media.sid}" preload="metadata" controls>
+            `<video class="lightbox-vid w-100p" data-sid="${message.media.sid}" controls playsinline controlsList="nodownload" preload="metadata">
                 <source src="${url}" type="${message.media.contentType}">
                 Your device does not support in-app video.
-            </video>`;
-
+            </video>
+            <br>
+            <a href="${url}" class="btn btn-secondary p-4" data-sid="${message.media.sid}" download="${message.media.filename}">
+                <i class="fas fa-file-download mX-5"></i>${message.media.filename}
+            </a>`;
         // Create file placeholder
         } else {
-            mediaPlaceholder = `<a href="${url}" data-sid="${message.media.sid}" download="${message.media.filename}">${message.media.filename}</a>`;
+            mediaPlaceholder =
+            `<a href="${url}" class="btn btn-secondary p-4" data-sid="${message.media.sid}" download="${message.media.filename}">
+                <i class="fas fa-file-download mX-5"></i>${message.media.filename}
+            </a>`;
         }
 
         return url;
@@ -641,7 +648,7 @@ function printMessage(message) {
             case me:
                 html =
                 `<div class="layers ai-fe gapY-10" data-sid="${message.sid}">
-                    <div class="layer">
+                    <div class="layer mw-80p">
                         <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
                             <div class="peer mL-15 ord-1"><small>${author.friendlyName}</small><br><small>${datetime}</small></div>
                             <div class="peer-greed ord-0"><span data-role="chat-message-body">${body}</span></div>
@@ -653,7 +660,7 @@ function printMessage(message) {
             default:
                 html =
                 `<div class="layers ai-fs gapY-10" data-sid="${message.sid}">
-                    <div class="layer">
+                    <div class="layer mw-80p">
                         <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
                             <div class="peer mL-15 ord-1"><small>${author.friendlyName}</small><br><small>${datetime}</small></div>
                             <div class="peer-greed ord-0"><span data-role="chat-message-body">${body}</span></div>

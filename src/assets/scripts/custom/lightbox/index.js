@@ -47,6 +47,11 @@ function vidObserver() {
 
         console.log('Opening lightbox.');
 
+        // Pause all other videos
+        $('video').each((index, el) => {
+            el.pause();
+        });
+
         $('body').prepend(
             `<div id='lightbox-display'>
                 <video id='lightbox-content' autoplay webkit-playsinline loop>
