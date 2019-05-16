@@ -20,6 +20,32 @@ export function updateUserHandler() {
     });
 }
 
+export function changeRoleHandler() {
+    $('#new-role-btn').click(() => {
+        // Save new role ID
+        const selection = $('#new-role option:selected');
+        console.log(selection);
+        const roleId = selection.data('role-id');
+        // Check user
+        storage.get('login')
+        .then(JSON.parse)
+        .then((user) => {
+            // If current role and new role are same, take no action
+            console.log(`New ID: ${roleId}\nUser Role ID:${user.role.id}`);
+            if (user.role.id === roleId) return;
+            // If new role is different, alert then change
+            navigator.notification.confirm(
+                'If you switch roles any current bookings you\'ve accepted will be cancelled. Are you sure you wanna swap?',
+                (index) => {
+                    index === 1 ? api.changeRole(roleId) : null;
+                },
+                'Careful Sis',
+                ['Okay', 'Cancel']
+            );
+        });
+    });
+}
+
 export function fillUserInfo() {
     return api.fillUserInfo();
 }
@@ -147,7 +173,6 @@ export function deleteBookingHandler() {
     });
 }
 
-// TODO: Check fixed
 export function reportClientHandler() {
     $('#btn-report-client').click((e) => {
         api.reportClient($(e.currentTarget).data('client-id'));

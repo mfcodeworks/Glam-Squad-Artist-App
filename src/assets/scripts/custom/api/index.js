@@ -542,6 +542,54 @@ export function deleteEvent(event) {
     });
 }
 
+export function changeRole(roleId) {
+    // Start loader
+    ui.startLoader();
+
+    // Update user object
+    isAuthenticated()
+    .then(() => {
+        return storage.get('login');
+    })
+    .then(JSON.parse)
+    .then((user) => {
+        // Cancel current bookings
+        user.bookings.forEach((eventId) => {
+            deleteEvent(eventId);
+        });
+        // Put new role
+        return apiSend('PUT', `${endpoint}/artists/${user.id}/role`, { roleId });
+    })
+    .then((r) => {
+        if (r.id) {
+            navigator.notification.alert(
+                'Role successfully changed.',
+                null,
+                'Success',
+                'Okay'
+            );
+            storage.save('login', JSON.stringify(r));
+        } else {
+            navigator.notification.alert(
+                `An error occured, please try again later.\n${JSON.stringify(r)}`,
+                null,
+                'Error',
+                'Okay'
+            );
+        }
+    })
+    .catch((err) => {
+        console.warn(err);
+        navigator.notification.alert(
+            `An unknown error occured. Please try again later.\n${JSON.stringify(err)}`,
+            null,
+            'Error',
+            'Okay'
+        );
+    })
+    .finally(ui.endLoader);
+}
+
 export function client(id) {
     return apiSend('GET', `${endpoint}/clients/${id}`)
     .then((c) => {

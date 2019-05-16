@@ -98,16 +98,20 @@ const app = {
                 .then(ui.selectFirstChat)
                 .finally(ui.endLoader);
 
-                /* Map UI */
+                /* Map Main UI */
                 map.stripeAccountCheck();
                 map.confirmRecentEvents();
+                api.getNewEvents();
+
+                /* Data Fill */
                 tools.fillUserData();
                 api.fillUserInfo();
-                api.getNewEvents();
+                ui.fillNewArtistRoles();
 
                 /* Settings UI */
                 settings.profilePhotoHandler();
                 settings.updateUserHandler();
+                settings.changeRoleHandler();
                 ui.handleEventNotificationClick();
                 ui.bookingClientHandler();
                 ui.rateClientHandler();

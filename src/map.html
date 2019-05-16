@@ -715,12 +715,13 @@
                                                 Bio&nbsp;<i class="fas fa-book-open"></i>
                                                 <textarea name='bio' class='form-control' id='new-bio' rows="5" placeholder="No bio yet&hellip;"></textarea>
                                             </div>
-                                            <!-- FIXME: Decide if role can toggle & procedure
-                                            <div class='form-group'>
-                                                <label class="fw-500" for="new-role"><i class="fas fa-users"></i> Role</label>
-                                                <select class="form-control" id="new-role" name="new-role">
-                                                </select>
-                                            </div> -->
+                                            <div class="form-group">
+                                                <label class="fw-500" for="new-role">Role <i class="fas fa-users"></i></label>
+                                                <div class="input-group">
+                                                    <select class="form-control mr-2" id="new-role" name="new-role"></select>
+                                                    <button class="btn btn-danger" id="new-role-btn" type="button">Change Role</button>
+                                                </div>
+                                            </div>
                                             <div class='form-group'>
                                                 Instagram&nbsp;<i class="fab fa-instagram"></i>
                                                 <input type='text' name='instagram' class='form-control' id='new-instagram' autocapitalize="none">

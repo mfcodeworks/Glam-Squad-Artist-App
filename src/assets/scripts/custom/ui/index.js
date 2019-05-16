@@ -218,6 +218,19 @@ export function fillArtistRoles() {
     });
 }
 
+export function fillNewArtistRoles() {
+    api.getArtistRoles()
+    .then((roles) => {
+        storage.get('login')
+        .then(JSON.parse)
+        .then((user) => {
+            roles.data.forEach((role) => {
+                $('#new-role').append(`<option data-role-id="${role.id}" ${role.id === user.role.id ? 'selected' : ''}>${role.name}</option>`);
+            });
+        });
+    });
+}
+
 export function addSettingsEvent(event) {
     const price = `$${event.price.toFixed(2)}`,
           eventDate = new Date(event.datetime),
