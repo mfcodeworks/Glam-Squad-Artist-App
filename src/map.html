@@ -177,7 +177,6 @@
                                 <span class="title">Chat</span>
                             </a>
                         </li>
-                        <!-- ANALYTICS CHARTS
                         <li class="nav-item">
                             <a class='sidebar-link' href="charts.html">
                                 <span class="icon-holder">
@@ -186,7 +185,6 @@
                                 <span class="title">Charts</span>
                             </a>
                         </li>
-                        -->
                         <!-- FORM EXAMPLES
                         <li class="nav-item">
                             <a class='sidebar-link' href="forms.html">
@@ -207,7 +205,7 @@
                             </a>
                         </li>
                         -->
-                        <!-- ANALYTICS TABLES
+                        <!-- TABLES DEMO
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" href="javascript:void(0);">
                                 <span class="icon-holder">
@@ -614,6 +612,84 @@
                     </div>
                     <!-- /PAGE: Bookings -->
 
+                    <!-- PAGE: Charts -->
+                    <div class="d-none" data-page="charts">
+                        <div id='mainContent'>
+                            <!-- CHART: Line Chart (chartJS) -->
+                            <div>
+                                <div class="bgc-white p-20 bd">
+                                    <h6 class="c-grey-900">Line Chart</h6>
+                                    <div class="mT-30">
+                                        <canvas id="line-chart" height="220"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CHART: Area Chart (chartJS) -->
+                            <div>
+                                <div class="bgc-white p-20 bd">
+                                    <h6 class="c-grey-900">Area Chart</h6>
+                                    <div class="mT-30">
+                                        <canvas id="area-chart" height="220"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CHART: Scatter Chart (chartJS) -->
+                            <div>
+                                <div class="bgc-white p-20 bd">
+                                    <h6 class="c-grey-900">Scatter Chart</h6>
+                                    <div class="mT-30">
+                                        <canvas id="scatter-chart" height="220"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CHART: Bar Chart (chartJS) -->
+                            <div>
+                                <div class="bgc-white p-20 bd">
+                                    <h6 class="c-grey-900">Bar Chart</h6>
+                                    <div class="mT-30">
+                                        <canvas id="bar-chart" height="220"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- CHART: Pie Chart (easyPieChart) -->
+                            <div>
+                                <div class="bgc-white p-20 bd">
+                                    <h6 class="c-grey-900">Easy Pie Charts</h6>
+                                    <div class="mT-30">
+                                        <div class="peers mT-20 fxw-nw@lg+ jc-sb ta-c gap-10">
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-size='80' data-percent="75" data-bar-color='#f44336'>
+                                                    <span></span>
+                                                </div>
+                                                <h6 class="fsz-sm">New Users</h6>
+                                            </div>
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-size='80' data-percent="50" data-bar-color='#2196f3'>
+                                                    <span></span>
+                                                </div>
+                                                <h6 class="fsz-sm">New Purchases</h6>
+                                            </div>
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-size='80' data-percent="65" data-bar-color='#f44336'>
+                                                    <span></span>
+                                                </div>
+                                                <h6 class="fsz-sm">New Customers</h6>
+                                            </div>
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-size='80' data-percent="90" data-bar-color='#ff9800'>
+                                                    <span></span>
+                                                </div>
+                                                <h6 class="fsz-sm">Bounce Rate</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /PAGE: Charts -->
+
                     <!-- Global Modals -->
                         <!-- Payment Modal -->
                         <div class="modal fade" id="payment-modal" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
@@ -736,15 +812,20 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="new-portfolio" class="btn clr-primary" id="new-portfolio-label">
-                                                    Add to Portfolio<i class="fas fa-images mL-3"></i>
+                                                    Add to Portfolio&nbsp;<i class="fas fa-images mL-3"></i>
                                                 </label>
                                                 <input type="file" class="form-control d-none" id="new-portfolio" name="new-portfolio[]" multiple>
                                             </div>
-                                            <div class="grid" data-src="portfolio-preview">
+                                            <div class="form-group grid" data-src="portfolio-preview">
                                                 <div class='grid-col grid-col--1'></div>
                                                 <div class='grid-col grid-col--2'></div>
                                                 <div class='grid-col grid-col--3'></div>
                                                 <div class='grid-col grid-col--4'></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#portfolio-modal">
+                                                    Remove Portfolio Images&nbsp;<i class="fas fa-images mL-3"></i>
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -753,6 +834,32 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn clr-cancel" id="btn-close-profile" data-dismiss="modal">Close</button>
                                         <button type="button" class="btn clr-primary" id="btn-save-profile">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Portfolio Modal -->
+                        <div class="modal fade" id="portfolio-modal" role="dialog" aria-labelledby="portfolioModal" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Remove Portfolio Images</h5>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        <!-- Profile Input -->
+                                        <form action='' id='portfolio-removal-form'>
+                                            <div class="form-group" data-role="portfolio-removal-selection"></div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn clr-cancel" id="btn-close-portfolio" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn clr-primary" id="btn-portfolio-remove">Submit</button>
                                     </div>
                                 </div>
                             </div>

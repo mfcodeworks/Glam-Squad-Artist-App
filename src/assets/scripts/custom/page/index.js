@@ -3,6 +3,7 @@ const pages = [
     'chat.html',
     'calendar.html',
     'map.html',
+    'charts.html',
 ];
 
 export default (function () {
@@ -58,6 +59,14 @@ export default (function () {
 
                 // Set active link
                 $('a.sidebar-link[href="calendar.html"]').addClass('active');
+                break;
+
+            case 'charts.html':
+                // Show HTML
+                $('[data-page="charts"]').removeClass('d-none');
+
+                // Set active link
+                $('a.sidebar-link[href="charts.html"]').addClass('active');
                 break;
 
             default:

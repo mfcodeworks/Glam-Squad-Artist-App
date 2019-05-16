@@ -30,6 +30,7 @@ import * as push from './custom/push';
 import * as tools from './custom/tools';
 import * as api from './custom/api';
 import * as settings from './custom/settings';
+import './masonry';
 
 // FIX: Current fix for cordova inAppBrowser window.open overwrite
 const open = window.open;
