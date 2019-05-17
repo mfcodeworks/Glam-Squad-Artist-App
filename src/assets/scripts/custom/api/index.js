@@ -835,7 +835,7 @@ export function fillUserInfo() {
             <div class='grid-col grid-col--3'></div>
             <div class='grid-col grid-col--4'></div>
             ${u.portfolio !== null ? u.portfolio.map((img) => {
-                return `<div class='grid-item bd bdrs-4 bdw-1 bdc-grey-400'><img class="lightbox-img" src="${img.photo}" /></div>`;
+                return `<div class='grid-item bd bdrs-4 bdw-1 bdc-grey-400'><img class="portfolio-img lightbox-img" src="${img.photo}" /></div>`;
             }).join('') : ''}
         `);
         masonryInit();

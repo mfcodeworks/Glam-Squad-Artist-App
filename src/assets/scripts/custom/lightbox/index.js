@@ -9,6 +9,8 @@ function lightboxObserver() {
 // Display image lightbox
 function imgObserver() {
     $(document).on('click', '.lightbox-img', (e) => {
+        console.log('Portfolio Click');
+
         const src = $(e.currentTarget).attr('src');
         let filename = src.split('/').pop();
 
@@ -34,9 +36,8 @@ function imgObserver() {
 // Video lightbox
 function vidObserver() {
     $(document).on('click', '.lightbox-vid', (e) => {
-        const vid = e.currentTarget;
-
-        const src = $(vid).find('source').attr('src'),
+        const vid = e.currentTarget,
+            src = $(vid).find('source').attr('src'),
             type = $(vid).find('source').attr('type');
         let filename = src.split('/').pop();
 

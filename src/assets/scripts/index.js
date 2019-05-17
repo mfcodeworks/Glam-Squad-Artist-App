@@ -1,5 +1,6 @@
 /* NPM */
 import 'fullcalendar';
+import 'long-press-event/src/long-press-event';
 
 /* Style */
 import 'fullcalendar/dist/fullcalendar.min.css';
@@ -113,10 +114,11 @@ const app = {
                 settings.profilePhotoHandler();
                 settings.updateUserHandler();
                 settings.changeRoleHandler();
+                settings.reportClientHandler();
                 ui.handleEventNotificationClick();
                 ui.bookingClientHandler();
                 ui.rateClientHandler();
-                settings.reportClientHandler();
+                ui.portfolioLongPressHandler();
 
                 /* Create media directory */
                 tools.createMediaDir();

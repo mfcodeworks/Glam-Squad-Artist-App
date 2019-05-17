@@ -26,6 +26,14 @@ export function endPageLoading() {
     }, 300);
 }
 
+export function portfolioLongPressHandler() {
+    $(document).on('long-press', '.portfolio-img', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Portfolio long press event.');
+    });
+}
+
 // Login screen forms
 export function registerUserHandler() {
     $('[data-role="register"]').click(() => {
