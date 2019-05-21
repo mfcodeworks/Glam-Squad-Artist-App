@@ -114,6 +114,9 @@ const app = {
                 api.fillUserInfo();
                 ui.fillNewArtistRoles();
 
+                /* Analytics Fill */
+                api.getReceipts();
+
                 /* Settings UI */
                 settings.profilePhotoHandler();
                 settings.updateUserHandler();

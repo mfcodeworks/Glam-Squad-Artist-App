@@ -930,3 +930,12 @@ export function updateUser() {
     })
     .finally(ui.endLoader);
 }
+
+export function getReceipts() {
+    storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        return apiSend('GET', `${endpoint}/artists/${u.id}/receipts`);
+    })
+    .then(console.log);
+}

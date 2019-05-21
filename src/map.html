@@ -619,28 +619,32 @@
                     <!-- PAGE: Charts -->
                     <div class="d-none" data-page="charts">
                         <div id='mainContent'>
-                            <!-- CHART: Line Chart (chartJS) -->
+                            <!-- CHART: Pie Chart (easyPieChart) -->
                             <div>
                                 <div class="bgc-white p-20 bd">
-                                    <h6 class="c-grey-900">Line Chart</h6>
+                                    <h6 class="c-grey-900">Comparison to Last Month</h6>
                                     <div class="mT-30">
-                                        <canvas id="line-chart" height="220"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- CHART: Area Chart (chartJS) -->
-                            <div>
-                                <div class="bgc-white p-20 bd">
-                                    <h6 class="c-grey-900">Area Chart</h6>
-                                    <div class="mT-30">
-                                        <canvas id="area-chart" height="220"></canvas>
+                                        <div class="peers mT-20 fxw-nw@lg+ jc-sb ta-c gap-10">
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-src="jobs-this-month" data-size='80' data-percent="140" data-bar-color='#f44336'>
+                                                    <span>7</span>
+                                                </div>
+                                                <h6 class="fsz-sm">Jobs</h6>
+                                            </div>
+                                            <div class="peer">
+                                                <div class="easy-pie-chart" data-src="earnings-this-month" data-size='80' data-percent="137" data-bar-color='#4caf50'>
+                                                    <span>$1,030</span>
+                                                </div>
+                                                <h6 class="fsz-sm">Earnings</h6>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- CHART: Scatter Chart (chartJS) -->
                             <div>
                                 <div class="bgc-white p-20 bd">
-                                    <h6 class="c-grey-900">Scatter Chart</h6>
+                                    <h6 class="c-grey-900">Earnings Per Booking</h6>
                                     <div class="mT-30">
                                         <canvas id="scatter-chart" height="220"></canvas>
                                     </div>
@@ -649,44 +653,9 @@
                             <!-- CHART: Bar Chart (chartJS) -->
                             <div>
                                 <div class="bgc-white p-20 bd">
-                                    <h6 class="c-grey-900">Bar Chart</h6>
+                                    <h6 class="c-grey-900">Bookings Per Month</h6>
                                     <div class="mT-30">
                                         <canvas id="bar-chart" height="220"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- CHART: Pie Chart (easyPieChart) -->
-                            <div>
-                                <div class="bgc-white p-20 bd">
-                                    <h6 class="c-grey-900">Easy Pie Charts</h6>
-                                    <div class="mT-30">
-                                        <div class="peers mT-20 fxw-nw@lg+ jc-sb ta-c gap-10">
-                                            <div class="peer">
-                                                <div class="easy-pie-chart" data-size='80' data-percent="75" data-bar-color='#f44336'>
-                                                    <span></span>
-                                                </div>
-                                                <h6 class="fsz-sm">New Users</h6>
-                                            </div>
-                                            <div class="peer">
-                                                <div class="easy-pie-chart" data-size='80' data-percent="50" data-bar-color='#2196f3'>
-                                                    <span></span>
-                                                </div>
-                                                <h6 class="fsz-sm">New Purchases</h6>
-                                            </div>
-                                            <div class="peer">
-                                                <div class="easy-pie-chart" data-size='80' data-percent="65" data-bar-color='#f44336'>
-                                                    <span></span>
-                                                </div>
-                                                <h6 class="fsz-sm">New Customers</h6>
-                                            </div>
-                                            <div class="peer">
-                                                <div class="easy-pie-chart" data-size='80' data-percent="90" data-bar-color='#ff9800'>
-                                                    <span></span>
-                                                </div>
-                                                <h6 class="fsz-sm">Bounce Rate</h6>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
