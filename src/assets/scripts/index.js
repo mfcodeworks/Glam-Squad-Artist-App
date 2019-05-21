@@ -42,12 +42,16 @@ const app = {
     initialize() {
         /* Page listener */
         document.addEventListener('pageload', this.onDeviceReady.bind(this),  false);
+
         /* Handle back button */
         document.addEventListener('backbutton', this.onBackButton.bind(this), false);
+
         /* Listen for app resume */
         document.addEventListener('resume', this.onResume.bind(this), false);
+
         /* Monitor network connection */
         tools.monitorNetwork();
+
         /* FIX: Restores original window.open functionality */
         window.open = open;
     },
@@ -76,8 +80,8 @@ const app = {
                     map.onMapError,
                     {
                         enableHighAccuracy: false,
-                        // 5 seconds timeout
-                        timeout: (5 * 1000),
+                        // 2 seconds timeout
+                        timeout: (2 * 1000),
                         // max age for cache use 5 seconds
                         maximumAge: (5 * 1000),
                     }
