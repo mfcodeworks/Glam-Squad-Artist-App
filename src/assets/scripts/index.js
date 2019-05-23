@@ -115,7 +115,8 @@ const app = {
                 ui.fillNewArtistRoles();
 
                 /* Analytics Fill */
-                api.getReceipts();
+                api.getReceipts()
+                .then(tools.makeAnalytics);
 
                 /* Settings UI */
                 settings.profilePhotoHandler();

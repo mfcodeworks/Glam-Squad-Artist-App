@@ -28,9 +28,9 @@ export function endPageLoading() {
 
 export function portfolioLongPressHandler() {
     $(document).on('long-press', '.portfolio-img', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        e.originalEvent.preventDefaultClick();
         console.log('Portfolio long press event.');
+        // TODO: Add checkboxes over each image for selecting which image to delete
     });
 }
 

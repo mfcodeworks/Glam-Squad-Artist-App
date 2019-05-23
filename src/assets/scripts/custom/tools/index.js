@@ -69,6 +69,10 @@ export function authenticatedCheck() {
     });
 }
 
+export function makeAnalytics() {
+    // TODO: Analytics Pseudocode
+}
+
 export function fillUserData() {
     return storage.get('login')
     .then(JSON.parse)
