@@ -69,8 +69,9 @@ export function authenticatedCheck() {
     });
 }
 
-export function makeAnalytics() {
+export function makeAnalytics(receipts) {
     // TODO: Analytics Pseudocode
+    console.log(receipts);
 }
 
 export function fillUserData() {
