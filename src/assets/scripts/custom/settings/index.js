@@ -98,11 +98,16 @@ export function getBookings() {
                 console.log('Event clicked');
                 console.log(event);
 
+                // Set now for date comparison
+                const now = new Date();
+
                 // Fill Modal
                 $('[data-src="booking-datetime"]').text(event.start.toLocaleString(tools.getLanguage()));
                 $('[data-role="delete-booking"]').data('event-id', event.id);
                 $('[data-role="delete-booking"]').data('event-address', event.title);
                 $('[data-src="booking-address"]').text(event.title.split(',')[0]);
+                // If today later than event, event is in past so disabled cancel button
+                $('[data-role="delete-booking"]').prop('disabled', now.getTime() > event.start.toDate().getTime());
                 ui.addSettingsEvent(event.data);
                 $('#event-booking-modal').modal('show');
             },
