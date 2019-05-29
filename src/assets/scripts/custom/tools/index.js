@@ -70,8 +70,102 @@ export function authenticatedCheck() {
 }
 
 export function makeAnalytics(receipts) {
-    // TODO: Analytics Pseudocode
+    /**
+     * Analytics code
+     */
+
+    // Log receipts
     console.log(receipts);
+
+    // Set data variables
+    const today = new Date(),
+        todayMonth = today.getMonth(),
+        todayYear = today.getFullYear(),
+        previousYear = today.getFullYear() - 1,
+        scatterX = {},
+        scatterY = {},
+        scatterArray = {},
+        barArray = {};
+    let pieJobs = 0,
+        pieEarnings = 0;
+
+    // If no previous bookings return empty object
+    if (receipts.length === 0) {
+        const empty = {
+            scatterArray: {},
+            barArray: {},
+            pieJobs: 0,
+            pieEarnings: 0,
+        };
+        empty.scatterArray[todayYear] = [[], [], [], [], [], [], [], [], [], [], [], []];
+        empty.barArray[todayYear] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        empty.barArray[previousYear] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        return empty;
+    }
+
+    // Loop through available receipts
+    receipts.forEach((receipt) => {
+        // Create receipt datetime object
+        receipt.payment_datetime = new Date(receipt.payment_datetime);
+
+        // Set receipt date constants
+        const paymentMonth = receipt.payment_datetime.getMonth(),
+            paymentYear = receipt.payment_datetime.getFullYear();
+
+        // Instantiate analytic array values
+        scatterX.hasOwnProperty(paymentYear) === false ?
+            scatterX[paymentYear] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : null;
+        scatterY.hasOwnProperty(paymentYear) === false ?
+            scatterY[paymentYear] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : null;
+        scatterArray.hasOwnProperty(paymentYear) === false ?
+            scatterArray[paymentYear] = [
+                [], [], [], [], [], [], [], [], [], [], [], [],
+            ] : null;
+        barArray.hasOwnProperty(paymentYear) === false ?
+            barArray[paymentYear] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : null;
+
+        /**
+         * Analytics calculations
+         */
+
+        // For bar array at year/month index <[2019][01]> add a booking
+        barArray[paymentYear][paymentMonth]++;
+
+        // For scatter chart add 1 job to X, add earnings to Y
+        scatterX[paymentYear][paymentMonth]++;
+        scatterY[paymentYear][paymentMonth] += receipt.payment_amount;
+
+        // Push object { x: total jobs so far, y: total earnings so far} to scatter data
+        scatterArray[paymentYear][paymentMonth].push({
+            x: scatterX[paymentYear][paymentMonth],
+            y: scatterY[paymentYear][paymentMonth],
+        });
+    });
+
+    /**
+     * Simple pie chart data
+     */
+
+    // Divide this months jobs by last months for a percentage, unless last month is 0
+    pieJobs = (!scatterArray[todayYear][todayMonth - 1].last()) ?
+        100 : (scatterArray[todayYear][todayMonth].last().x / scatterArray[todayYear][todayMonth - 1].last().x) * 100;
+
+    // Divide this months earnings by last months for a total earnings percentage, unless last month is 0
+    pieEarnings = (!scatterArray[todayYear][todayMonth - 1].last()) ?
+        100 : (scatterArray[todayYear][todayMonth].last().y / scatterArray[todayYear][todayMonth - 1].last().y) * 100;
+
+    // If not existing, create previous yeara data for bar chart
+    barArray.hasOwnProperty(todayYear - 1) === false ?
+        barArray[todayYear - 1] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] : null;
+
+    // Output data in object
+    return {
+        scatterArray,
+        barArray,
+        pieJobs,
+        pieEarnings,
+    };
 }
 
 export function fillUserData() {

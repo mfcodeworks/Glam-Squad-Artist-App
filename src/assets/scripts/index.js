@@ -1,3 +1,4 @@
+/* eslint-disable no-extend-native */
 /* NPM */
 import 'fullcalendar';
 import 'long-press-event/src/long-press-event';
@@ -7,7 +8,7 @@ import 'fullcalendar/dist/fullcalendar.min.css';
 import '../styles/index.scss';
 
 /* Theme JS */
-import './charts';
+// import './charts';
 import './popover';
 import './search';
 import './sidebar';
@@ -33,8 +34,15 @@ import * as api from './custom/api';
 import * as settings from './custom/settings';
 import './masonry';
 
-// FIX: Current fix for cordova inAppBrowser window.open overwrite
+// Current fix for cordova inAppBrowser window.open overwrite
 const open = window.open;
+
+// Add a get last method to arrays
+if (!Array.prototype.last) {
+    Array.prototype.last = function () {
+        return this[this.length - 1];
+    };
+}
 
 /* Cordova App */
 const app = {
@@ -116,7 +124,8 @@ const app = {
 
                 /* Analytics Fill */
                 api.getReceipts()
-                .then(tools.makeAnalytics);
+                .then(tools.makeAnalytics)
+                .then(ui.analyticsCharts);
 
                 /* Settings UI */
                 settings.profilePhotoHandler();

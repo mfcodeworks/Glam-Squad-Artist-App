@@ -1,6 +1,10 @@
+/* eslint-disable default-case */
 /* eslint-disable no-use-before-define */
 
 // imports
+import Chart from 'chart.js';
+import 'easy-pie-chart/dist/jquery.easypiechart.min';
+import { COLORS } from '../../constants/colors';
 import masonryInit from '../../masonry';
 import * as api from '../api';
 import * as storage from '../storage';
@@ -32,6 +36,113 @@ export function portfolioLongPressHandler() {
         console.log('Portfolio long press event.');
         // TODO: Add checkboxes over each image for selecting which image to delete
     });
+}
+
+export function analyticsCharts(charts) {
+    // Log analytics data
+    console.log(charts);
+
+    // Set date for reference
+    const today = new Date(),
+        labelMonth = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ];
+
+    /**
+     * Bar Chart
+     */
+
+    const barChartBox = document.getElementById('bar-chart'),
+        barCtx = barChartBox.getContext('2d');
+
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'Deember'],
+            datasets: [{
+                label           : `Bookings (${today.getFullYear()})`,
+                backgroundColor : COLORS['green-500'],
+                borderColor     : COLORS['green-800'],
+                borderWidth     : 1,
+                data            : charts.barArray[today.getFullYear()],
+            }, {
+                label           : `Bookings (${today.getFullYear() - 1})`,
+                backgroundColor : COLORS['red-500'],
+                borderColor     : COLORS['red-800'],
+                borderWidth     : 1,
+                data            : charts.barArray[today.getFullYear() - 1],
+            }],
+        },
+
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+        },
+    });
+
+    /**
+     * Scatter Chart
+     */
+
+    const scatterChartBox = document.getElementById('scatter-chart'),
+        scatterCtx = scatterChartBox.getContext('2d');
+
+    Chart.Scatter(scatterCtx, {
+        data: {
+            datasets: [{
+                label           : labelMonth[today.getMonth()],
+                borderColor     : COLORS['green-500'],
+                backgroundColor : COLORS['green-500'],
+                data: charts.scatterArray[today.getFullYear()][today.getMonth()],
+            // If past January add previous month data, else show January with February at 0
+            },
+            (today.getMonth() - 1) > -1 ? {
+                label           : labelMonth[today.getMonth() - 1],
+                borderColor     : COLORS['red-500'],
+                backgroundColor : COLORS['red-500'],
+                data: charts.scatterArray[today.getFullYear()][today.getMonth() - 1],
+            } : {
+                label           : labelMonth[today.getMonth() + 1],
+                borderColor     : COLORS['red-500'],
+                backgroundColor : COLORS['red-500'],
+                data: [],
+            }],
+        },
+    });
+
+    /**
+     * Pie Chart
+     */
+
+    // Set pie chart text
+    $('[data-src="jobs-this-month"] span').html(
+        charts.scatterArray[today.getFullYear()][today.getMonth()].length > 0 ?
+            charts.scatterArray[today.getFullYear()][today.getMonth()].last().x : 0
+    );
+    $('[data-src="earnings-this-month"] span').html(
+        charts.scatterArray[today.getFullYear()][today.getMonth()].length > 0 ?
+            `$${charts.scatterArray[today.getFullYear()][today.getMonth()].last().y}` : '$0'
+    );
+
+    // Init pie chart
+    $('.easy-pie-chart').easyPieChart();
+
+    // Set pie chart percentages
+    $('[data-src="jobs-this-month"]').data('easyPieChart').update(charts.pieJobs);
+    $('[data-src="earnings-this-month"]').data('easyPieChart').update(charts.pieEarnings);
 }
 
 // Login screen forms
