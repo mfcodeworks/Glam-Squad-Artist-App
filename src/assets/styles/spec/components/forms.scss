@@ -1,3 +1,17 @@
+.overlay {
+  background-color: rgba(114, 119, 122, 0.4) !important;
+}
+
+.checkbox-r label {
+  display: block !important;
+}
+
+.checkbox-r label::before,
+.checkbox-r label::after {
+  right: 5px !important;
+  left: unset !important;
+}
+
 .checkbox label {
   display: inline-block;
   vertical-align: middle;

@@ -735,27 +735,27 @@ export function deleteLocation(location) {
     ui.startLoader();
 
     return storage.get('login')
-        .then(JSON.parse)
-        .then((u) => {
-            // Send to API Server
-            return apiSend('DELETE', `${endpoint}/artists/${u.id}/locations/${location}`);
-        })
-        .then((r) => {
-            switch (r.response) {
-                case true:
-                    console.log(`Deleted location ${location}`);
-                    break;
+    .then(JSON.parse)
+    .then((u) => {
+        // Send to API Server
+        return apiSend('DELETE', `${endpoint}/artists/${u.id}/locations/${location}`);
+    })
+    .then((r) => {
+        switch (r.response) {
+            case true:
+                console.log(`Deleted location ${location}`);
+                break;
 
-                case false:
-                    console.warn(`Failed to delete location ${location}`);
-                    console.warn(`${r.error_code}: ${r.error}`);
-                    break;
+            case false:
+                console.warn(`Failed to delete location ${location}`);
+                console.warn(`${r.error_code}: ${r.error}`);
+                break;
 
-                default:
-                    console.error('Unknown error occured communicating with API server.');
-                    break;
-            }
-        });
+            default:
+                console.error('Unknown error occured communicating with API server.');
+                break;
+        }
+    });
 }
 
 export function saveLocation() {
@@ -835,10 +835,38 @@ export function fillUserInfo() {
             <div class='grid-col grid-col--3'></div>
             <div class='grid-col grid-col--4'></div>
             ${u.portfolio !== null ? u.portfolio.map((img) => {
-                return `<div class='grid-item bd bdrs-4 bdw-1 bdc-grey-400'><img class="portfolio-img lightbox-img" src="${img.photo}" /></div>`;
+                return `
+                <div class="grid-item">
+                    <div class="pos-r">
+                        <div class="checkbox-r checkbox checkbox-circle checkbox-danger overlay pos-a w-100 h-100 d-n portfolio-checkbox">
+                            <input type="checkbox" id="portfolio-img-${img.id}" data-img-id="${img.id}">
+                            <label for="portfolio-img-${img.id}"></label>
+                        </div>
+                        <img class="portfolio-img lightbox-img" src="${img.photo}">
+                    </div>
+                </div>`.trim();
             }).join('') : ''}
         `);
         masonryInit();
+    });
+}
+
+export function deletePortfolio(imgList) {
+    // Show loading icon
+    ui.startLoader();
+
+    return storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        // Send to API Server
+        return apiSend('DELETE', `${endpoint}/artists/${u.id}/portfolio`, imgList);
+    })
+    // Refresh portfolio info
+    .then(isAuthenticated)
+    .finally(() => {
+        fillUserInfo();
+        // Close loading icon
+        ui.endLoader();
     });
 }
 

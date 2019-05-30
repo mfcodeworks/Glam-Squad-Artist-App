@@ -35,6 +35,22 @@ export function portfolioLongPressHandler() {
         e.originalEvent.preventDefaultClick();
         console.log('Portfolio long press event.');
         // TODO: Add checkboxes over each image for selecting which image to delete
+        $('.portfolio-checkbox').removeClass('d-n');
+    });
+}
+
+export function portfolioDeleteHandler() {
+    $('[data-role="confirm-portfolio-delete"]').click(() => {
+        if ($('.portfolio-checkbox').hasClass('d-n')) {
+            $('.portfolio-checkbox').removeClass('d-n');
+            return;
+        }
+        const imgList = [];
+        $('.portfolio-checkbox input[type="checkbox"]:checked').each((index, el) => {
+            imgList.push($(el).data('img-id'));
+        });
+        api.deletePortfolio(imgList);
+        $('.portfolio-checkbox').addClass('d-n');
     });
 }
 

@@ -676,6 +676,11 @@
                                     <!-- Modal body -->
                                     <div class="modal-body">
                                         <!-- TODO: Stripe info fill -->
+                                        You can find your payment info available at the Stripe Dashboard.<br>
+                                        This info includes where to pay your money to, how much you've earned and
+                                        If you want to visit this in another browser you can visit at <a href="https://dashboard.stripe.com/dashboard">https://dashboard.stripe.com/dashboard</a>.
+                                        If you want a direct link just click the button below.
+                                        <a href="https://dashboard.stripe.com/dashboard" class="btn btn-secondary ta-c"><i class="far fa-credit-card"></i></a>
                                     </div>
 
                                     <!-- Modal footer -->
@@ -796,7 +801,7 @@
                                                 <div class='grid-col grid-col--4'></div>
                                             </div>
                                             <div class="form-group">
-                                                <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#portfolio-modal">
+                                                <button class="btn btn-secondary" type="button"  data-role="confirm-portfolio-delete">
                                                     Remove Portfolio Images&nbsp;<i class="fas fa-images mL-3"></i>
                                                 </button>
                                             </div>
@@ -807,32 +812,6 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn clr-cancel" id="btn-close-profile" data-dismiss="modal">Close</button>
                                         <button type="button" class="btn clr-primary" id="btn-save-profile">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Portfolio Modal -->
-                        <div class="modal fade" id="portfolio-modal" role="dialog" aria-labelledby="portfolioModal" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Remove Portfolio Images</h5>
-                                    </div>
-
-                                    <!-- Modal body -->
-                                    <div class="modal-body">
-                                        <!-- Profile Input -->
-                                        <form action='' id='portfolio-removal-form'>
-                                            <div class="form-group" data-role="portfolio-removal-selection"></div>
-                                        </form>
-                                    </div>
-
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn clr-cancel" id="btn-close-portfolio" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn clr-primary" id="btn-portfolio-remove">Submit</button>
                                     </div>
                                 </div>
                             </div>

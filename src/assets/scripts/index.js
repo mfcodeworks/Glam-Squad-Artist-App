@@ -136,6 +136,7 @@ const app = {
                 ui.bookingClientHandler();
                 ui.rateClientHandler();
                 ui.portfolioLongPressHandler();
+                ui.portfolioDeleteHandler();
 
                 /* Create media directory */
                 tools.createMediaDir();
@@ -157,6 +158,14 @@ const app = {
         // Check if sidebar or modals are open and close top layer
         // TODO: Update with correct artist modals
         switch (true) {
+            case ($('.portfolio-checkbox').hasClass('d-n') === false):
+                // Hide checkboxes
+                $('.portfolio-checkbox').addClass('d-n');
+                // Remove any checked input
+                $('.portfolio-checkbox input[type="checkbox"]:checked').each((index, el) => {
+                    $(el).prop('checked', false);
+                });
+                break;
             case ($('.app').hasClass('is-collapsed')):
                 $('div.mobile-toggle.sidebar-toggle').click();
                 break;
