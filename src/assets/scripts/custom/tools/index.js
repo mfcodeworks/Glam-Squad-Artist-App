@@ -192,8 +192,6 @@ export function checkChatMedia() {
             'File too large',
             'Okay'
         );
-        input.val(null);
-        console.log(input.val());
     }
 
     // If media removed exit

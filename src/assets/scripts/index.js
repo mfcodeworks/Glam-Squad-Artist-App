@@ -137,6 +137,7 @@ const app = {
                 ui.rateClientHandler();
                 ui.portfolioLongPressHandler();
                 ui.portfolioDeleteHandler();
+                ui.fileInputIndicator();
 
                 /* Create media directory */
                 tools.createMediaDir();

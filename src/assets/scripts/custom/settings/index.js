@@ -138,7 +138,10 @@ export function profilePhotoHandler() {
                 })
                 .then(tools.fillUserData);
             })
-            .finally(ui.endLoader);
+            .finally(() => {
+                $(input).siblings('label').find('[data-role="file-indicator"]').remove();
+                ui.endLoader();
+            });
         }
     });
 }

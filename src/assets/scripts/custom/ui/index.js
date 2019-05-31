@@ -30,6 +30,33 @@ export function endPageLoading() {
     }, 300);
 }
 
+export function fileInputIndicator() {
+    $('input[type="file"]').change((e) => {
+        // Store input, file, label and parent references
+        const input = $(e.currentTarget),
+            files = input[0].files[0],
+            inputLabel = input.siblings('label'),
+            parent = input.parent();
+        // If a label exists append to label, otherwise append as a sibling to input
+        const placement = inputLabel.length > 0 ? inputLabel : parent;
+        console.log(placement);
+
+        // If files were added, add a file indicator
+        if (files) {
+            console.log(placement.hasClass('pos-r'));
+            placement.hasClass('pos-r') ? null : placement.addClass('pos-r');
+            placement.append(`
+                <span data-role="file-indicator" class="pos-a c-white bgc-grey-900 bdrs-50p" style="height: 20px; width: 20px; right: -10px; top: -5px; z-index: 1050;">
+                    <i class="fas fa-plus fsz-sm"></i>
+                </span>`.trim()
+            );
+        // If files were cleared remove indicator
+        } else {
+            placement.find('[data-role="file-indicator"]').remove();
+        }
+    });
+}
+
 export function portfolioLongPressHandler() {
     $(document).on('long-press', '.portfolio-img', (e) => {
         e.originalEvent.preventDefaultClick();

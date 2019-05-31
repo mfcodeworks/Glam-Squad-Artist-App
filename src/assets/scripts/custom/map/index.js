@@ -330,13 +330,12 @@ export function confirmRecentEvents() {
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <div class='text-center'>
+                            <div class='ta-c'>
                                 <button type='button' class="btn m-1 clr-cancel btn-close-confirm" data-dismiss='modal'>Not Finished Yet</button>
                                 <button type='button' class="btn m-1 btn-danger btn-confirm-event" data-attended='false' data-event="${event.id}">Didn't Attend</button>
                                 <button type='button' class="btn m-1 clr-primary btn-confirm-event" data-attended='true' data-event="${event.id}">Event Finished</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>`);
