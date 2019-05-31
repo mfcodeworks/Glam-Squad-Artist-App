@@ -1,6 +1,7 @@
 #chat-sidebar {
   width: 250px;
-  height: calc(100vh - #{$header-height} - 60px);
+  height: calc(100vh - 120px);
+  z-index: 1000;
   overflow: auto;
 
   @include to($breakpoint-md) {
@@ -13,7 +14,13 @@
   }
 }
 
+#chat-title-box {
+  min-height: 85px;
+  z-index: 500;
+}
+
 #chat-box {
-  height: calc(100vh - #{$header-height} - 50px);
+  height: calc(100vh - #{$header-height} - 55px);
   overflow: auto;
+  padding-top: 85px;
 }

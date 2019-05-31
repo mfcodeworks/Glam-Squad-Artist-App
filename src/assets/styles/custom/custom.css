@@ -15,6 +15,9 @@
     box-shadow: none;
     -webkit-box-shadow: none;
 }
+.v-h {
+    visibility: hidden;
+}
 
 /* User */
 .user-photo {

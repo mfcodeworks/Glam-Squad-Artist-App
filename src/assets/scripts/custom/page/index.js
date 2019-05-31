@@ -19,13 +19,13 @@ export default (function () {
             e.preventDefault();
 
             // Hide current page
-            $('[data-page]').addClass('d-none');
+            $('[data-page]').addClass('v-h');
 
             // Remove active from current page
             $('a.sidebar-link').removeClass('active');
 
             // Hide search bar
-            $('.search-box').addClass('d-none');
+            $('.search-box').addClass('v-h');
         } else {
             return;
         }
@@ -36,7 +36,7 @@ export default (function () {
         switch (url) {
             case 'chat.html':
                 // Show HTML
-                $('[data-page="chat"]').removeClass('d-none');
+                $('[data-page="chat"]').removeClass('v-h');
 
                 // Set active link
                 $('a.sidebar-link[href="chat.html"]').addClass('active');
@@ -44,18 +44,18 @@ export default (function () {
 
             case 'map.html':
                 // Show HTML
-                $('[data-page="map"]').removeClass('d-none');
+                $('[data-page="map"]').removeClass('v-h');
 
                 // Set active link
                 $('a.sidebar-link[href="map.html"]').addClass('active');
 
                 // Show search bar
-                $('.search-box').removeClass('d-none');
+                $('.search-box').removeClass('v-h');
                 break;
 
             case 'calendar.html':
                 // Show HTML
-                $('[data-page="booking"]').removeClass('d-none');
+                $('[data-page="booking"]').removeClass('v-h');
 
                 // Set active link
                 $('a.sidebar-link[href="calendar.html"]').addClass('active');
@@ -63,7 +63,7 @@ export default (function () {
 
             case 'charts.html':
                 // Show HTML
-                $('[data-page="charts"]').removeClass('d-none');
+                $('[data-page="charts"]').removeClass('v-h');
 
                 // Set active link
                 $('a.sidebar-link[href="charts.html"]').addClass('active');

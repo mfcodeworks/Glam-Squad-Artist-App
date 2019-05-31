@@ -853,9 +853,6 @@ function printMessage(message) {
         }
 
         $('[data-role="chat-message-view"]').append(html);
-
-        // Auto scroll down
-        $('[data-role="chat-message-view"]').parent().scrollTop($('[data-role="chat-message-view"]').height());
     });
 }
 
@@ -890,7 +887,7 @@ export function channelListHandler() {
         .then(JSON.parse)
         .then((data) => {
             // Put chat image
-            $('#chat-box').find('img:first').attr('src', img);
+            $('#channel-img').attr('src', img);
 
             // Set event datetime
             const date = new Date(data.attributes.datetime);
@@ -901,7 +898,7 @@ export function channelListHandler() {
             // Set chat title
             const title =
             `<h6 class="lh-1 mB-0">${addressArray[0]}</h6>
-            <small>${addressArray.slice(0, 2)}</small><br>
+            <small>${addressArray.slice(1, 3).toString().trunc(30)}</small><br>
             <small>${datetime}</small>`.trim();
             $('[data-role="chat-title"]').html(title);
         })
@@ -933,6 +930,10 @@ export function channelListHandler() {
 
             // If no messages then print none found
             printInfoMessage('No tea found.');
+
+            // Auto scroll down
+            console.log($('[data-role="chat-message-view"]')[0].height());
+            $('[data-role="chat-message-view"]').parent().scrollTop($('[data-role="chat-message-view"]')[0].height());
         })
         // End loader
         .finally(endLoader);
