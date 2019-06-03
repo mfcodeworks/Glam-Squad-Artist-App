@@ -2,6 +2,7 @@
 /* NPM */
 import 'fullcalendar';
 import 'long-press-event/src/long-press-event';
+import 'jquery.appear/jquery.appear';
 
 /* Style */
 import 'fullcalendar/dist/fullcalendar.min.css';
@@ -120,6 +121,7 @@ const app = {
                 .then(tools.fileDownloadHandler)
                 .then(chat.chatListeners)
                 .then(ui.selectFirstChat)
+                .then(ui.prevMessages)
                 .finally(ui.endLoader);
 
                 /* Map Main UI */

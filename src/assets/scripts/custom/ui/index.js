@@ -963,6 +963,13 @@ export function channelListHandler() {
     });
 }
 
+export function prevMessages() {
+    $(document).on('appear', '[data-role="chat-prev-message-loader"]', (e) => {
+        console.log('Chat scrolled to top.');
+        console.log(e);
+    });
+}
+
 export function selectFirstChat() {
     // Get first chat channel
     const firstChat = $('[data-role="channel"]').first();

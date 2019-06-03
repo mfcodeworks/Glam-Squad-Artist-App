@@ -45,6 +45,7 @@
     "fullcalendar": "^3.6.2",
     "jquery": "^3.4.0",
     "jquery-sparkline": "^2.4.0",
+    "jquery.appear": "git+https://github.com/morr/jquery.appear.git",
     "jvectormap": "^2.0.4",
     "load-google-maps-api": "^1.0.0",
     "lodash": "^4.17.4",
