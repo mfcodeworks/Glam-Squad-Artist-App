@@ -23,7 +23,7 @@ function getAuthHeader() {
     return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
-        // If user and key exist return key
+        // If user and key exist return key, else return empty string
         return (u && u.key) ? u.key : null;
     });
 }
@@ -39,14 +39,21 @@ function apiSend(method = 'GET', url, form = null) {
 
     return getAuthHeader()
     .then((auth) => {
+        let headers;
+
+        // Set headers, if no auth available don't set
+        (auth) ? headers = {
+            'NR-HASH': hmac,
+            'NR-AUTH': auth,
+        } : headers = {
+            'NR-HASH': hmac,
+        };
+
         return new Promise((resolve, reject) => {
             $.ajax({
                 method,
                 url,
-                headers: {
-                    'NR-HASH': hmac,
-                    'NR-AUTH': auth,
-                },
+                headers,
                 data: message,
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',

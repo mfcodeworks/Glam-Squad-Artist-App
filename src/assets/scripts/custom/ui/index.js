@@ -661,7 +661,10 @@ export function chatHandler() {
         })
         // Auto scroll down
         .finally(() => {
-            $('[data-role="chat-message-view"]').parent().scrollTop($('[data-role="chat-message-view"]').height());
+            $('#chat-box').animate({
+                scrollTop: $('[data-role="chat-message-view"]').height(),
+            }, 'fast');
+            console.log('Chat scrolled');
         });
     });
 }
@@ -677,6 +680,18 @@ function printInfoMessage(message) {
         </div>
     </div>`;
     $('[data-role="chat-message-view"]').append(html);
+}
+
+// Print loading icon for chat
+function printLoadingIcon() {
+    $('[data-role="chat-message-view"]').prepend(
+    `<div class="layers ai-fc">
+        <div class="layer">
+            <span class="c-grey-600 fs-i fsz-def" data-role="chat-prev-message-loader">
+                <i class="fas fa-spin fa-spinner"></i>
+            </span>
+        </div>
+    </div>`.trim());
 }
 
 function cacheFile(url, message, source) {
@@ -802,7 +817,7 @@ function printMessage(message) {
     let html;
     let me;
 
-    storage.get('login')
+    return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
         me = `artist-${u.username}`;
@@ -843,7 +858,7 @@ function printMessage(message) {
                 html =
                 `<div class="layers ai-fs gapY-10" data-sid="${message.sid}">
                     <div class="layer mw-80p">
-                        <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
+                        <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-grey-400 bdrs-2 lh-3/2">
                             <div class="peer mL-15 ord-1"><small>${author.friendlyName}</small><br><small>${datetime}</small></div>
                             <div class="peer-greed ord-0"><span data-role="chat-message-body">${body}</span></div>
                         </div>
@@ -853,6 +868,8 @@ function printMessage(message) {
         }
 
         $('[data-role="chat-message-view"]').append(html);
+
+        return true;
     });
 }
 
@@ -923,6 +940,8 @@ export function channelListHandler() {
 
             // If channel has messages print each message
             if (messages.items.length) {
+                // If previous messages print loading icon
+                (messages.hasPrevPage) ? printLoadingIcon() : null;
                 return messages.items.reduce((p, message) => {
                     return p.then(() => { return printMessage(message); });
                 }, Promise.resolve());
@@ -930,13 +949,17 @@ export function channelListHandler() {
 
             // If no messages then print none found
             printInfoMessage('No tea found.');
-
-            // Auto scroll down
-            console.log($('[data-role="chat-message-view"]')[0].height());
-            $('[data-role="chat-message-view"]').parent().scrollTop($('[data-role="chat-message-view"]')[0].height());
         })
-        // End loader
-        .finally(endLoader);
+        .finally(() => {
+            // Auto scroll down
+            $('#chat-box').animate({
+                scrollTop: $('[data-role="chat-message-view"]').height(),
+            }, 'fast');
+            console.log('Chat scrolled');
+
+            // End loader
+            endLoader();
+        });
     });
 }
 

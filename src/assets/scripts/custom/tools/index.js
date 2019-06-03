@@ -147,13 +147,13 @@ export function makeAnalytics(receipts) {
      * Simple pie chart data
      */
 
-    // Divide this months jobs by last months for a percentage, unless last month is 0
-    pieJobs = (!scatterArray[todayYear][todayMonth - 1].last()) ?
-        100 : (scatterArray[todayYear][todayMonth].last().x / scatterArray[todayYear][todayMonth - 1].last().x) * 100;
+    // Divide this months jobs by last months for a percentage, unless one month is 0
+    pieJobs = (scatterArray[todayYear][todayMonth - 1].last() && scatterArray[todayYear][todayMonth].last()) ?
+        (scatterArray[todayYear][todayMonth].last().x / scatterArray[todayYear][todayMonth - 1].last().x) * 100 : 100;
 
-    // Divide this months earnings by last months for a total earnings percentage, unless last month is 0
-    pieEarnings = (!scatterArray[todayYear][todayMonth - 1].last()) ?
-        100 : (scatterArray[todayYear][todayMonth].last().y / scatterArray[todayYear][todayMonth - 1].last().y) * 100;
+    // Divide this months earnings by last months for a total earnings percentage, unless one month is 0
+    pieEarnings = (scatterArray[todayYear][todayMonth - 1].last() && scatterArray[todayYear][todayMonth].last()) ?
+        (scatterArray[todayYear][todayMonth].last().y / scatterArray[todayYear][todayMonth - 1].last().y) * 100 : 100;
 
     // If not existing, create previous yeara data for bar chart
     barArray.hasOwnProperty(todayYear - 1) === false ?

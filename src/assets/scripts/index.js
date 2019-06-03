@@ -85,6 +85,7 @@ const app = {
                 ui.registerUserHandler();
                 ui.forgotPasswordHandler();
                 ui.updatePortfolioImages();
+                $('body').css('overflow', 'auto');
                 break;
 
             case 'app':
@@ -103,7 +104,10 @@ const app = {
 
                 /* Auth Check */
                 tools.authenticatedCheck()
-                .then(settings.getBookings);
+                .then(() => {
+                    $('body').css('overflow', 'auto');
+                    settings.getBookings();
+                });
 
                 /* Chat/Notification Init */
                 chat.init()
