@@ -1,15 +1,14 @@
 /* eslint-disable no-extend-native */
 /* NPM */
 import 'fullcalendar';
+import 'jquery.appear';
 import 'long-press-event/src/long-press-event';
-import 'jquery.appear/jquery.appear';
 
 /* Style */
 import 'fullcalendar/dist/fullcalendar.min.css';
 import '../styles/index.scss';
 
 /* Theme JS */
-// import './charts';
 import './popover';
 import './search';
 import './sidebar';
@@ -121,8 +120,8 @@ const app = {
                 .then(tools.fileDownloadHandler)
                 .then(chat.chatListeners)
                 .then(ui.selectFirstChat)
-                .then(ui.prevMessages)
                 .finally(ui.endLoader);
+                ui.prevMessages();
 
                 /* Map Main UI */
                 map.stripeAccountCheck();

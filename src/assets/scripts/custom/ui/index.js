@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow-callback */
 /* eslint-disable default-case */
 /* eslint-disable no-use-before-define */
 
@@ -636,15 +637,16 @@ export function chatHandler() {
             message = new FormData();
             message.append('file', media);
         } else {
-            message = $('textarea[data-role="chat-message"]').val();
-            $('textarea[data-role="chat-message"]').val('');
+            message = $('textarea[data-role="chat-message-input"]').val();
+            $('textarea[data-role="chat-message-input"]').val('');
         }
 
         // Log message
         console.log(message);
 
         // Reset inputs
-        $('textarea[data-role="chat-message"]').val('');
+        $('textarea[data-role="chat-message-input"]').val('');
+        $('textarea[data-role="chat-message-input"]').focus();
         input.val('');
 
         // If message is empty cancel send
@@ -685,9 +687,9 @@ function printInfoMessage(message) {
 // Print loading icon for chat
 function printLoadingIcon() {
     $('[data-role="chat-message-view"]').prepend(
-    `<div class="layers ai-fc">
+    `<div class="layers ai-fc" data-role="chat-prev-message-loader">
         <div class="layer">
-            <span class="c-grey-600 fs-i fsz-def" data-role="chat-prev-message-loader">
+            <span class="c-grey-600 fs-i fsz-def">
                 <i class="fas fa-spin fa-spinner"></i>
             </span>
         </div>
@@ -814,6 +816,9 @@ function getMediaInfo(message) {
 
 // Print channel message
 function printMessage(message) {
+    // If message exists, exit
+    if ($(`[data-sid="${message.sid}"]`).length) return;
+
     let html;
     let me;
 
@@ -844,7 +849,7 @@ function printMessage(message) {
         switch (message.state.author) {
             case me:
                 html =
-                `<div class="layers ai-fe gapY-10" data-sid="${message.sid}">
+                `<div class="layers ai-fe gapY-10" data-sid="${message.sid}" data-role="chat-message" data-message-index="${message.state.index}">
                     <div class="layer mw-80p">
                         <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-white bdrs-2 lh-3/2">
                             <div class="peer mL-15 ord-1"><small>${author.friendlyName}</small><br><small>${datetime}</small></div>
@@ -856,7 +861,7 @@ function printMessage(message) {
 
             default:
                 html =
-                `<div class="layers ai-fs gapY-10" data-sid="${message.sid}">
+                `<div class="layers ai-fs gapY-10" data-sid="${message.sid}" data-role="chat-message" data-message-index="${message.state.index}">
                     <div class="layer mw-80p">
                         <div class="peers ta-r fxw-nw ai-c pY-3 pX-10 bgc-grey-400 bdrs-2 lh-3/2">
                             <div class="peer mL-15 ord-1"><small>${author.friendlyName}</small><br><small>${datetime}</small></div>
@@ -866,10 +871,26 @@ function printMessage(message) {
                 </div>`;
                 break;
         }
+        // Create DOM Message Array
+        const messageArray = $('[data-role="chat-message"]');
 
-        $('[data-role="chat-message-view"]').append(html);
-
-        return true;
+        // If first message place first
+        if (messageArray.length === 0) {
+            $('[data-role="chat-message-view"]').append(html);
+        // If newest message place last
+        } else if (message.state.index > messageArray.last().data('message-index')) {
+            $('[data-role="chat-message-view"]').append(html);
+        // If oldest message place first
+        } else if (message.state.index < messageArray.first().data('message-index')) {
+            $('[data-role="chat-message-view"]').prepend(html);
+        // If between oldest and newest, loop thorugh messages until x < messageIndex & x+1 > messageIndex
+        } else {
+            for (let i = 0; i < messageArray.length; i++) {
+                if ($(messageArray[i]).data('message-index') < message.state.index && $(messageArray[i + 1]).data('message-index') > message.state.index) {
+                    $(messageArray[i]).after(html);
+                }
+            }
+        }
     });
 }
 
@@ -880,6 +901,11 @@ export function channelListHandler() {
 
         // Start loader
         startLoader();
+
+        // Auto scroll down
+        $('#chat-box').animate({
+            scrollTop: $('[data-role="chat-message-view"]').height(),
+        }, 'fast');
 
         if (channelList.data('sid') === $('[data-role="chat-message-view"]').data('sid')) {
             // End loader
@@ -892,6 +918,7 @@ export function channelListHandler() {
 
         // Get channel sid
         const sid = channelList.data('sid');
+        let hasPrevPage;
 
         // Set sid for chat
         $('[data-role="chat-message-view"]').data('sid', sid);
@@ -941,7 +968,7 @@ export function channelListHandler() {
             // If channel has messages print each message
             if (messages.items.length) {
                 // If previous messages print loading icon
-                (messages.hasPrevPage) ? printLoadingIcon() : null;
+                hasPrevPage = messages.hasPrevPage;
                 return messages.items.reduce((p, message) => {
                     return p.then(() => { return printMessage(message); });
                 }, Promise.resolve());
@@ -949,6 +976,10 @@ export function channelListHandler() {
 
             // If no messages then print none found
             printInfoMessage('No tea found.');
+        })
+        .then(() => {
+            // If previous messages print loading icon
+            (hasPrevPage) ? printLoadingIcon() : null;
         })
         .finally(() => {
             // Auto scroll down
@@ -963,11 +994,63 @@ export function channelListHandler() {
     });
 }
 
+function checkMessageLoader() {
+    // Force appear on elements
+    $.force_appear();
+
+    // Check chatbox is at top
+    if ($('#chat-box').scrollTop() > 20) return;
+
+    // Log previous message loader position
+    console.log(`Chat box at top. Previous messages loader: ${$('[data-role="chat-prev-message-loader"]').is(':appeared')}`);
+
+    // Check after 0.8 seconds to confirm user is staying at top message
+    const prevMessageTimeout = setTimeout(() => {
+        if ($('[data-role="chat-prev-message-loader"]').is(':appeared')) {
+            console.log('User loaded top, getting more messages');
+            // Remove loader
+            $('[data-role="chat-prev-message-loader"]').remove();
+
+            // Set scroll height
+            $('#chat-box').scrollTop(18);
+
+            // Get previous chat messages
+            const sid = $('[data-role="chat-message-view"]').data('sid');
+            let hasPrevPage;
+            chat.getChannel(sid)
+            .then((channel) => {
+                const anchor = $('[data-role="chat-message"]').first().data('message-index') - 1;
+                console.log(`Anchor: ${anchor}`);
+                return channel.getMessages(30, anchor);
+            })
+            .then((messages) => {
+                console.log(messages);
+
+                // If channel has messages print each message
+                if (messages.items.length) {
+                    // If previous messages print loading icon
+                    hasPrevPage = messages.hasPrevPage;
+                    return messages.items.reduce((p, message) => {
+                        return p.then(() => { return printMessage(message); });
+                    }, Promise.resolve());
+                }
+            })
+            .then(() => {
+                // If previous messages print loading icon
+                (hasPrevPage) ? printLoadingIcon() : null;
+            });
+        // If user scrolled back down clear timeout
+        } else {
+            clearTimeout(prevMessageTimeout);
+        }
+    }, 800);
+}
+
 export function prevMessages() {
-    $(document).on('appear', '[data-role="chat-prev-message-loader"]', (e) => {
-        console.log('Chat scrolled to top.');
-        console.log(e);
-    });
+    // Add appear event to data-role divs
+    $('[data-role="chat-prev-message-loader"]').appear();
+    // On chatbox scroll throttled, trigger appear, log chat-box scroll top, check for previous message loader
+    $('#chat-box').on('scroll', _.throttle(checkMessageLoader, 2000));
 }
 
 export function selectFirstChat() {
