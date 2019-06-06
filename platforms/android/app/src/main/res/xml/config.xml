@@ -73,6 +73,7 @@
     <resource-file src="res/icon/android/logo-white.png" target="app/src/main/res/drawable-xxhdpi/logo.png" />
     <resource-file src="res/icon/android/logo-white.png" target="app/src/main/res/drawable-xxxhdpi/logo.png" />
     <preference name="loglevel" value="DEBUG" />
+    <preference name="KeyboardDisplayRequiersUserAction" value="false" />
     <preference name="android-maxSdkVersion" value="28" />
     <preference name="android-targetSdkVersion" value="26" />
     <preference name="AndroidPersistentFileLocation" value="Internal" />
