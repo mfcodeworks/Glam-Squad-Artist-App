@@ -31,21 +31,21 @@ export function getStripeId(token) {
 export function getCustomerInfo() {
     return new Promise((resolve, reject) => {
         storage.get('login')
-            .then(JSON.parse)
-            .then((u) => {
-                $.ajax({
-                    url: `https://api.stripe.com/v1/customers/${u.stripeId}`,
-                    headers: {
-                        'Authorization' : `Bearer ${apiSecret}`,
-                    },
-                    method: 'GET',
-                    success: (r) => {
-                        resolve(r);
-                    },
-                    error: (e) => {
-                        reject(e);
-                    },
-                });
+        .then(JSON.parse)
+        .then((u) => {
+            $.ajax({
+                url: `https://api.stripe.com/v1/customers/${u.stripe_account_token}`,
+                headers: {
+                    'Authorization' : `Bearer ${apiSecret}`,
+                },
+                method: 'GET',
+                success: (r) => {
+                    resolve(r);
+                },
+                error: (e) => {
+                    reject(e);
+                },
+            });
             });
     });
 }

@@ -132,6 +132,7 @@ const app = {
                 tools.fillUserData();
                 api.fillUserInfo();
                 ui.fillNewArtistRoles();
+                ui.qrPay();
 
                 /* Analytics Fill */
                 api.getReceipts()

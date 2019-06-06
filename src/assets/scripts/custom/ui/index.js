@@ -5,6 +5,8 @@
 // imports
 import Chart from 'chart.js';
 import 'easy-pie-chart/dist/jquery.easypiechart.min';
+import 'awesomeqr/require';
+import AwesomeQRCode from 'awesomeqr/awesome-qr.min';
 import { COLORS } from '../../constants/colors';
 import masonryInit from '../../masonry';
 import * as api from '../api';
@@ -62,7 +64,7 @@ export function portfolioLongPressHandler() {
     $(document).on('long-press', '.portfolio-img', (e) => {
         e.originalEvent.preventDefaultClick();
         console.log('Portfolio long press event.');
-        // TODO: Add checkboxes over each image for selecting which image to delete
+        // Add checkboxes over each image for selecting which image to delete
         $('.portfolio-checkbox').removeClass('d-n');
     });
 }
@@ -210,6 +212,41 @@ export function loginUserHandler() {
 export function forgotPasswordHandler() {
     $('#btn-confirm-forgot-password').click(() => {
         api.forgotPassword();
+    });
+}
+
+export function qrPay() {
+    storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+            new AwesomeQRCode().create({
+                text: u.stripe_account_token,
+                size: 600,
+                margin: 0,
+                dotScale: 1,
+                whiteMargin: false,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                autoColor: true,
+                maskedDots: false,
+                correctLevel: AwesomeQRCode().constructor.CorrectLevel.Q,
+                backgroundImage: undefined,
+                backgroundDimming: 'rgba(0,0,0,0)',
+                gifBackground: undefined,
+                logoImage: img,
+                logoScale: 0.3,
+                logoMargin: 4,
+                logoCornerRadius: 0,
+                binarize: false,
+                binarizeThreshold: 128,
+                callback: undefined,
+                bindElement: 'stripe-qr',
+            });
+        };
+        img.src = 'assets/static/images/logo-large.png';
     });
 }
 
