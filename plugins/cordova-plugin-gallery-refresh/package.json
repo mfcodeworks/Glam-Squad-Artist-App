@@ -1,0 +1,66 @@
+{
+  "_from": "cordova-plugin-gallery-refresh",
+  "_id": "cordova-plugin-gallery-refresh@1.0.61",
+  "_inBundle": false,
+  "_integrity": "sha1-r4481qJzn9S1ykMpLQ/O0eLD7Wg=",
+  "_location": "/cordova-plugin-gallery-refresh",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-gallery-refresh",
+    "name": "cordova-plugin-gallery-refresh",
+    "escapedName": "cordova-plugin-gallery-refresh",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-gallery-refresh/-/cordova-plugin-gallery-refresh-1.0.61.tgz",
+  "_shasum": "af8e3cd6a2739fd4b5ca43292d0fced1e2c3ed68",
+  "_spec": "cordova-plugin-gallery-refresh",
+  "_where": "D:\\Projects\\NR-Glam-Squad\\Glam-Squad-Artist-App",
+  "author": {
+    "name": "KwanUng_Park",
+    "email": "pouup69@gmail.com",
+    "url": "https://github.com/pouu69"
+  },
+  "bugs": {
+    "url": "https://github.com/pouu69/cordova-plugin-gallery-refresh/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-gallery-refresh",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Platform Device gallery refresh after image download",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/pouu69/cordova-plugin-gallery-refresh",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova",
+    "gallery",
+    "cordova-ios",
+    "refresh"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-gallery-refresh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pouu69/cordova-plugin-gallery-refresh.git"
+  },
+  "version": "1.0.61"
+}

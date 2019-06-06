@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nygmarosebeauty.nrglamsquadartist" version="0.14.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.nygmarosebeauty.nrglamsquadartist" version="0.14.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>
         NR Glam Squad Artist
     </name>
@@ -81,6 +81,10 @@
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <plugin name="cordova-support-google-services" spec="1.1.0" />
+    <plugin name="cordova-plugin-gallery-refresh" spec="^1.0.61">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
+    </plugin>
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />

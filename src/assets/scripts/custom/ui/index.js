@@ -1017,7 +1017,7 @@ function checkMessageLoader() {
             $('[data-role="chat-prev-message-loader"]').remove();
 
             // Set scroll height
-            $('#chat-box').scrollTop(18);
+            $('#chat-box').scrollTop(15);
 
             // Get previous chat messages
             const sid = $('[data-role="chat-message-view"]').data('sid');

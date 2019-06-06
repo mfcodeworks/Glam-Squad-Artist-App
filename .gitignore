@@ -30,3 +30,5 @@ package-lock.json
 # ----------------------------
 
 node_modules
+platforms/android/app/build/intermediates/
+platforms/android/app/build/generated/

@@ -3,9 +3,7 @@ import * as ui from '../ui';
 import * as api from '../api';
 
 // Track highest notification for file downloads
-let downloadId = 0,
-    progressEv,
-    progressInterval;
+let downloadId = 1;
 // Email Regex
 const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -282,7 +280,7 @@ function createFile(dirEntry, fileName) {
 }
 
 // Write to file on device
-function writeFile(fileEntry, data, id = 0) {
+function writeFile(fileEntry, data) {
     return new Promise((resolve, reject) => {
         // Create a FileWriter object for FileEntry
         fileEntry.createWriter((fileWriter) => {
@@ -297,23 +295,7 @@ function writeFile(fileEntry, data, id = 0) {
                 reject(e);
             };
 
-            cordova.plugins.notification.local.on(
-                'cancel', (notification) => {
-                    console.log(notification);
-                    fileWriter.abort();
-                    cordova.plugins.notification.local.clear({ id });
-                }
-            );
-
             fileWriter.write(data);
-
-            cordova.plugins.notification.local.update({
-                id,
-                progressBar: { indeterminate: true },
-                clock: false,
-                vibrate: false,
-                sound: false,
-            });
         });
     });
 }
@@ -325,10 +307,10 @@ export function createMediaDir() {
     // Set file save location
     switch (device.platform) {
         case 'Android':
-            storageLocation = `${cordova.file.externalRootDirectory}Glam Squad/Glam Squad Media`;
+            storageLocation = `${cordova.file.externalRootDirectory}GlamSquad/media/GlamSquadArtist`;
             console.log(cordova.file.externalRootDirectory);
             console.log(storageLocation);
-            return createDir(cordova.file.externalRootDirectory, 'Glam Squad/Glam Squad Media');
+            return createDir(cordova.file.externalRootDirectory, 'GlamSquad/media/GlamSquadArtist');
 
         case 'browser':
             console.log('Browser detected, downloads will be done through browser.');
@@ -345,7 +327,7 @@ export function createMediaDir() {
 }
 
 // FileTransfer URI download for external files
-function fileTransferDownload(uri, filename, id) {
+function fileTransferDownload(uri, filename) {
     const fileTransfer = new FileTransfer();
 
     // Do file write
@@ -360,50 +342,20 @@ function fileTransferDownload(uri, filename, id) {
                 uri,
                 fileEntry.toURL(),
                 (entry) => {
-                    console.log(entry);
-                    clearInterval(progressInterval);
+                    // Refresh gallery with entry
+                    window.galleryRefresh.refresh(
+                        entry.toURL(),
+                        (success) => { console.log(success); },
+                        (error) => { console.warn(error); }
+                    );
                     resolve(entry);
                 },
                 (error) => {
                     console.warn(error);
-                    clearInterval(progressInterval);
                     reject(error);
                 },
                 false,
                 {}
-            );
-            // Update download progress notification
-            fileTransfer.onprogress = (progressEvent) => {
-                // Set progress event const
-                progressEv = progressEvent;
-
-                if (!progressInterval) {
-                    // Update progress
-                    progressInterval = setInterval(() => {
-                        let loaded;
-                        // Update with download progress
-                        (progressEv.lengthComputable) ? loaded = Math.floor(progressEv.loaded / (progressEv.total * 100)) : loaded = 20;
-                        console.log(loaded);
-                        cordova.plugins.notification.local.update({
-                            id,
-                            progressBar: { value: loaded },
-                            clock: false,
-                            vibrate: false,
-                            sound: false,
-                        });
-                        if (loaded > 99) clearInterval(progressInterval);
-                    // Run every 1 second
-                    }, 1 * 1000);
-                }
-            };
-            // On cancel abort download
-            cordova.plugins.notification.local.on(
-                'cancel',
-                (notification) => {
-                    console.log(notification);
-                    fileTransfer.abort();
-                    cordova.plugins.notification.local.clear({ id });
-                }
             );
         });
     });
@@ -411,7 +363,9 @@ function fileTransferDownload(uri, filename, id) {
 
 // Download file from URI
 export function downloadFile(uri, filename) {
-    const id = downloadId++;
+    const id = downloadId;
+    downloadId++;
+    console.log(id);
     let data;
 
     // Create download notification
@@ -420,17 +374,12 @@ export function downloadFile(uri, filename) {
         smallIcon: 'res://img/logo.png',
         text: filename,
         title: 'Downloading',
-        progressBar: { value: 0 },
-        actions: [{
-            id: 'cancel',
-            title: 'Cancel',
-        }],
+        progressBar: { indeterminate: true },
+        sticky: true,
         clock: false,
-        foreground: true,
         color: 'black',
         vibrate: false,
         sound: false,
-        sticky: true,
     });
 
     // Check if base64 or URI
@@ -446,73 +395,60 @@ export function downloadFile(uri, filename) {
                 return createFile(dir, filename, data);
             })
             .then((fileEntry) => {
-                return writeFile(fileEntry, data, id);
+                return writeFile(fileEntry, data)
+                .then(() => {
+                    // Refresh gallery with entry
+                    window.galleryRefresh.refresh(
+                        fileEntry.toURL(),
+                        (success) => { console.log(success); },
+                        (error) => { console.warn(error); }
+                    );
+                    return true;
+                });
             })
             .then(() => {
-                cordova.plugins.notification.local.schedule({
+                cordova.plugins.notification.local.update({
                     id,
-                    smallIcon: 'res://img/logo.png',
-                    text: filename,
                     title: 'Complete',
                     progressBar: { enabled: false },
-                    actions: [],
-                    clock: false,
-                    foreground: true,
-                    color: 'black',
-                    vibrate: false,
                     autoClear: true,
+                    sticky: false,
                 });
             })
             .catch((err) => {
                 console.warn(err);
-                cordova.plugins.notification.local.schedule({
+                cordova.plugins.notification.local.update({
                     id,
-                    smallIcon: 'res://img/logo.png',
                     text: JSON.stringify(err),
                     title: 'Error',
                     progressBar: { enabled: false },
-                    actions: [],
-                    clock: false,
-                    foreground: true,
-                    color: 'black',
-                    vibrate: false,
                     autoClear: true,
+                    sticky: false,
                 });
             });
 
         // For non-base64 download file URI to file
         case false:
             console.log('File transfer initiated');
-            return fileTransferDownload(uri, filename, id)
+            return fileTransferDownload(uri, filename)
             .then(() => {
-                cordova.plugins.notification.local.schedule({
+                cordova.plugins.notification.local.update({
                     id,
-                    smallIcon: 'res://img/logo.png',
-                    text: filename,
                     title: 'Complete',
                     progressBar: { enabled: false },
-                    actions: [],
-                    clock: false,
-                    foreground: true,
-                    color: 'black',
-                    vibrate: false,
                     autoClear: true,
+                    sticky: false,
                 });
             })
             .catch((err) => {
                 console.warn(err);
-                cordova.plugins.notification.local.schedule({
+                cordova.plugins.notification.local.update({
                     id,
-                    smallIcon: 'res://img/logo.png',
                     text: JSON.stringify(err),
                     title: 'Error',
                     progressBar: { enabled: false },
-                    actions: [],
-                    clock: false,
-                    foreground: true,
-                    color: 'black',
-                    vibrate: false,
                     autoClear: true,
+                    sticky: false,
                 });
             });
 

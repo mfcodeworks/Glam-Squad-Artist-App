@@ -123,5 +123,13 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-gallery-refresh": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-gallery-refresh"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

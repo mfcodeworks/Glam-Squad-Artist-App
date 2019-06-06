@@ -44,6 +44,7 @@
 		9B040239A2D345529C199026 /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 36B5223A7A674A718F67795A /* AppDelegate+notification.m */; };
 		068A1A86EB194D339E988B5E /* PushPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 74B859FFB2E34A6399839A5B /* PushPlugin.m */; };
 		5804C2D829824920B6634A3A /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C3797E2B3254003B2524084 /* PushKit.framework */; };
+		7C1C54FAAB564298ACEEF111 /* GalleryRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D353207AE149D48ED6EC0E /* GalleryRefresh.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +133,8 @@
 		D7A74D4750164AD3A4E1FC13 /* AppDelegate+notification.h */ = {isa = PBXFileReference; name = "AppDelegate+notification.h"; path = "phonegap-plugin-push/AppDelegate+notification.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		763108C2F89B42E58272ABFD /* PushPlugin.h */ = {isa = PBXFileReference; name = "PushPlugin.h"; path = "phonegap-plugin-push/PushPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		1C3797E2B3254003B2524084 /* PushKit.framework */ = {isa = PBXFileReference; name = "PushKit.framework"; path = "System/Library/Frameworks/PushKit.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		41D353207AE149D48ED6EC0E /* GalleryRefresh.m */ = {isa = PBXFileReference; name = "GalleryRefresh.m"; path = "cordova-plugin-gallery-refresh/GalleryRefresh.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		D3F9AD9A59BB49F2B3E7DF62 /* GalleryRefresh.h */ = {isa = PBXFileReference; name = "GalleryRefresh.h"; path = "cordova-plugin-gallery-refresh/GalleryRefresh.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +292,8 @@
 				74B859FFB2E34A6399839A5B /* PushPlugin.m */,
 				D7A74D4750164AD3A4E1FC13 /* AppDelegate+notification.h */,
 				763108C2F89B42E58272ABFD /* PushPlugin.h */,
+				41D353207AE149D48ED6EC0E /* GalleryRefresh.m */,
+				D3F9AD9A59BB49F2B3E7DF62 /* GalleryRefresh.h */,
 			);
 			name = Plugins;
 			path = "NR Glam Squad Artist/Plugins";
@@ -423,6 +428,7 @@
 				6B7F8853C36A4FF194370FBE /* CDVVibration.m in Sources */,
 				9B040239A2D345529C199026 /* AppDelegate+notification.m in Sources */,
 				068A1A86EB194D339E988B5E /* PushPlugin.m in Sources */,
+				7C1C54FAAB564298ACEEF111 /* GalleryRefresh.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

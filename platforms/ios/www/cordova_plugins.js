@@ -328,6 +328,14 @@ module.exports = [
     "clobbers": [
       "PushNotification"
     ]
+  },
+  {
+    "id": "cordova-plugin-gallery-refresh.GalleryRefresh",
+    "file": "plugins/cordova-plugin-gallery-refresh/www/GalleryRefresh.js",
+    "pluginId": "cordova-plugin-gallery-refresh",
+    "clobbers": [
+      "galleryRefresh"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -347,7 +355,8 @@ module.exports.metadata =
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-support-google-services": "1.1.0",
   "phonegap-plugin-multidex": "1.0.0",
-  "phonegap-plugin-push": "2.2.3"
+  "phonegap-plugin-push": "2.2.3",
+  "cordova-plugin-gallery-refresh": "1.0.55"
 };
 // BOTTOM OF METADATA
 });
