@@ -73,10 +73,15 @@ export function portfolioDeleteHandler() {
             $('.portfolio-checkbox').removeClass('d-n');
             return;
         }
+
         const imgList = [];
         $('.portfolio-checkbox input[type="checkbox"]:checked').each((index, el) => {
             imgList.push($(el).data('img-id'));
         });
+
+        // Show loading icon
+        startLoader();
+
         api.deletePortfolio(imgList);
         $('.portfolio-checkbox').addClass('d-n');
     });

@@ -849,7 +849,7 @@ export function fillUserInfo() {
                             <input type="checkbox" id="portfolio-img-${img.id}" data-img-id="${img.id}">
                             <label for="portfolio-img-${img.id}"></label>
                         </div>
-                        <img class="portfolio-img lightbox-img" src="${img.photo}">
+                        <img class="portfolio-img lightbox-img" data-long-press-delay="1000" src="${img.photo}">
                     </div>
                 </div>`.trim();
             }).join('') : ''}
@@ -859,9 +859,6 @@ export function fillUserInfo() {
 }
 
 export function deletePortfolio(imgList) {
-    // Show loading icon
-    ui.startLoader();
-
     return storage.get('login')
     .then(JSON.parse)
     .then((u) => {
@@ -871,6 +868,7 @@ export function deletePortfolio(imgList) {
     // Refresh portfolio info
     .then(isAuthenticated)
     .finally(() => {
+        // Update portfolio display
         fillUserInfo();
         // Close loading icon
         ui.endLoader();
