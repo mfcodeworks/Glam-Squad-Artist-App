@@ -50,6 +50,24 @@ export function fillUserInfo() {
     return api.fillUserInfo();
 }
 
+export function saveSettingsHandler() {
+    $('#btn-save-settings').click(() => {
+        // Check dark mode map
+        const darkMap = $('#dark-mode-map').is(':checked');
+        const appSettings = {
+            darkMap,
+        };
+        storage.save('app-settings', JSON.stringify(appSettings));
+        navigator.notification.alert(
+            'Restart app to apply new settings',
+            null,
+            'Settings Saved',
+            'Okay'
+        );
+        $('#btn-close-settings');
+    });
+}
+
 export function getBookings() {
     const events = [],
         promises = [];

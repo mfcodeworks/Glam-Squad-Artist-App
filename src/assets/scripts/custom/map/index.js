@@ -50,20 +50,24 @@ function makeMap() {
 
         // Try to load map
         try {
-            // Make Mapbox GL Map
-            mapboxgl.accessToken = accessToken;
-            map = new mapboxgl.Map(
-                {
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
-                    center: position,
-                    zoom: 16,
-                    doubleClickZoom: false,
-                    refreshExpiredTiles: false,
-                    renderWorldCopies: false,
-                }
-            );
-            resolve(map);
+            return storage.get('app-settings')
+            .then(JSON.parse)
+            .then((s) => {
+                // Make Mapbox GL Map
+                mapboxgl.accessToken = accessToken;
+                map = new mapboxgl.Map(
+                    {
+                        container: 'map',
+                        style: (s && s.darkMap) ? 'mapbox://styles/mapbox/dark-v10?optimize=true' : 'mapbox://styles/mapbox/streets-v10?optimize=true',
+                        center: position,
+                        zoom: 16,
+                        doubleClickZoom: false,
+                        refreshExpiredTiles: false,
+                        renderWorldCopies: false,
+                    }
+                );
+                resolve(map);
+            });
         } catch (e) {
             navigator.notification.alert(
                 'Your device may not support this app, please reload the app and try again',
@@ -367,13 +371,15 @@ function loadMap() {
     $(document).ready(() => {
         // Add map to app
         makeMap()
-        .then(getLocations);
+        .then(() => {
+            getLocations();
 
-        // Observe map for clicks and reverse geocode
-        addMapClickMarker();
+            // Observe map for clicks and reverse geocode
+            addMapClickMarker();
 
-        // Add geocoder to app
-        addGeocoder();
+            // Add geocoder to app
+            addGeocoder();
+        });
     });
 }
 
