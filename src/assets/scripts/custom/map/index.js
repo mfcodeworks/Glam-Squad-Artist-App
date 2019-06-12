@@ -8,10 +8,11 @@ import * as payment from '../payment';
 import * as tools from '../tools';
 
 // map let
-let map;
+let map,
 // user lat/lng
-let lat;
-let lng;
+    lat,
+    lng,
+    darkMode = false;
 // markers
 const markers = [];
 let locations = [];
@@ -53,12 +54,13 @@ function makeMap() {
             return storage.get('app-settings')
             .then(JSON.parse)
             .then((s) => {
+                darkMode = (s && s.darkMap);
                 // Make Mapbox GL Map
                 mapboxgl.accessToken = accessToken;
                 map = new mapboxgl.Map(
                     {
                         container: 'map',
-                        style: (s && s.darkMap) ? 'mapbox://styles/mapbox/dark-v10?optimize=true' : 'mapbox://styles/mapbox/streets-v10?optimize=true',
+                        style: (darkMode) ? 'mapbox://styles/mapbox/dark-v10?optimize=true' : 'mapbox://styles/mapbox/streets-v10?optimize=true',
                         center: position,
                         zoom: 16,
                         doubleClickZoom: false,
@@ -117,7 +119,7 @@ function makeMapMarker(lnglat, address) {
 
     // Create marker point div
     const point = document.createElement('div');
-    point.className = 'location-marker';
+    point.className = `${darkMode ? 'location-marker-dark location-marker' : 'location-marker'}`;
 
     // Create popup with address, TODO: handle create event button
     const popup = new mapboxgl.Popup(
@@ -206,9 +208,9 @@ function addMapClickMarker() {
 function makeLocationMarker(loc) {
     // Create marker point div
     const point = document.createElement('div');
-    point.className = 'saved-location-marker';
+    point.className = `${darkMode ? 'location-marker-dark saved-location-marker' : 'saved-location-marker'}`;
 
-    // Create popup with address, TODO: handle create event button
+    // Create popup with address, handle create event button
     const popup = new mapboxgl.Popup(
         {
             anchor: 'bottom',

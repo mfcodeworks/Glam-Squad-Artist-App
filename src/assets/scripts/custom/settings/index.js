@@ -50,6 +50,16 @@ export function fillUserInfo() {
     return api.fillUserInfo();
 }
 
+export function fillSettings() {
+    storage.get('app-settings')
+    .then(JSON.parse)
+    .then((s) => {
+        if (s && s.darkMap) {
+            $('#dark-mode-map').prop('checked', 'true');
+        }
+    });
+}
+
 export function saveSettingsHandler() {
     $('#btn-save-settings').click(() => {
         // Check dark mode map

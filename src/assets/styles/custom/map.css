@@ -18,6 +18,9 @@
     cursor: pointer;
     z-index: 10 !important;
 }
+.location-marker-dark {
+    background-image: url("../static/images/logo-white.png") !important;
+}
 .marker-popup {
     text-align: center;
 }

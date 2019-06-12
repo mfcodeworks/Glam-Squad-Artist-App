@@ -144,6 +144,7 @@ const app = {
                 settings.updateUserHandler();
                 settings.changeRoleHandler();
                 settings.reportClientHandler();
+                settings.fillSettings();
                 settings.saveSettingsHandler();
                 ui.handleEventNotificationClick();
                 ui.bookingClientHandler();
