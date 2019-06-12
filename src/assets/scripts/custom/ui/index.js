@@ -827,7 +827,7 @@ function getMediaInfo(message) {
         // Create video placeholder
         } else if (message.media.contentType.indexOf('video') > -1) {
             mediaPlaceholder =
-            `<video class="lightbox-vid w-100p" data-sid="${message.media.sid}" controls playsinline controlsList="nodownload" preload="metadata">
+            `<video class="lightbox-vid w-100p" style="background-color: #000;" data-sid="${message.media.sid}" poster="assets/static/images/Logo_Transparent_White-scaledown.png" controls playsinline controlsList="nodownload" preload="metadata">
                 <source src="${url}" type="${message.media.contentType}">
                 Your device does not support in-app video.
             </video>
