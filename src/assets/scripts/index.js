@@ -190,6 +190,15 @@ const app = {
             case (($('#register-dialog-modal').data('bs.modal') || {})._isShown):
                 $('#btn-cancel-register').click();
                 break;
+            case (($('#about-modal').data('bs.modal') || {})._isShown):
+                $('#btn-close-about').click();
+                break;
+            case (($('#privacy-policy-modal').data('bs.modal') || {})._isShown):
+                $('#btn-close-privacy').click();
+                break;
+            case (($('#terms-conditions-modal').data('bs.modal') || {})._isShown):
+                $('#btn-close-terms').click();
+                break;
             case (($('#rate-artists-modal').data('bs.modal') || {})._isShown):
                 $('#btn-close-rate-artists').click();
                 break;

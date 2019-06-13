@@ -58,6 +58,10 @@
 }
 
 /* Branding - Colours */
+.brand-logo {
+    max-width: 60%;
+    max-height: 80px;
+}
 .clr-white {
     background-color: #fff;
 }
