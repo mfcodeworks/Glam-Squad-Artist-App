@@ -155,9 +155,11 @@ export function handle() {
             if (notif.additionalData.hasOwnProperty('newEvent')) {
                 // Add new notification
                 ui.notificationEvent(notif.additionalData.newEvent);
-                // Set notification count
-                const count = $('a[data-role="event-notification-item"]').length;
-                $('[data-src="notification-count"]').text((count > 99) ? '99+' : count + 1);
+                // Set notification count after 500ms delay
+                setTimeout(() => {
+                    const count = $('a[data-role="event-notification-item"]').length;
+                    $('[data-src="notification-count"]').text((count > 99) ? '99+' : count);
+                }, 500);
             }
         });
 
