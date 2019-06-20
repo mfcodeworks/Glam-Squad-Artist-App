@@ -36,6 +36,7 @@ export function unsubscribe(topic) {
             topic,
             () => {
                 console.log(`FCM unsubscribed to ${topic}`);
+                api.deleteFcmTopic(topic);
                 resolve(true);
             },
             (e) => {

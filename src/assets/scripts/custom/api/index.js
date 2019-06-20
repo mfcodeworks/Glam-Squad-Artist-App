@@ -629,52 +629,77 @@ export function getFcmTopics(type = 'artist') {
 
 export function saveFcmToken(token) {
     return storage.get('login')
-        .then(JSON.parse)
-        .then((u) => {
-            // Send to API Server
-            return apiSend('PUT', `${endpoint}/artists/${u.id}/fcm/token`, token);
-        })
-        .then((r) => {
-            switch (r.response) {
-                case true:
-                    console.log(`Saved FCM Token: ${token}`);
-                    break;
+    .then(JSON.parse)
+    .then((u) => {
+        // Send to API Server
+        return apiSend('PUT', `${endpoint}/artists/${u.id}/fcm/token`, token);
+    })
+    .then((r) => {
+        switch (r.response) {
+            case true:
+                console.log(`Saved FCM Token: ${token}`);
+                break;
 
-                case false:
-                    console.warn(`Failed to save FCM Token: ${token}`);
-                    console.warn(`${r.error}`);
-                    break;
+            case false:
+                console.warn(`Failed to save FCM Token: ${token}`);
+                console.warn(`${r.error}`);
+                break;
 
-                default:
-                    console.error('Unknown error occured communicating with API server.');
-                    break;
-            }
-        });
+            default:
+                console.error('Unknown error occured communicating with API server.');
+                break;
+        }
+    });
 }
 
 export function saveFcmTopic(topic, type = 'artist') {
     return storage.get('login')
-        .then(JSON.parse)
-        .then((u) => {
-            // Send to API Server
-            return apiSend('PUT', `${endpoint}/${type}s/${u.id}/fcm/topic`, { topic });
-        })
-        .then((r) => {
-            switch (r.response) {
-                case true:
-                    console.log(`Saved FCM Topic ${topic}`);
-                    break;
+    .then(JSON.parse)
+    .then((u) => {
+        // Send to API Server
+        return apiSend('PUT', `${endpoint}/${type}s/${u.id}/fcm/topic`, { topic });
+    })
+    .then((r) => {
+        switch (r.response) {
+            case true:
+                console.log(`Saved FCM Topic ${topic}`);
+                break;
 
-                case false:
-                    console.warn(`Failed to save FCM topic: ${topic}`);
-                    console.warn(`${r.error_code}: ${r.error}`);
-                    break;
+            case false:
+                console.warn(`Failed to save FCM topic: ${topic}`);
+                console.warn(`${r.error_code}: ${r.error}`);
+                break;
 
-                default:
-                    console.error('Unknown error occured communicating with API server.');
-                    break;
-            }
-        });
+            default:
+                console.error('Unknown error occured communicating with API server.');
+                break;
+        }
+    });
+}
+
+export function deleteFcmTopic(topic, type = 'artist') {
+    return storage.get('login')
+    .then(JSON.parse)
+    .then((u) => {
+        // Send to API Server
+        return apiSend('DELETE', `${endpoint}/${type}s/${u.id}/fcm/topic`, { topic });
+    })
+    .then((r) => {
+        switch (r.response) {
+            case true:
+                console.log(`Deleted FCM Topic ${topic}`);
+                break;
+
+            case false:
+                console.warn(`Failed to delete FCM topic: ${topic}`);
+                console.warn(`${r.error_code}: ${r.error}`);
+                break;
+
+            default:
+                console.error('Unknown error occured communicating with API server.');
+                break;
+        }
+    });
 }
 
 export function getChatToken() {
