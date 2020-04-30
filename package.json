@@ -44,7 +44,7 @@
     "easy-pie-chart": "^2.1.7",
     "file-loader": "^1.1.5",
     "fullcalendar": "^3.6.2",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jquery-sparkline": "^2.4.0",
     "jquery.appear": "git+https://github.com/morr/jquery.appear.git",
     "jvectormap": "^2.0.4",
