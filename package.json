@@ -59,7 +59,7 @@
     "popper.js": "^1.14.7",
     "skycons": "^1.0.0",
     "storage": "^0.2.0",
-    "twilio-chat": "^3.2.1",
+    "twilio-chat": "^3.4.0",
     "twitter-connect-plugin": "^0.6.0"
   },
   "cordova": {
@@ -129,7 +129,7 @@
     "extract-text-webpack-plugin": "^3.0.1",
     "html-webpack-plugin": "^2.30.1",
     "imagemin-webpack-plugin": "^1.5.2",
-    "node-sass": "^4.5.3",
+    "node-sass": "^9.0.0",
     "postcss-cssnext": "^3.0.2",
     "postcss-loader": "^2.0.8",
     "sass-loader": "^6.0.6",
